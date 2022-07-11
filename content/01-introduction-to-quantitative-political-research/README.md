@@ -6,7 +6,7 @@ social and political phenomena. Yet, how we ought to study these
 phenomena is a contested subject with divides between descriptive
 analyses, causal inference, and prediction having long animated the
 discipline. In the first week of this course, we will begin by
-considering various approaches to contemporary political inquiry, the
+considering various approaches to quantitative political inquiry, the
 questions they are capable of answering, and their various trade-offs.
 
 ## Tuesday, August 30th, 2022
