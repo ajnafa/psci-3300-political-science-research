@@ -8,17 +8,17 @@ consider questions of whether our measures adequately capture the
 concepts we claim they do, identifying the appropriate level at which to
 take measurements, and the trade-offs between parsimony and precision.
 
-### Tuesday, September 27nd, 2022
+### Tuesday, September 27th, 2022
 
 -   Bueno de Mesquita, Ethan and Anthony Fowler. 2021. “Measure your
     Mission” in *Thinking Clearly with Data*. Princeton University
-    Press, 336–356
+    Press, pp. 336–356
 
 -   Munck, Gerardo L. 2009. *Measuring Democracy: A Bridge between
     Scholarship and Politics.* Baltimore: The Johns Hopkins University
     Press, pp. 1–32
 
-### Thursday, September 29nd, 2022
+### Thursday, September 29th, 2022
 
 -   Coppedge, Michael, et al. 2011. “Conceptualizing and Measuring
     Democracy: A New Approach.” *Perspectives on Politics* 9(2):
@@ -28,8 +28,9 @@ take measurements, and the trade-offs between parsimony and precision.
 -   von Borzyskowski, Inken, and Michael Wahman. 2021. “Systematic
     Measurement Error in Election Violence Data: Causes and
     Consequences.” *British Journal of Political Science* 51(1):
-    230–-252. doi:
-    [10.1017/S0007123418000509](https://doi.org/10.1017/S0007123418000509).
+    230–-252. doi/dataverse:
+    [10.1017/S0007123418000509](https://doi.org/10.1017/S0007123418000509);
+    [10.7910/DVN/LFD20F](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/LFD20F).
 
 ### Reccomended Readings
 
