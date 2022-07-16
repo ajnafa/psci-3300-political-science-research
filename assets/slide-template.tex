@@ -1,0 +1,270 @@
+\documentclass[12pt,ignorenonframetext,aspectratio=169]{beamer}
+
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+	\centering
+	\begin{beamercolorbox}[sep=16pt,center]{part title}
+		\usebeamerfont{part title}\insertpart\par
+	\end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+	\centering
+	\begin{beamercolorbox}[sep=12pt,center]{part title}
+		\usebeamerfont{section title}\insertsection\par
+	\end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+	\centering
+	\begin{beamercolorbox}[sep=8pt,center]{part title}
+		\usebeamerfont{subsection title}\insertsubsection\par
+	\end{beamercolorbox}
+}
+\AtBeginPart{
+	\frame{\partpage}
+}
+\AtBeginSection{
+	\ifbibliography
+	\else
+	\frame{\sectionpage}
+	\fi
+}
+\AtBeginSubsection{
+	\frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+\usepackage{unicode-math}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+	\usepackage[]{microtype}
+	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+	\IfFileExists{parskip.sty}{%
+		\usepackage{parskip}
+	}{% else
+		\setlength{\parindent}{0pt}
+		\setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+	\KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+
+\usepackage{csquotes}
+\usepackage[style=chicago-authordate,backend=biber,sorting=nyt]{biblatex}
+
+$if(bibliography)$
+	\addbibresource{$bibliography$}
+$endif$
+
+%% Comment these out if you don't want a slide with just the
+%% part/section/subsection/subsubsection title:
+%\AtBeginPart{
+%	\let\insertpartnumber\relax
+%	\let\partname\relax
+%	\frame{\partpage}
+%}
+%\AtBeginSection{
+%	\let\insertsectionnumber\relax
+%	\let\sectionname\relax
+%	\frame{\sectionpage}
+%}
+%\AtBeginSubsection{
+%	\let\insertsubsectionnumber\relax
+%	\let\subsectionname\relax
+%	\frame{\subsectionpage}
+%}
+
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0.25em}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+\setlength{\parskip}{0pt}
+\let\Tiny=\tiny
+
+% Defnining color scheme options
+\usepackage{color, hyperref}
+
+% Primary Colors
+\definecolor{UNTGreen}{RGB}{0,123,60}
+\definecolor{UNTWhite}{RGB}{255,255,255}
+\definecolor{UNTBlack}{RGB}{0,0,0}
+
+% Secondary Colors
+\definecolor{UNTGreenS1}{RGB}{0,169,80}
+\definecolor{UNTGreenS2}{RGB}{80,158,47}
+
+% Bold Accent Colors
+\definecolor{UNTLime}{RGB}{196,214,0}
+\definecolor{UNTBlue}{RGB}{0,169,224}
+\definecolor{UNTPurple}{RGB}{173,26,172}
+\definecolor{UNTCoolGrey}{RGB}{83,86,90}
+\definecolor{UNTPink}{RGB}{239,75,129}
+\definecolor{UNTDarkGreen}{RGB}{0,103,71}
+
+% Soft Accent Colors
+\definecolor{UNTPastelGreen}{RGB}{185,220,210}
+\definecolor{UNTPastelPink}{RGB}{255,177,187}
+
+\hypersetup{
+	breaklinks=true,
+	pdfauthor={A. Jordan Nafa (University of North Texas)},
+	pdftitle={PSCI 3300 Political Science Research Methods},
+	pdfborder={0 0 0},
+	colorlinks=true,
+	citecolor=UNTGreen,
+	urlcolor=UNTGreen,
+	linkcolor=black,
+	filecolor=black
+}
+\urlstyle{same}
+
+% Main Theme Settings
+\usetheme[width=1.75cm,hideothersections]{PaloAlto}
+\usefonttheme{serif}
+
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+%\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+%\newenvironment{Shaded}{}{}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\small,commandchars=\\\{\}}
+\newenvironment{Shaded}{\linespread{1}}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{#1}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{#1}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\DataTypeTok}[1]{#1}
+\newcommand{\DecValTok}[1]{#1}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{#1}
+\newcommand{\FunctionTok}[1]{#1}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{#1}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\VariableTok}[1]{#1}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+
+\makeatletter
+\beamer@headheight=1.5\baselineskip     %controls the height of the headline, default is 2.5    
+\makeatother
+
+\setbeamertemplate{footline}{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshortauthor
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshortinstitute
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+			\usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+	\end{beamercolorbox}}%
+	\vskip0pt%
+}
+\makeatother
+
+% Sections and subsections should not get their own damn slide.
+\AtBeginPart{}
+\AtBeginSection{}
+\AtBeginSubsection{}
+\AtBeginSubsubsection{}
+
+% Get rid of navigation symbols.
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+
+% Some optional color adjustments to Beamer
+\setbeamercolor{palette primary}{bg=UNTGreen,fg=white}
+\setbeamercolor{palette secondary}{bg=UNTDarkGreen,fg=white}
+\setbeamercolor{palette tertiary}{bg=UNTGreenS1,fg=white}
+\setbeamercolor{palette quaternary}{bg=UNTGreenS2,fg=white}
+\setbeamercolor{frametitle}{bg=UNTGreen,fg=white}
+
+% Sidebar color settings
+\setbeamercolor{sidebar}{bg=UNTGreenS1}
+\setbeamercolor{author in sidebar}{fg=white}
+\setbeamercolor{title in sidebar}{fg=white}
+\setbeamercolor{section in sidebar}{fg=white} 
+\setbeamercolor{section in sidebar shaded}{fg=white}
+
+\setbeamercolor{structure}{fg=UNTGreen} % itemize, enumerate, etc
+%\setbeamercolor{section in toc}{fg=UNTGreen} % TOC sections
+%\setbeamercolor{subsection in toc}{fg=UNTDarkGreen} % TOC sections
+%\setbeamercolor{subsection in head/foot}{bg=UNTGreenS2,fg=white}
+\setbeamercolor{shorttitle in headline}{bg=UNTGreen,fg=white}
+
+\setbeamercolor{section in sidebar}{fg=white}            %color of the active section
+\setbeamercolor{section in sidebar shaded}{fg=white}     %color of the inactive section
+%\setbeamercolor{subsection in sidebar}{fg=...}         %color of the active subsection
+%\setbeamercolor{subsection in sidebar shaded}{fg=...}  %color of the inactive subsection
+%\setbeamercolor{title in sidebar}{fg=...}              %color of the presentation title
+%
+\usepackage{xpatch}
+\xpatchcmd{\itemize}{\def\makelabel}{\setlength{\itemsep}{0.25em}\def\makelabel}{}{}
+
+% Adjust some item elements. More cosmetic things.
+%-------------------------------------------------
+
+$if(author)$\author{$author$}$endif$
+$if(title)$
+	\title[$if(title.lecture)$$title.lecture$$endif$]{$if(title.course)$$title.course$$endif$}
+$endif$
+\institute[University of North Texas]{
+	\normalsize{University of North Texas\\ 
+		Department of Political Science}
+}
+$if(date)$\date{$date$}$endif$
+%\subject{}
+%\setbeamercovered{transparent}
+%\setbeamertemplate{navigation symbols}{}
+\begin{document}
+	
+	% Title Slide
+	\begin{frame}
+		\maketitle
+	\end{frame}
+
+$body$
+
+\end{document}
