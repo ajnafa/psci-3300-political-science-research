@@ -16,7 +16,7 @@ take measurements, and the trade-offs between parsimony and precision.
 
 -   Munck, Gerardo L. 2009. *Measuring Democracy: A Bridge between
     Scholarship and Politics.* Baltimore: The Johns Hopkins University
-    Press, pp. 1–32
+    Press, pp. 13–52
 
 ### Thursday, September 29th, 2022
 
