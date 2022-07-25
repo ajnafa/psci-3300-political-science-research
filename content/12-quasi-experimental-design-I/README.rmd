@@ -17,7 +17,7 @@ In many if not most cases in political science and economics, baseline random as
 
 ### Thursday, November 17th, 2022
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 243--264
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data*. Princeton University Press, pp. 243--264
 
 - Sevi, Semra. 2022. "Is Incumbency Advantage Gendered?" *Legislative Studies Quarterly*. doi: [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); dataverse: [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
 

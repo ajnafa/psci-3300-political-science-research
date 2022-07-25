@@ -26,9 +26,8 @@ particular.
 ### Thursday, November 17th, 2022
 
 -   Bueno de Mesquita, Ethan and Anthony Fowler. 2021. “Regression
-    Discontinuity Designs” in *Thinking Clearly with Data: A Guide to
-    Quantitative Reasoning and Analysis*. Princeton University Press,
-    pp. 243–264
+    Discontinuity Designs” in *Thinking Clearly with Data*. Princeton
+    University Press, pp. 243–264
 
 -   Sevi, Semra. 2022. “Is Incumbency Advantage Gendered?” *Legislative
     Studies Quarterly*. doi:
