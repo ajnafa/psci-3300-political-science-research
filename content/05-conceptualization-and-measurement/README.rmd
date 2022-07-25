@@ -27,4 +27,4 @@ Once we've identified a research question and outlined a set of theoretical rela
 
 - Casper, Gretchen, and Claudiu Tufis. 2003. "Correlation Versus Interchangeability: The Limited Robustness of Empirical Findings on Democracy Using Highly Correlated Data Sets." *Political Analysis* 11(2): 196–203. doi: [10.1093/pan/mpg009](https://doi.org/10.1093/pan/mpg009)
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "On the Limits of Quantification" in *Thinking Clearly with Data*. Princeton University Press, 357--368
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "On the Limits of Quantification" in *Thinking Clearly with Data*. Princeton University Press, pp. 357--368

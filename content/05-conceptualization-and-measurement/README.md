@@ -46,4 +46,4 @@ take measurements, and the trade-offs between parsimony and precision.
 
 -   Bueno de Mesquita, Ethan and Anthony Fowler. 2021. “On the Limits of
     Quantification” in *Thinking Clearly with Data*. Princeton
-    University Press, 357–368
+    University Press, pp. 357–368
