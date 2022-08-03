@@ -19,19 +19,20 @@ particular.
 
 -   Latura, Audrey and Ana Catalano Weeks. 2022. “Corporate Board Quotas
     and Gender Equality Policies in the Workplace.” *American Journal of
-    Political Science*. doi:
-    [10.1111/ajps.12709](https://doi.org/10.1111/ajps.12709); dataverse:
+    Political Science*. doi/dataverse:
+    [10.1111/ajps.12709](https://doi.org/10.1111/ajps.12709);
     [10.7910/DVN/WJINZP](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/WJINZP)
 
 ### Thursday, November 17th, 2022
 
 -   Bueno de Mesquita, Ethan and Anthony Fowler. 2021. “Regression
-    Discontinuity Designs” in *Thinking Clearly with Data*. Princeton
-    University Press, pp. 243–264
+    Discontinuity Designs” in *Thinking Clearly with Data: A Guide to
+    Quantitative Reasoning and Analysis*. Princeton University Press,
+    pp. 243–264
 
 -   Sevi, Semra. 2022. “Is Incumbency Advantage Gendered?” *Legislative
-    Studies Quarterly*. doi:
-    [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); dataverse:
+    Studies Quarterly*. doi/dataverse:
+    [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376);
     [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
 
 ### Reccomended Readings

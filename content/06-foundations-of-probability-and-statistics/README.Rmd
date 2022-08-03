@@ -19,4 +19,4 @@ While we introduced the basics of descriptive statistics in prior classes, this 
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression for Describing and Forecasting" in *Thinking Clearly with Data*. Princeton University Press, pp. 74--93
 
-- Problem Set II is due via Canvas on Sunday, October 9th by 11:59 PM
+- Problem Set II is due via Canvas on Sunday, October 9th by 11:59PM

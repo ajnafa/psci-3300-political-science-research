@@ -2,7 +2,7 @@ Causal Relationships in the Quantitative Social Sciences
 ================
 
 In quantitative political research we are generally interested in
-understanding causal relationships. This week introduces the basic logic
+explaining the causes of effects. This week introduces the basic logic
 of causal relationships, their formal representation through directed
 acyclic graphs (DAGs), and different types of estimands that aid us in
 answering our research questions and arriving at valid conclusions in

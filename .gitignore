@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Prevent saved MCMC model objects from uploading to github
+content/.*/output/.*.rds
+readings

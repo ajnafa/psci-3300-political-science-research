@@ -113,3 +113,13 @@ summary(std_norm)
 - The computers in the political science lab in Wooten Hall 173 should have the most recent version of R, RStudio, and RTools
   
 - If you expect to have difficulty meeting the technical requirements for this course you need to let me know immediately
+
+---
+
+### Getting Started with R
+
+- We will also make use of the probabilistic programming language Stan via it's R interfaces `brms` and `rstanarm` during parts of this course
+
+- Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
+
+- If you have difficulty getting these installed on your personal computer please come by my office hours or make and appointment for assistance

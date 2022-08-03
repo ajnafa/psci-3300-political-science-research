@@ -1,0 +1,531 @@
+---
+output: 
+  pdf_document:
+    highlight: haddock
+    keep_tex: true
+    fig_caption: yes
+    latex_engine: pdflatex
+    citation_package: biblatex
+    template: syllabus_template.tex
+geometry: margin=1in
+title: "PSCI 3300 Political Science Research Methods"
+author: "A. Jordan Nafa"
+date: "Fall 2022, Section 003"
+officehours: "Tues/Wed 12:30-2:00 PM or by Apt."
+office: "Wooten Hall #171"
+classroom: "Lang 310"
+time: "Tues/Thur 9:30-10:50 AM"
+email: "adamnafa@my.unt.edu"
+instructor: "A. Jordan Nafa"
+fontfamily: mathpazo 
+fontsize: 12pt
+monofont: "Source Code Pro"
+monofontoptions: "Scale=0.2"
+header-includes:
+   - \linespread{1.0}
+   - \usepackage{amsmath}
+biblio-style: chicago-authordate
+#bibliography: references.bib
+indent: FALSE
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(
+  "knitr",
+  "tibble",
+  "kableExtra"
+)
+
+knitr::opts_chunk$set(
+  cache = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = '  ',
+  fig.path = 'figs/',
+  cache.path = '_cache/',
+  fig.process = function(x) {
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2))
+      x2
+    else
+      x
+  }
+)
+```
+
+# Course Description
+
+\noindent This course serves as an introduction to research methods, causal inference, and applied statistics for contemporary political research. Throughout the semester, we will cover formulating research questions, theory development, the logic of causal relationships, and commonly employed approaches to answering questions about political phenomena. Upon completion of this course, students should be able to understand and interpret most research published in political science journals, as well as public opinion polls, surveys, and research findings reported in the news. Students should be able to formulate theoretical arguments and testable hypotheses, and to test these hypotheses in a variety of ways. As a result, students who complete this course should be prepared for future coursework in the social sciences, for starting to pursue their own research, and for a life as an educated and informed citizen.
+
+Although there is a modest amount of basic statistics involved, this is fundamentally an applied course where students will gain experience applying a range of different approaches to analyzing, visualizing, and interpreting data using the open-source statistical programming language R and the tidyverse. In practice, that means less of this 
+
+$$Normal(y|\mu,\sigma) = \frac{1}{\sqrt{2 \pi}\, \sigma} \exp\left( - \, \frac{1}{2}\left(\frac{y -\mu}{\sigma} \right)^2 \right)$$
+\noindent and more hands-on stuff like this
+```{r, results='hide'}
+## Simulate 10,000 random draws from a standard normal distribution
+std_norm <- rnorm(n = 10e3, mean = 0, sd = 1)
+
+## Print a summary
+summary(std_norm)
+```
+
+# Learning Objectives
+
+Students who master the content of this course will be able to:
+
+- Understand and interpret quantitative research published in political science journals
+
+- Formulate political research questions and theories to explain causal relationships
+
+- Compile data and conduct empirical analysis to answer a research question
+
+- Understand and interpret descriptive and inferential statistics
+
+- Utilize R to analyze, visualize, interpret, and communicate the results of empirical political analyses
+
+# Required Course Materials
+
+\noindent There is one **required** textbook for this course which can be purchased from the UNT campus bookstore or Amazon
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press. ISBN: 9780691214351
+
+All additional readings for the course and various instructional resources for applied statistics and programming in R are provided via the course's Canvas page.
+
+# Course Expectations
+
+\noindent A university course is a joint endeavor between instructor and students. We all have an important part to play. As the instructor in this course, I am responsible for
+
+- Providing course materials that will give you the opportunity to achieve our course objectives and providing you with the tools to learn
+
+- Providing timely feedback on your work and explaining concerns you may have with grading, and, being fair in my implementation of rules and policies in the course.
+
+As a student in this course, you are responsible for
+
+- Reading and completing all requirements of the course in a timely manner. Students are expected to come to class having done the assigned reading and failure to do so is likely to have an adverse impact on your grade in this course.
+
+- Working to remain attentive and engaged in the course
+
+- Assisting in maintaining a positive learning environment for everyone.
+
+# Technical Requirements
+
+\noindent To complete the required assignments for this course you will need a stable internet connection and access to a laptop or desktop computer to view course materials on canvas and complete required assignments. If you have difficulty meeting this requirement, you can access the internet from any building on the UNT campus or a local WIFI hotspot. If you encounter technical difficulties please contact the UNT helpdesk for assistance
+
+```{=tex}
+\begin{raggedright}
+Student Helpdesk:\\
+UNT IT Helpdesk\\
+Sage Hall 130\\
+940-565-2324\\
+helpdesk@unt.edu
+\end{raggedright}
+```
+
+I assume a basic familiarity with high-school algebra and a working knowledge of computers. If you are unfamiliar with downloading and installing software programs on your Mac or PC, you may want to allocate additional time to make sure those aspects of the course go smoothly. Note that installing the R language requires [a modern version of Windows, Mac OSX, or Linux](https://cran.r-project.org/doc/FAQ/R-FAQ.html#What-machines-does-R-run-on_003f) and the Chrome OS operating system is not currently supported.[^1] 
+If you are unable to meet the installation requirements for R on your personal computer, you can access both [R](https://itservices.cas.unt.edu/software/r) and [RStudio](https://itservices.cas.unt.edu/software/rstudio) from computers on the UNT campus or sign up for [RStudio Cloud](https://rstudio.cloud/plans/plus) which provides full web-based access to the latest version of R and RStudio with both [free](https://rstudio.cloud/plans/free) and [paid](https://rstudio.cloud/plans/plus) access options. Detailed instructions on installing R and RStudio can be found on the course's Canvas page.
+
+[^1]: However, certain Chromebook models may support Linux in which case [you can follow the instructions here](https://blog.sellorm.com/2018/12/20/installing-r-and-rstudio-on-a-chromebook/).
+
+# Communication
+
+\noindent I am available via email or during office hours to answer any questions you may have about the course. I typically respond to emails within 48 hours Monday-Friday. If you send an email over the weekend, I cannot guarantee a response before Monday morning. Before reaching out, please double check that your question is not answered somewhere on the syllabus--I will not respond to inquiries that can be answered by simply reading the syllabus. 
+
+In the event you need assistance related to some issue in R, be sure to attach a script containing all code necessary to reproduce the problem and a brief explanation of ways you have attempted to resolve it. You may also seek assistance from the [UNT Learning Center](https://learningcenter.unt.edu/) or the [dedicated R discord channel](https://discord.gg/ggm9dnAYBE).
+
+# Course Requirements and Grading
+
+\noindent It is extremely important that you read all materials before the assigned dates and attend class or view the lecture to understand how the readings from research articles complement material from the textbook. Additional materials may be posted to Canvas as circumstances arise. Grades for the course will be based upon assignments, a research project and presentation, and class participation.
+
+In calculating final your grade for this course I use standard mathematical rounding but will otherwise make no further adjustment of grades. Please remember that your final grade is the culmination of work that you have done over the course of the semester. It is not the product of bargaining at the end of the term. Moreover, I cannot make an exception for one student without making it for all students and that is never practical. The University of North Texas relies on an A-F scale for grades and, taking into account basic rounding, each letter grade corresponds to the following range:
+
+```{=tex}
+\begin{center}
+A: 89.5--100;
+B: 79.5--89.4;
+C: 69.5--79.4;
+D: 59.5--69.4;
+F: 59.4 or Less 
+\end{center}
+```
+
+## Problem Sets
+
+\noindent To get hands on experience writing R code, manipulating and modeling data, and thinking through the logic of cause and effect, you will complete five problem sets that ask you to apply the topics we cover in class using real or simulated data. These will account for 40\% of your overall grade. Note that *you must demonstrate you have made a good faith effort to work through each question in order to receive partial credit for incorrect answers*. Instructions for each problem set will posted on the course's Canvas page at least two weeks before its respective due date.
+
+## Final Project
+
+\noindent The final project for this course requires students to develop a research question relevant to political science or public policy, identify the necessary source(s) of data, and undertake an analysis in R to answer the question using the data and the tools we cover in this course. The final project will consist of two components, a research paper and a final presentation, and will account for 50\% of your overall grade. You will have the option to either work individually or in groups of no more than three people. If you choose to work as a group, you must provide written notice with the names of each student in the group **no later than Friday, September 23rd**.
+
+- **Research Paper** The research paper portion of the final project accounts for 60\% of the final project grade and will be broken down into four separate assignments: a research question and general outline, an overview of the **political science literature** on your topic, a theory outlining relationship of interest, and a final draft containing your research design and analysis. Detailed instructions for each assignment and examples of what the content and structure are expected to resemble will be provided on the course's Canvas page.
+
+- **Final Presentation** The presentation portion accounts for 40\% of your final project grade and requires you to give an 8-12 minute presentation of your research project which should cover your research question, theory, research design, and preliminary results. Examples and templates to assist you with structure and preparation will be provided on the course's Canvas page.
+
+## Class Participation
+
+\noindent The remaining 10\% of your grade in this course consists of participation. This means showing up to class, asking relevant questions, and completing occasional in-class activities.
+
+# Course Schedule
+
+```{r calendar, echo=FALSE, fig.height=7, fig.width=7}
+course_dates <- tibble::tibble(
+  date = seq(
+    from = lubridate::ymd("2022-08-01"), 
+    to = lubridate::ymd("2022-12-31"),
+    by = 1
+  ),
+  day = lubridate::wday(date, label = TRUE, abbr = FALSE),
+  class_day = dplyr::case_when(
+    date %in% lubridate::ymd(c("2022-09-04", "2022-09-18", "2022-09-25", "2022-10-09", "2022-10-23", "2022-11-06", "2022-11-27", "2022-12-15")) ~ "Assignment Due",
+    date == "2022-11-24" | date == "2022-09-15" ~ "No Class",
+    day %in% c("Tuesday", "Thursday") & date > "2022-08-29" & date < "2022-12-09" ~ "Class Day"
+  )
+)
+
+# Creating the calendar
+calendR::calendR(
+  start_date = min(course_dates$date),
+  end_date = max(course_dates$date),
+  start = "M",
+  months.col = "black",
+  special.days = course_dates$class_day,
+  special.col = c("#BFEFFF", "#DBFFD6", "#ECD4FF"),
+  mbg.col = "white",
+  lty = 0,
+  bg.col = "white",
+  low.col = "white",
+  title = "PSCI 3300 Fall 2022 Course Calendar",
+  legend.pos = "bottom",
+  title.size = 30,
+  orientation = "p",
+  font.family = "serif"
+) 
+```
+
+# Part I: Fundamentals of Political Research
+
+## Introduction to Empirical Political Research
+
+\noindent As a discipline, political science consists of the empirical study of social and political phenomena. Yet, how we ought to study these phenomena is a contested subject with divides between descriptive analyses, causal inference, and prediction having long animated the discipline. In the first week of this course, we will begin by considering various approaches to contemporary political inquiry, the questions they are capable of answering, and their various trade-offs.
+
+### Tuesday, August 30th, 2022
+
+- Course Introduction and Syllabus Overview
+
+### Thursday, September 1st, 2022
+
+- Samii, Cyrus. 2016. "Causal Empiricism in Quantitative Research." *Journal of Politics* 78(3): 941--955. doi: [10.1086/686690](https://doi.org/10.1086/686690)
+
+- Gerring, John. 2012. "Mere Description." *British Journal of Political Science* 42(4): 721--746. doi: [10.1017/S0007123412000130](https://doi.org/10.1017/S0007123412000130)
+
+- Problem Set 0 is Due via Canvas by Sunday, September 4th, 2022 at 11:59 PM
+
+## Formulating Political Research Questions
+
+\noindent The first step in the process of political research is formulating a question. For instance, scholars of political representation have long pondered whether the interests of privileged social groups are disproportionately represented in policy outcomes and why such inequalities arise. This week's focus will be on formulating and narrowing an empirical research question. We will also cover how to survey existing research on a subject effectively and efficiently using Google Scholar and other resources.
+
+### Tuesday, September 6th, 2022
+
+- Huntington-Klein, Nick. 2022. ["Research Questions"](https://theeffectbook.net/ch-ResearchQuestions.html) in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 1--18
+
+- McCauley, Adam, and Andrea Ruggeri. 2020. "From Questions and Puzzles to Research Project.” In *The SAGE Handbook of Research Methods in Political Science and International Relations*, ed. Luigi Curini and Robert Franzese. London, UK: SAGE, 26--43
+
+### Thursday, September 8th, 2022
+
+- Bueno de Mesquita, Ethan, and Anthony Fowler. 2021. "Correlation: What is it and What is it Good for?" in *Thinking Clearly with Data*. Princeton University Press, 13--36
+
+- Lupu, Noam, and Zach Warner. 2022. "Affluence and Congruence: Unequal Representation around the World" *Journal of Politics* 84(1): 276--290. doi/dataverse: [10.1086/714930](https://doi.org/10.1086/714930); [10.7910/DVN/DBNBEU](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBNBEU)
+
+## Causal Relationships in the Quantitative Social Sciences
+
+\noindent In quantitative political research we are generally interested in explaining the causes of effects. This week introduces the basic logic of causal relationships, their formal representation through directed acyclic graphs (DAGs), and different types of estimands that aid us in answering our research questions and arriving at valid conclusions in political science.
+
+### Tuesday, September 13th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Causation: What is it and What is it Good for?" in *Thinking Clearly with Data*. Princeton University Press, pp. 34--52
+
+- Rohrer, Julia M. 2018. "Thinking Clearly About Correlations and Causation: Graphical Causal Models for Observational Data." *Advances in Methods and Practices in Psychological Science* 1(1): 27--42. doi: [10.1177/2515245917745629](https://doi.org/10.1177/2515245917745629).
+
+### Thursday, September 15th, 2022
+
+- No class as I will be in Montreal for a conference. The preliminary research question assignment is due via Canvas on Sunday, September 18th by 11:59 PM.
+
+## Theory Building in Political Science
+
+\noindent At the most basic level, a theory is a verbal or formal explanation that describes a causal relationship between two or more variables. That is, a theory is our proposed answer to the question of why and how some phenomena occurs; a data story about why we think a causal relationship such as $Race \longrightarrow Vote~Choice$ or $Federalism_{j[t]} \longrightarrow Conflict_{j[t+1]}$ exists. This week we look at what makes a good theory, different ways of verbally and formally expressing theoretical relationships, and making explicit connections between research question, theory, and data.
+
+### Tuesday, September 20th, 2022
+
+- Claassen, Christopher. 2020. "Does Public Support Help Democracy Survive?" *American Journal of Political Science*, 64(1): 118-134. doi/dataverse: [10.1111/ajps.12452](https://doi.org/10.1111/ajps.12452); [10.7910/DVN/HWLW0J](https://doi.org/10.7910/DVN/HWLW0J)
+
+- Barnes, Tiffany D., and Mirya R. Holman. 2020. "Gender Quotas, Women’s Representation, and Legislative Diversity." *Journal of Politics* 82(4): 1271-1286. doi/dataverse: [10.1086/708336](https://doi.org/10.1086/708336); [10.7910/DVN/9TFMSG](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9TFMSG)
+
+### Thursday, September 22nd, 2022
+
+- Lundberg, Ian, Rebecca Johnson, and Brandon M. Stewart. 2021. "What Is Your Estimand? Defining the Target Quantity Connects Statistical Evidence to Theory." *American Sociological Review* 86(3): 532-565. doi/dataverse: [10.1177/00031224211004187](https://doi.org/10.1177/00031224211004187); [10.7910/DVN/ASGOVU](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ASGOVU)
+
+- Problem Set I is due via Canvas on Sunday, September 25th by 11:59 PM
+
+## Conceptualization and Measurement
+
+\noindent Once we've identified a research question and outlined a set of theoretical relationships, we need to either find or develop ways to measure or *operationalize* the underlying concepts. This week we'll consider questions of whether our measures adequately capture the concepts we claim they do, identifying the appropriate level at which to take measurements, and the trade-offs between parsimony and precision.
+
+### Tuesday, September 27th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Measure your Mission" in *Thinking Clearly with Data*. Princeton University Press, pp. 336--356
+
+- Munck, Gerardo L. 2009. *Measuring Democracy: A Bridge between Scholarship and Politics.* Baltimore: The Johns Hopkins University Press, pp. 13--52
+
+### Thursday, September 29th, 2022
+
+- Coppedge, Michael, et al. 2011. "Conceptualizing and Measuring Democracy: A New Approach." *Perspectives on Politics* 9(2): 247--267. doi: [10.1017/S1537592711000880](https://doi.org/10.1017/S1537592711000880)
+
+- von Borzyskowski, Inken, and Michael Wahman. 2021. "Systematic Measurement Error in Election Violence Data: Causes and Consequences." *British Journal of Political Science* 51(1): 230–-252. doi/dataverse: [10.1017/S0007123418000509](https://doi.org/10.1017/S0007123418000509); [10.7910/DVN/LFD20F](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/LFD20F).
+
+### Reccomended Readings
+
+- McMann, Kelly et al. 2022. "Assessing Data Quality: An Approach and An Application." *Political Analysis* 30(3): 426–449. doi: [10.1017/pan.2021.27](https://doi.org/10.1017/pan.2021.27)
+
+- Casper, Gretchen, and Claudiu Tufis. 2003. "Correlation Versus Interchangeability: The Limited Robustness of Empirical Findings on Democracy Using Highly Correlated Data Sets." *Political Analysis* 11(2): 196–203. doi: [10.1093/pan/mpg009](https://doi.org/10.1093/pan/mpg009)
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "On the Limits of Quantification" in *Thinking Clearly with Data*. Princeton University Press, pp. 357--368
+
+# Part II: Foundations of Quantitative Social Science
+
+## Foundations of Probability and Statistics for Political Research
+
+\noindent While we introduced the basics of descriptive statistics in prior classes, this week we'll turn our attention to the application of probability theory and statistical reasoning that provide a foundation for the methods covered in the remainder of the course. We'll cover selection bias, the difference between samples and populations, and the basic logic of statistical inference as it relates to contemporary political science.
+
+### Tuesday, October 4th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Correlation Requires Variation" in *Thinking Clearly with Data*. Princeton University Press, pp. 55--73
+
+- Gelman, Andrew,Jennifer Hill, and Aki Vehtari. 2021. "Statistical Inference" in *Regression and Other Stories*. Cambridge University Press, pp. 49--68
+
+### Thursday, October 6th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression for Describing and Forecasting" in *Thinking Clearly with Data*. Princeton University Press, pp. 74--93
+
+- Problem Set II is due via Canvas on Sunday, October 9th by 11:59PM
+
+## Probabilistic Reasoning and Applied Bayesian Inference
+
+\noindent Continuing with our brief introduction to inferential statistics, this week we dive more concretely into the application of probability theory and Bayesian inference in the contemporary social sciences as a powerful and principled tool for expressing and quantifying uncertainty.
+
+### Tuesday, October 11th, 2022
+
+- Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapters 1 and 2"](https://www.bayesrulesbook.com/chapter-1.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
+
+### Thursday, October 13th, 2022
+
+- Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 4: Balance and Sequentiality in Bayesian Analyses"](https://www.bayesrulesbook.com/chapter-4.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
+
+- Allen, Michael A., et al. 2020. "Outside the Wire: U.S. Military Deployments and Public Opinion in Host States." *American Political Science Review* 114(2): 326–41. doi: [10.1017/S0003055419000868](https://doi.org/10.1017/S0003055419000868); dataverse: [10.7910/DVN/VCE7KN](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VCE7KN)
+
+### Reccomended Readings
+
+- Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. *Regression and Other Stories*. Cambridge University Press, pp. 113--182
+
+- Western, Bruce, and Simon Jackman. 1994. "Bayesian Inference for Comparative Research." *American Political Science Review* 88(2): 412–423. doi: [10.2307/2944713](https://doi.org/10.2307/2944713)
+
+## Multiple Regression I
+
+\noindent Regression models are ubiquitous in political science and serve as the primary workhorse for statistical inference. This week we will continue our introduction to the foundations of applied statistics in political science and the use of regression as an approach to estimating and describing relationships. We'll also more concretely discuss the assumptions necessary for valid inference.
+
+### Tuesday, October 18th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Samples, Uncertainty, and Statistical Inference" in *Thinking Clearly with Data*. Princeton University Press, pp. 94--112
+
+- Aronow, Peter M., and Cyrus Samii. 2016. "Does Regression Produce Representative Estimates of Causal Effects?" *American Journal of Political Science* 60 (1): 250–267. doi: [10.1111/ajps.12185](https://doi.org/10.1111/ajps.12185); dataverse: [10.7910/DVN/29098](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/29098)
+
+### Thursday, October 20th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Why Correlation Doesn't Imply Causation" in *Thinking Clearly with Data*. Princeton University Press, pp. 160--192
+
+- Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 9: Simple Normal Regression"](https://www.bayesrulesbook.com/chapter-9.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
+
+- Problem Set III is due via Canvas on Sunday, October 23rd by 11:59PM
+
+### Reccomended Readings
+
+- Huntington-Klein, Nick. 2022. "Regression" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 179--266. [https://theeffectbook.net/ch-StatisticalAdjustment.html](https://theeffectbook.net/ch-StatisticalAdjustment.html)
+
+- Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapters 10-11"](https://www.bayesrulesbook.com/chapter-10.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
+
+## Multiple Regression II
+
+\noindent Continuing our introduction to regression, this week we'll take a more detailed look at the logic of regression adjustment as a means of dealing with confounding. Moving beyond the framework of constant linear relationships, we'll explore more principled approaches to analyzing non-linear relationships and questions of classification that are distinct from regression.
+
+### Tuesday, October 25th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Controlling for Confounders" in *Thinking Clearly with Data*. Princeton University Press, pp. 193--217
+
+- Cinelli, Carlos, Andrew Forney, and Judea Pearl. 2022. "A Crash Course in Good and Bad Controls." *Sociological Methods \& Research*: 1--34. doi: [10.1177/00491241221099552](https://doi.org/10.1177/00491241221099552)
+
+### Thursday, October 27th, 2022
+
+- Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 13: Logistic Regression"](https://www.bayesrulesbook.com/chapter-13.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
+
+### Reccomended Readings
+
+- Mood, Carina. 2010. "Logistic Regression: Why We Cannot Do What We Think We Can Do, and What We Can Do About It." *European Sociological Review* 26(1): 67–82. doi: [10.1093/esr/jcp006](https://doi.org/10.1093/esr/jcp006)
+
+## Hypothesis Testing and Theory Evaluation
+
+\noindent The dominant approach to evaluating theories of politics quantitatively often takes the form of *hypothesis testing*. Despite its persistence in the field, the most common manifestation, Null Hypothesis Significance Testing (NHST), suffers from an number of logical inconsistencies that are not always understood. This week we'll look at the basic logic of hypothesis testing in political science, the questions it can and cannot answer, and alternative approaches that are better suited to answering the questions social scientists are often interested in.
+
+### Tuesday, November 1st, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Over-Comparing, Under-Reporting" in *Thinking Clearly with Data*. Princeton University Press, pp. 113--156
+
+- Gross, Justin H. 2015. "Testing What Matters (If You Must Test at All): A Context-Driven Approach to Substantive and Statistical Significance." *American Journal of Political Science* 59 (3): 775--788. doi: [10.1111/ajps.12149](https://doi.org/10.1111/ajps.12149)
+
+### Thursday, November 3rd, 2022
+
+- Krcmaric, Daniel. 2022. "Does the International Criminal Court Target the American Military?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000478](https://doi.org/10.1017/S0003055422000478); [10.7910/DVN/HHNZGT](https://doi.org/10.7910/DVN/HHNZGT)
+
+- Makowski, Dominique, et al. 2019. "Indices of Effect Existence and Significance in the Bayesian Framework." *Frontiers in Psychology* 10: 1--14. doi: [10.3389/fpsyg.2019.02767](https://doi.org/10.3389/fpsyg.2019.02767)
+
+### Reccomended Readings
+
+-  Rainey, Carlisle. 2014. "Arguing for a Negligible Effect." *American Journal of Political Science*, 58(4): 1083-1091. doi/dataverse: [10.1111/ajps.12102](https://doi.org/10.1111/ajps.12102); [10.7910/DVN/23818](https://doi.org/10.7910/DVN/23818)
+
+- Gabriel S. Lenz and Alexander Sahn. 2022. "Achieving Statistical Significance with Control Variables and Without Transparency." *Political Analysis* 29 (3): 356--369. doi/dataverse: [10.1017/pan.2020.31](https://doi.org/10.1017/pan.2020.31); [10.7910/DVN/XIEJCR8](https://doi.org/10.7910/DVN/XIEJCR8)
+
+- Gill, Jeff. 1999. "The Insignificance of Null Hypothesis Significance Testing." *Political Research Quarterly* 52(3): 647–674. doi: [10.1177/106591299905200309](https://doi.org/10.1177/106591299905200309)
+
+# Part III: Research Design and Causal Inference
+
+## Experimental Designs and Baseline Randomization
+
+\noindent The recognition that baseline random assignment of the treatment is the only way to achieve an unbiased estimate of a causal effect was perhaps one of the most important developments in twentieth century statistics. Although randomized controlled trials (RCT) are often held up as the gold standard for research design, they are not without limitations. This week we'll explore the basic logic of experimental design in the context of both traditional and natural experiments, ways random assignment can go wrong, and the trade-off between internal and external validity.
+
+### Tuesday, November 8th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 218--242
+
+- Frederiksen, Kristian Vrede Skaaning. 2022. "Does Competence Make Citizens Tolerate Undemocratic Behavior?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000119](https://doi.org/10.1017/S0003055422000119); [10.7910/DVN/NGFLRO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NGFLRO)
+
+### Thursday, November 10th, 2022
+
+- Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
+
+- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
+
+- Problem Set IV is due via Canvas on Sunday, November 15th by 11:59 PM
+
+### Reccomended Readings
+
+- Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
+
+- Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. "Causal Inference and Randomized Experiments" in *Regression and Other Stories*. Cambridge University Press, pp. 339--356
+
+- Bos, Angela L., et al. 2022. "This One’s for the Boys: How Gendered Political Socialization Limits Girls’ Political Ambition and Interest." *American Political Science Review* 116(2): 484--501. doi/dataverse: [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027); [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
+
+## Quasi-Experimental Designs I
+
+\noindent In many if not most cases in political science and economics, baseline random assignment of the treatment is either impractical or infeasible due to ethical, financial, or other considerations. Faced with this reality, social scientists often rely on quasi-experimental approaches to estimate causal effects. This week we will explore alternatives to experimental designs that attempt to achieve baseline random assignment, their core assumptions, and some of their limitations focusing on difference in difference and regression discontinuity designs in particular.
+
+### Tuesday, November 15th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Difference in Differences Designs" in *Thinking Clearly with Data*. Princeton University Press, pp. 266--288
+
+- Latura, Audrey and Ana Catalano Weeks. 2022. "Corporate Board Quotas and Gender Equality Policies in the Workplace." *American Journal of Political Science*. doi/dataverse: [10.1111/ajps.12709](https://doi.org/10.1111/ajps.12709); [10.7910/DVN/WJINZP](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/WJINZP)
+
+### Thursday, November 17th, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 243--264
+
+- Sevi, Semra. 2022. "Is Incumbency Advantage Gendered?" *Legislative Studies Quarterly*. doi/dataverse: [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
+
+### Reccomended Readings
+
+- Huntington-Klein, Nick. 2022. "Difference-in-Differences" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 435--467. [https://theeffectbook.net/ch-DifferenceinDifference.html](https://theeffectbook.net/ch-DifferenceinDifference.html)
+
+- Imai, Kosuke, and Song Kim. 2021. "On the Use of Two-Way Fixed Effects Regression Models for Causal Inference with Panel Data." *Political Analysis* 29(3): 405--415. doi: [10.1017/pan.2020.33](https://doi.org/10.1017/pan.2020.33); 
+
+- Huntington-Klein, Nick. 2022. "Regression Discontinuity" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 505--554. [https://theeffectbook.net/ch-RegressionDiscontinuity.html](https://theeffectbook.net/ch-RegressionDiscontinuity.html)
+
+## Quasi-Experimental Designs II
+
+\noindent The approaches to estimating causal effects we've examined thus far rest upon the assumption of *strict exogeniety* which tends to fail spectacularly in the context of observational data and inhibits our ability to make causal claims outside of experimental settings. This week we turn our focus to recent developments in political science that draw on a set of weaker identifying assumptions known as *sequential ignorability* to identify treatment effects and examine causal mechanisms.
+
+### Tuesday, November 22nd, 2022
+
+- Kurtz, Marcus J., and Adam Lauretig. 2022. "Does Free-Market Reform Induce Protest? Selection, Post-Treatment Bias, and Depoliticization." *British Journal of Political Science* 52(2): 968-–976. doi/dataverse: [10.1017/S0007123420000605](https://doi.org/10.1017/S0007123420000605); [10.7910/DVN/WU2WSE](https://doi.org/10.7910/DVN/WU2WSE)
+
+- Ladam, Christina, Jeffrey J. Harden, Jason H. Windett. 2018. "Prominent Role Models: High-Profile Female Politicians and the Emergence of Women as Candidates for Public Office." *American Journal of Political Science*, 62 (2): 369--381. doi/dataverse: [10.1017/10.1111/ajps.12351](https://doi.org/10.1111/ajps.12351); [10.7910/DVN/D5DEHM](http://doi.org/10.7910/DVN/D5DEHM)
+
+### Reccomended Readings
+
+- Blackwell, Matthew and Adam Glynn. 2018. "How to Make Causal Inferences with Time-Series Cross-Sectional Data under Selection on Observables." *American Political Science Review* 112 (4): 1067--1082. doi/dataverse: [10.1017/S0003055418000357](https://doi.org/10.1017/S0003055418000357); [10.7910/DVN/SFBX6Z](https://doi.org/10.7910/DVN/SFBX6Z)
+
+### Thursday, November 24th, 2022
+
+- No class. Thanksgiving Break
+
+- Problem Set V is due via Canvas on Sunday, November 27th by 11:59PM
+
+## Prediction and Forecasting for Political Research
+
+\noindent We've covered a great deal over the course of the semester, focusing mainly on strategies for causal inference and probabilistic reasoning. To conclude this course, we'll briefly turn our attention to a somewhat different inferential goal and discuss the use of predictive modeling and machine learning in the quantitative social sciences.
+
+### Tuesday, November 29th, 2022
+
+- Cranmer, Skyler J., and Bruce A. Desmarais. 2017. "What Can We Learn from Predictive Modeling?" *Political Analysis* 25(2): 145–-66. doi: [10.1017/pan.2017.3](https://doi.org/10.1017/pan.2017.3)
+
+- Fariss, Christopher J., and Zachary M. Jones. 2018. "Enhancing Validity in Observational Settings When Replication Is Not Possible." *Political Science Research and Methods* 6(2): 365–-80. doi/dataverse: [10.1017/psrm.2017.5](https://doi.org/10.1017/psrm.2017.5); [10.7910/DVN/O2BK85](http://dx.doi.org/10.7910/DVN/O2BK85)
+
+### Thursday, December 1st, 2022
+
+- No Class. Work on your final papers and research presentations.
+
+## Research Project Presentations
+
+### Tuesday, December 6th, 2022
+
+- Final Research Project Presentations
+
+### Thursday, December 8th, 2022
+
+- Final Research Project Presentations
+
+## Finals Week
+
+### Thursday, December 15th, 2022
+
+- Final research papers are due via Canvas by 11:59PM on Thursday, December 15th, 2022
+
+# Acknowledgments and License Information
+
+\noindent The content of this class relies in part on materials from courses designed by Andrew Heiss, Matthew Blackwell, Danillo Freire, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All materials for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
+
+# Course Policies
+
+- **Canvas:** Canvas is an online course information and management program. All course documents (syllabus, assignments, etc.) will be posted on or via Canvas. You should check it regularly, and read all of the announcements carefully. Canvas also facilitates e-mail communication among class members and between class members and the instructor. Please use your UNT email address for communication about this class and check it frequently. If you do not you could miss important course information.
+
+- **Late Work, Illness and Family Emergencies:** It is expected that all work will be submitted at the scheduled times. **Late assignments will be docked 50%** after missing the deadline. After 3 days they will not be accepted. You can work on this class at your own pace, and your work is available to complete far in advance of the deadlines. This allows you to plan ahead for almost all circumstances, including busy weeks, shifting work schedules, religious holidays, family vacations, and the like. If you are unable to turn in work on time because of an emergency, you must contact me prior to the deadline. All illnesses and family emergencies must be documented with appropriate evidence.
+
+- **COVID-19:** While completing work is expected as outlined above, it is important for all of us to be mindful of the health and safety of everyone in our community, especially given concerns about COVID-19. Please contact me if you are impacted due to a related issue regarding COVID-19. It is important that you communicate with me prior to being late as to what may be preventing you from completing your work so I may make a decision about accommodating your request to turn in late work. If you are experiencing cough, shortness of breath or difficulty breathing, fever, or any of the other possible symptoms of COVID-19 (<https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html>) please seek medical attention from the Student Health and Wellness Center (940-565-2333 or [askSHWC\@unt.edu](mailto:askSHWC@unt.edu){.email}) or your health care provider.
+
+- **Americans with Disabilities Act Statement:** The University of North Texas makes reasonable academic accommodation for students with disabilities. Students seeking reasonable accommodation must first register with the Office of Disability Access (ODA) to verify their eligibility. If a disability is verified, the ODA will provide you with a reasonable accommodation letter to be delivered to faculty to begin a private discussion regarding your specific needs in a course. You may request reasonable accommodations at any time, however, ODA notices of reasonable accommodation should be provided as early as possible in the semester to avoid any delay in implementation. Note that students must obtain a new letter of reasonable accommodation for every semester and must meet with each faculty member prior to implementation in each class. Students are strongly encouraged to deliver letters of reasonable accommodation during faculty office hours or by appointment. Faculty members have the authority to ask students to discuss such letters during their designated office hours to protect the privacy of the student. For additional information, refer to the Office of Disability Access website at <http://www.unt.edu/oda>. You may also contact ODA by phone at (940) 565-4323.
+
+- **Academic Misconduct:** Academic Integrity is defined in the UNT Policy on Student Standards for Academic Integrity. Any suspected case of Academic Dishonesty will be handled in accordance with the University Policy and procedures. Possible academic penalties range from a verbal or written admonition to a grade of "F" in the course. Further sanctions may apply to incidents involving major violations. For policy and procedures: <http://facultysuccess.unt.edu/academic-integrity>.
+
+- **Emergency Notification & Procedures:** UNT uses a system called Eagle Alert to quickly notify you with critical information in an event of emergency (i.e., severe weather, campus closing, and health and public safety emergencies like chemical spills, fires, or violence). The system sends voice messages (and text messages upon permission) to the phones of all active faculty staff, and students. Please make certain to update your phone numbers at my.unt.edu. Some helpful emergency preparedness actions include: 1) ensuring you know the evacuation routes and severe weather shelter areas, determining how you will contact family and friends if phones are temporarily unavailable, and identifying where you will go if you need to evacuate the Denton area suddenly. In the event of a university closure, your instructor will communicate with you through Canvas regarding assignments, exams, field trips, and other items that may be impacted by the closure.
+
+- **Acceptable Student Behavior:** Student behavior that interferes with an instructor's ability to conduct a class or other students' opportunity to learn is unacceptable and disruptive and will not be tolerated in any instructional forum at UNT. Students engaging in unacceptable behavior will be directed to leave the classroom and the instructor may refer the student to the Center for Student Rights and Responsibilities to consider whether the student's conduct violated the Code of Student Conduct. The university's expectations for student conduct apply to all instructional forums, including university and electronic classroom, labs, discussion groups, field trips, etc. The Code of Student Conduct can be found at www.unt.edu/csrr. In short, please be considerate of others.
+
+- **Sexual Discrimination, Harassment, & Assault:** The University has procedures in place that aim to be aware of the needs of those who make an institutional report of sexual assault, domestic violence, dating violence, and stalking. Procedures include informing individuals about their right to file criminal charges as well as the availability of counseling, health, mental health, victim advocacy, legal assistance, visa and immigration assistance and other services on and/or off campus, as well as additional remedies to prevent contact between a complainant and a respondent, such as housing, academic, transportation and working accommodations, if reasonably available. The University will make such accommodations, if the victim requests them and if they are reasonably available, regardless of whether the complainant chooses to report the crime to the UNTPD or local law enforcement.
+
+Anyone can report prohibited conduct by notifying the Dean of Students Office (940.565.2648), the Title IX Coordinator (940.565.2759) or the UNT Police Department (940.565.3000). The online reporting form is found at <http://report.unt.edu>.
+
+## Important Notice for F-1 Students taking Distance Education Courses
+
+- **Federal Regulation:** To read detailed Immigration and Customs Enforcement regulations for F-1 students taking online courses, please go to the Electronic Code of Federal Regulations website at <http://www.ecfr.gov/>. The specific portion concerning distance education courses is located at Title 8 CFR 214.2 Paragraph (f)(6)(i)(G). The paragraph reads: (G) For F-1 students enrolled in classes for credit or classroom hours, no more than the equivalent of one class or three credits per session, term, semester, trimester, or quarter may be counted toward the full course of study requirement if the class is taken on-line or through distance education and does not require the student's physical attendance for classes, examination or other purposes integral to completion of the class. An on-line or distance education course is a course that is offered principally through the use of television, audio, or computer transmission including open broadcast, closed circuit, cable, microwave, or satellite, audio conferencing, or computer conferencing. If the F-1 student's course of study is in a language study program, no on-line or distance education classes may be considered to count toward a student's full course of study requirement.
+
+- **University of North Texas Compliance:** To comply with immigration regulations, an F-1 visa holder within the United States may need to engage in an on-campus experiential component for this course. This component (which must be approved in advance by the instructor) can include activities such as taking an on-campus exam, participating in an on-campus lecture or lab activity, or other on-campus experience integral to the completion of this course. If such an on-campus activity is required, it is the student's responsibility to do the following:
+
+    (1) Submit a written request to the instructor for an on-campus experiential component within one week of the start of the course.
+    (2) Ensure that the activity on campus takes place and the instructor documents it in writing with a notice sent to the International Student and Scholar Services Office. ISSS has a form available that you may use for this purpose.
+
+    Because the decision may have serious immigration consequences, if an F-1 student is unsure about his or her need to participate in an on-campus experiential component for this course, s/he should contact the UNT International Student and Scholar Services Office (telephone 940-565-2195 or email [internationaladvising\@unt.edu](mailto:internationaladvising@unt.edu){.email}) to get clarification before the one-week deadline.
