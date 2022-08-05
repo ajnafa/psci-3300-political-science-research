@@ -55,9 +55,7 @@ knitr::opts_chunk$set(
 
 # Course Description
 
-\noindent This course serves as an introduction to research methods, causal inference, and applied statistics for contemporary political research. Throughout the semester, we will cover formulating research questions, theory development, the logic of causal relationships, and commonly employed approaches to answering questions about political phenomena. Upon completion of this course, students should be able to understand and interpret most research published in political science journals, as well as public opinion polls, surveys, and research findings reported in the news. Students should be able to formulate theoretical arguments and testable hypotheses, and to test these hypotheses in a variety of ways. As a result, students who complete this course should be prepared for future coursework in the social sciences, for starting to pursue their own research, and for a life as an educated and informed citizen.
-
-Although there is a modest amount of basic statistics involved, this is fundamentally an applied course where students will gain experience applying a range of different approaches to analyzing, visualizing, and interpreting data using the open-source statistical programming language R and the tidyverse. In practice, that means less of this 
+\noindent This course serves as an introduction to research methods, causal inference, and applied statistics for contemporary political research. Throughout the semester, we will cover formulating research questions, theory development, the logic of causal relationships, and approaches to answering questions about political phenomena. Although there is a modest amount of statistics involved, this is fundamentally an applied course where students will gain experience applying a range of different approaches to analyzing, visualizing, and interpreting data using the open-source statistical programming language R and the tidyverse. In practice, that means less of this 
 
 $$Normal(y|\mu,\sigma) = \frac{1}{\sqrt{2 \pi}\, \sigma} \exp\left( - \, \frac{1}{2}\left(\frac{y -\mu}{\sigma} \right)^2 \right)$$
 \noindent and more hands-on stuff like this
@@ -68,6 +66,8 @@ std_norm <- rnorm(n = 10e3, mean = 0, sd = 1)
 ## Print a summary
 summary(std_norm)
 ```
+
+Upon completion of this course, students should be able to understand and interpret most research published in political science journals, as well as public opinion polls, surveys, and research findings reported in the news. Students should be able to formulate theoretical arguments and testable hypotheses, and to test these hypotheses in principled and logically consistent ways. As a result, students who complete this course should be prepared for future coursework in the social sciences, for starting to pursue their own research, and for a life as an educated and informed citizen.
 
 # Learning Objectives
 
@@ -211,6 +211,8 @@ calendR::calendR(
 
 - Course Introduction and Syllabus Overview
 
+- Read through the "Getting Started with R and Stan" module on the course's Canvas page
+
 ### Thursday, September 1st, 2022
 
 - Samii, Cyrus. 2016. "Causal Empiricism in Quantitative Research." *Journal of Politics* 78(3): 941--955. doi: [10.1086/686690](https://doi.org/10.1086/686690)
@@ -335,7 +337,7 @@ calendR::calendR(
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Samples, Uncertainty, and Statistical Inference" in *Thinking Clearly with Data*. Princeton University Press, pp. 94--112
 
-- Aronow, Peter M., and Cyrus Samii. 2016. "Does Regression Produce Representative Estimates of Causal Effects?" *American Journal of Political Science* 60 (1): 250–267. doi: [10.1111/ajps.12185](https://doi.org/10.1111/ajps.12185); dataverse: [10.7910/DVN/29098](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/29098)
+- Aronow, Peter M., and Cyrus Samii. 2016. "Does Regression Produce Representative Estimates of Causal Effects?" *American Journal of Political Science* 60(1): 250–267. doi/dataverse: [10.1111/ajps.12185](https://doi.org/10.1111/ajps.12185); [10.7910/DVN/29098](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/29098)
 
 ### Thursday, October 20th, 2022
 
@@ -433,7 +435,7 @@ calendR::calendR(
 
 ### Thursday, November 17th, 2022
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 243--264
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data*. Princeton University Press, pp. 243--264
 
 - Sevi, Semra. 2022. "Is Incumbency Advantage Gendered?" *Legislative Studies Quarterly*. doi/dataverse: [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
 
@@ -458,6 +460,8 @@ calendR::calendR(
 ### Reccomended Readings
 
 - Blackwell, Matthew and Adam Glynn. 2018. "How to Make Causal Inferences with Time-Series Cross-Sectional Data under Selection on Observables." *American Political Science Review* 112 (4): 1067--1082. doi/dataverse: [10.1017/S0003055418000357](https://doi.org/10.1017/S0003055418000357); [10.7910/DVN/SFBX6Z](https://doi.org/10.7910/DVN/SFBX6Z)
+
+- Acharya, Avidit, Matthew Blackwell, and Maya Sen. 2016. "Explaining Causal Findings Without Bias: Detecting and Assessing Direct Effects." *American Political Science Review* 110(3): 512–-29. doi: [10.1017/S0003055416000216](https://doi.org/10.1017/S0003055416000216)
 
 ### Thursday, November 24th, 2022
 
@@ -497,7 +501,7 @@ calendR::calendR(
 
 # Acknowledgments and License Information
 
-\noindent The content of this class relies in part on materials from courses designed by Andrew Heiss, Matthew Blackwell, Danillo Freire, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All materials for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
+\noindent The content of this class relies in part on materials from courses designed by [Andrew Heiss](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com), [Matthew Blackwell], Danillo Freire, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All materials for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
 
 # Course Policies
 
