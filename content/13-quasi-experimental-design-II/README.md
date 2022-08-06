@@ -22,7 +22,7 @@ mechanisms.
 -   Ladam, Christina, Jeffrey J. Harden, Jason H. Windett. 2018.
     “Prominent Role Models: High-Profile Female Politicians and the
     Emergence of Women as Candidates for Public Office.” *American
-    Journal of Political Science*, 62(2): 369–381. doi/dataverse:
+    Journal of Political Science*, 62 (2): 369–381. doi/dataverse:
     [10.1017/10.1111/ajps.12351](https://doi.org/10.1111/ajps.12351);
     [10.7910/DVN/D5DEHM](http://doi.org/10.7910/DVN/D5DEHM)
 
@@ -30,18 +30,16 @@ mechanisms.
 
 -   No class. Thanksgiving Break
 
--   Problem Set V is due via Canvas on Sunday, November 27th by 11:59PM
-
-### Reccomended Readings
+### Recommended Readings
 
 -   Blackwell, Matthew and Adam Glynn. 2018. “How to Make Causal
     Inferences with Time-Series Cross-Sectional Data under Selection on
-    Observables.” *American Political Science Review* 112(4): 1067–1082.
-    doi/dataverse:
+    Observables.” *American Political Science Review* 112 (4):
+    1067–1082. doi/dataverse:
     [10.1017/S0003055418000357](https://doi.org/10.1017/S0003055418000357);
     [10.7910/DVN/SFBX6Z](https://doi.org/10.7910/DVN/SFBX6Z)
 
 -   Acharya, Avidit, Matthew Blackwell, and Maya Sen. 2016. “Explaining
     Causal Findings Without Bias: Detecting and Assessing Direct
-    Effects.” *American Political Science Review* 110(3): 512-–29. doi:
+    Effects.” *American Political Science Review* 110(3): 512–-29. doi:
     [10.1017/S0003055416000216](https://doi.org/10.1017/S0003055416000216)

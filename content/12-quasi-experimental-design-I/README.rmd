@@ -17,14 +17,16 @@ In many if not most cases in political science and economics, baseline random as
 
 ### Thursday, November 17th, 2022
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 243--264
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression Discontinuity Designs" in *Thinking Clearly with Data*. Princeton University Press, pp. 243--264
 
 - Sevi, Semra. 2022. "Is Incumbency Advantage Gendered?" *Legislative Studies Quarterly*. doi/dataverse: [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
 
-### Reccomended Readings
+- Problem Set 4 is due via Canvas on Sunday, November 20th by 11:59 PM
+
+### Recommended Readings
 
 - Huntington-Klein, Nick. 2022. "Difference-in-Differences" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 435--467. [https://theeffectbook.net/ch-DifferenceinDifference.html](https://theeffectbook.net/ch-DifferenceinDifference.html)
 
-- Imai, Kosuke, and Song Kim. 2021. "On the Use of Two-Way Fixed Effects Regression Models for Causal Inference with Panel Data." *Political Analysis* 29(3): 405--415. doi: [10.1017/pan.2020.33](https://doi.org/10.1017/pan.2020.33)
+- Liu, Licheng, Ye Wang, and Yiqing Xu. 2022. "A Practical Guide to Counterfactual Estimators for Causal Inference with Time-Series Cross-Sectional Data." *American Journal of Political Science*: 1--17. doi/dataverse: [10.1111/ajps.12723](https://doi.org/10.1111/ajps.12723); [10.7910/DVN/ZVC9W5](https://doi.org/10.7910/DVN/ZVC9W5)
 
 - Huntington-Klein, Nick. 2022. "Regression Discontinuity" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 505--554. [https://theeffectbook.net/ch-RegressionDiscontinuity.html](https://theeffectbook.net/ch-RegressionDiscontinuity.html)

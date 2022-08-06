@@ -11,19 +11,17 @@ The recognition that baseline random assignment of the treatment is the only way
 
 ### Tuesday, November 8th, 2022
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 218--242
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data*. Princeton University Press, pp. 218--242
 
-- Frederiksen, Kristian Vrede Skaaning. 2022. "Does Competence Make Citizens Tolerate Undemocratic Behavior?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000119](https://doi.org/10.1017/S0003055422000119); [10.7910/DVN/NGFLRO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NGFLRO)
+- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
 
 ### Thursday, November 10th, 2022
 
 - Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
 
-- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
+- Research Design assignment is due via Canvas on Friday, November 11th by 11:59 PM
 
-- Problem Set IV is due via Canvas on Sunday, November 15th by 11:59 PM
-
-### Reccomended Readings
+### Recommended Readings
 
 - Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
 

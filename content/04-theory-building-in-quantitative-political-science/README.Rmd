@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-At the most basic level, a theory is a verbal or formal explanation that describes a causal relationship between two or more variables. That is, a theory is our proposed answer to the question of why and how some phenomena occurs; a data story about why we think a causal relationship such as $Race \longrightarrow Vote\,Choice$ or $Federalism_{j[t]} \longrightarrow Conflict_{j[t+1]}$ exists. This week we look at what makes a good theory, different ways of verbally and formally expressing theoretical relationships, and making explicit connections between research question, theory, and data.
+At the most basic level, a theory is a verbal or formal explanation that describes a causal relationship between two or more variables. That is, a theory is our proposed answer to the question of why and how some phenomena occurs; a data story about why we think a causal relationship such as $Race \longrightarrow Vote~Choice$ or $Federalism_{j[t]} \longrightarrow Conflict_{j[t+1]}$ exists. This week we look at what makes a good theory, different ways of verbally and formally expressing theoretical relationships, and making explicit connections between research question, theory, and data.
 
 ### Tuesday, September 20th, 2022
 
@@ -19,4 +19,4 @@ At the most basic level, a theory is a verbal or formal explanation that describ
 
 - Lundberg, Ian, Rebecca Johnson, and Brandon M. Stewart. 2021. "What Is Your Estimand? Defining the Target Quantity Connects Statistical Evidence to Theory." *American Sociological Review* 86(3): 532-565. doi/dataverse: [10.1177/00031224211004187](https://doi.org/10.1177/00031224211004187); [10.7910/DVN/ASGOVU](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ASGOVU)
 
-- Problem Set I is due via Canvas on Sunday, September 25th by 11:59PM
+- Problem Set 1 is due via Canvas on Sunday, September 25th by 11:59 PM

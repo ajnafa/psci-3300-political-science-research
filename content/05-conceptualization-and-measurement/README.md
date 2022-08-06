@@ -32,7 +32,7 @@ take measurements, and the trade-offs between parsimony and precision.
     [10.1017/S0007123418000509](https://doi.org/10.1017/S0007123418000509);
     [10.7910/DVN/LFD20F](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/LFD20F).
 
-### Reccomended Readings
+### Recommended Readings
 
 -   McMann, Kelly et al. 2022. “Assessing Data Quality: An Approach and
     An Application.” *Political Analysis* 30(3): 426–449. doi:

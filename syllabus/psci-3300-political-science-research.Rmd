@@ -71,7 +71,7 @@ Upon completion of this course, students should be able to understand and interp
 
 # Learning Objectives
 
-Students who master the content of this course will be able to:
+\noindent Students who master the content of this course will be able to:
 
 - Understand and interpret quantitative research published in political science journals
 
@@ -164,7 +164,7 @@ F: 59.4 or Less
 
 \noindent The remaining 10\% of your grade in this course consists of participation. This means showing up to class, asking relevant questions, and completing occasional in-class activities.
 
-# Course Schedule
+# Tentative Course Schedule
 
 ```{r calendar, echo=FALSE, fig.height=7, fig.width=7}
 course_dates <- tibble::tibble(
@@ -175,7 +175,20 @@ course_dates <- tibble::tibble(
   ),
   day = lubridate::wday(date, label = TRUE, abbr = FALSE),
   class_day = dplyr::case_when(
-    date %in% lubridate::ymd(c("2022-09-04", "2022-09-18", "2022-09-25", "2022-10-09", "2022-10-23", "2022-11-06", "2022-11-27", "2022-12-15")) ~ "Assignment Due",
+    date %in% lubridate::ymd(c(
+      "2022-09-04", 
+      "2022-09-25", 
+      "2022-10-09", 
+      "2022-10-30", 
+      "2022-11-20"
+      )) ~ "Problem Set Due",
+    date %in% lubridate::ymd(c(
+      "2022-09-16",
+      "2022-10-14",
+      "2022-11-11",
+      "2022-12-15"
+    )) ~ "Research Assignment Due",
+        date %in% lubridate::ymd(c("2022-12-06", "2022-12-08")) ~ "Final Presentations",
     date == "2022-11-24" | date == "2022-09-15" ~ "No Class",
     day %in% c("Tuesday", "Thursday") & date > "2022-08-29" & date < "2022-12-09" ~ "Class Day"
   )
@@ -188,7 +201,7 @@ calendR::calendR(
   start = "M",
   months.col = "black",
   special.days = course_dates$class_day,
-  special.col = c("#BFEFFF", "#DBFFD6", "#ECD4FF"),
+  special.col = c("#BFEFFF", "#DBFFD6", "#ECD4FF", "#CCD4FF", "#EBFFD6"),
   mbg.col = "white",
   lty = 0,
   bg.col = "white",
@@ -237,6 +250,10 @@ calendR::calendR(
 
 - Lupu, Noam, and Zach Warner. 2022. "Affluence and Congruence: Unequal Representation around the World" *Journal of Politics* 84(1): 276--290. doi/dataverse: [10.1086/714930](https://doi.org/10.1086/714930); [10.7910/DVN/DBNBEU](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBNBEU)
 
+### Recommended Readings
+
+- Geddes, Barbara. 2003. *Paradigms and Sand Castles: Theory Building and Research Design in Comparative Politics*. Ann Arbor: University of Michigan Press, 27--88
+
 ## Causal Relationships in the Quantitative Social Sciences
 
 \noindent In quantitative political research we are generally interested in explaining the causes of effects. This week introduces the basic logic of causal relationships, their formal representation through directed acyclic graphs (DAGs), and different types of estimands that aid us in answering our research questions and arriving at valid conclusions in political science.
@@ -250,6 +267,12 @@ calendR::calendR(
 ### Thursday, September 15th, 2022
 
 - No class as I will be in Montreal for a conference. The preliminary research question assignment is due via Canvas on Sunday, September 18th by 11:59 PM.
+
+### Recommended Readings
+
+- Keele, Luke, Randolph T. Stevenson, and Felix Elwert. 2020. “The Causal Interpretation of Estimated Associations in Regression Models.” *Political Science Research and Methods* 8(1): 1-–13. doi: [10.1017/psrm.2019.31](https://doi.org/10.1017/psrm.2019.31)
+
+- Huntington-Klein, Nick. 2022. "Causal Paths and Closing Back Doors" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, 116--128. [https://theeffectbook.net/ch-CausalPaths.html](https://theeffectbook.net/ch-CausalPaths.html)
 
 ## Theory Building in Political Science
 
@@ -265,7 +288,7 @@ calendR::calendR(
 
 - Lundberg, Ian, Rebecca Johnson, and Brandon M. Stewart. 2021. "What Is Your Estimand? Defining the Target Quantity Connects Statistical Evidence to Theory." *American Sociological Review* 86(3): 532-565. doi/dataverse: [10.1177/00031224211004187](https://doi.org/10.1177/00031224211004187); [10.7910/DVN/ASGOVU](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ASGOVU)
 
-- Problem Set I is due via Canvas on Sunday, September 25th by 11:59 PM
+- Problem Set 1 is due via Canvas on Sunday, September 25th by 11:59 PM
 
 ## Conceptualization and Measurement
 
@@ -283,7 +306,7 @@ calendR::calendR(
 
 - von Borzyskowski, Inken, and Michael Wahman. 2021. "Systematic Measurement Error in Election Violence Data: Causes and Consequences." *British Journal of Political Science* 51(1): 230–-252. doi/dataverse: [10.1017/S0007123418000509](https://doi.org/10.1017/S0007123418000509); [10.7910/DVN/LFD20F](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/LFD20F).
 
-### Reccomended Readings
+### Recommended Readings
 
 - McMann, Kelly et al. 2022. "Assessing Data Quality: An Approach and An Application." *Political Analysis* 30(3): 426–449. doi: [10.1017/pan.2021.27](https://doi.org/10.1017/pan.2021.27)
 
@@ -307,7 +330,7 @@ calendR::calendR(
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Regression for Describing and Forecasting" in *Thinking Clearly with Data*. Princeton University Press, pp. 74--93
 
-- Problem Set II is due via Canvas on Sunday, October 9th by 11:59PM
+- Problem Set 2 is due via Canvas on Sunday, October 9th by 11:59PM
 
 ## Probabilistic Reasoning and Applied Bayesian Inference
 
@@ -323,7 +346,9 @@ calendR::calendR(
 
 - Allen, Michael A., et al. 2020. "Outside the Wire: U.S. Military Deployments and Public Opinion in Host States." *American Political Science Review* 114(2): 326–41. doi: [10.1017/S0003055419000868](https://doi.org/10.1017/S0003055419000868); dataverse: [10.7910/DVN/VCE7KN](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VCE7KN)
 
-### Reccomended Readings
+- Theory assignment is due via Canvas on Friday, October 14th, 2020 by 11:59 PM
+
+### Recommended Readings
 
 - Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. *Regression and Other Stories*. Cambridge University Press, pp. 113--182
 
@@ -345,9 +370,7 @@ calendR::calendR(
 
 - Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 9: Simple Normal Regression"](https://www.bayesrulesbook.com/chapter-9.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
 
-- Problem Set III is due via Canvas on Sunday, October 23rd by 11:59PM
-
-### Reccomended Readings
+### Recommended Readings
 
 - Huntington-Klein, Nick. 2022. "Regression" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 179--266. [https://theeffectbook.net/ch-StatisticalAdjustment.html](https://theeffectbook.net/ch-StatisticalAdjustment.html)
 
@@ -367,9 +390,13 @@ calendR::calendR(
 
 - Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 13: Logistic Regression"](https://www.bayesrulesbook.com/chapter-13.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
 
-### Reccomended Readings
+- Problem Set 3 is due via Canvas on Sunday, October 30th by 11:59PM
+
+### Recommended Readings
 
 - Mood, Carina. 2010. "Logistic Regression: Why We Cannot Do What We Think We Can Do, and What We Can Do About It." *European Sociological Review* 26(1): 67–82. doi: [10.1093/esr/jcp006](https://doi.org/10.1093/esr/jcp006)
+
+- Clarke, Kevin A., Brenton Kenkel, and Miguel R. Rueda. 2018. "Omitted Variables, Countervailing Effects, and the Possibility of Overadjustment." *Political Science Research and Methods* 6(2): 343--354. doi/dataverse: [10.1017/psrm.2016.46](https://doi.org/10.1017/psrm.2016.46); [10.7910/DVN/BSKHUF](https://doi.org/10.7910/DVN/BSKHUF)
 
 ## Hypothesis Testing and Theory Evaluation
 
@@ -379,21 +406,21 @@ calendR::calendR(
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Over-Comparing, Under-Reporting" in *Thinking Clearly with Data*. Princeton University Press, pp. 113--156
 
-- Gross, Justin H. 2015. "Testing What Matters (If You Must Test at All): A Context-Driven Approach to Substantive and Statistical Significance." *American Journal of Political Science* 59 (3): 775--788. doi: [10.1111/ajps.12149](https://doi.org/10.1111/ajps.12149)
+- Gross, Justin H. 2015. "Testing What Matters (If You Must Test at All): A Context-Driven Approach to Substantive and Statistical Significance." *American Journal of Political Science* 59(3): 775--788. doi: [10.1111/ajps.12149](https://doi.org/10.1111/ajps.12149)
 
 ### Thursday, November 3rd, 2022
 
 - Krcmaric, Daniel. 2022. "Does the International Criminal Court Target the American Military?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000478](https://doi.org/10.1017/S0003055422000478); [10.7910/DVN/HHNZGT](https://doi.org/10.7910/DVN/HHNZGT)
 
-- Makowski, Dominique, et al. 2019. "Indices of Effect Existence and Significance in the Bayesian Framework." *Frontiers in Psychology* 10: 1--14. doi: [10.3389/fpsyg.2019.02767](https://doi.org/10.3389/fpsyg.2019.02767)
-
-### Reccomended Readings
-
 -  Rainey, Carlisle. 2014. "Arguing for a Negligible Effect." *American Journal of Political Science*, 58(4): 1083-1091. doi/dataverse: [10.1111/ajps.12102](https://doi.org/10.1111/ajps.12102); [10.7910/DVN/23818](https://doi.org/10.7910/DVN/23818)
+
+### Recommended Readings
 
 - Gabriel S. Lenz and Alexander Sahn. 2022. "Achieving Statistical Significance with Control Variables and Without Transparency." *Political Analysis* 29 (3): 356--369. doi/dataverse: [10.1017/pan.2020.31](https://doi.org/10.1017/pan.2020.31); [10.7910/DVN/XIEJCR8](https://doi.org/10.7910/DVN/XIEJCR8)
 
 - Gill, Jeff. 1999. "The Insignificance of Null Hypothesis Significance Testing." *Political Research Quarterly* 52(3): 647–674. doi: [10.1177/106591299905200309](https://doi.org/10.1177/106591299905200309)
+
+- Bernardi, Fabrizio, Lela Chakhaia and Liliya Leopold. 2017. "‘Sing Me a Song with Social Significance’: The (Mis)Use of Statistical Significance Testing in European Sociological Research." *European Sociological Review* 33(1): 1-15. doi: [10.1093/esr/jcw047](https://doi.org/10.1093/esr/jcw047)
 
 # Part III: Research Design and Causal Inference
 
@@ -403,19 +430,17 @@ calendR::calendR(
 
 ### Tuesday, November 8th, 2022
 
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data: A Guide to Quantitative Reasoning and Analysis*. Princeton University Press, pp. 218--242
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data*. Princeton University Press, pp. 218--242
 
-- Frederiksen, Kristian Vrede Skaaning. 2022. "Does Competence Make Citizens Tolerate Undemocratic Behavior?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000119](https://doi.org/10.1017/S0003055422000119); [10.7910/DVN/NGFLRO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NGFLRO)
+- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
 
 ### Thursday, November 10th, 2022
 
 - Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
 
-- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
+- Research Design assignment is due via Canvas on Friday, November 11th by 11:59 PM
 
-- Problem Set IV is due via Canvas on Sunday, November 15th by 11:59 PM
-
-### Reccomended Readings
+### Recommended Readings
 
 - Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
 
@@ -439,11 +464,13 @@ calendR::calendR(
 
 - Sevi, Semra. 2022. "Is Incumbency Advantage Gendered?" *Legislative Studies Quarterly*. doi/dataverse: [10.1111/lsq.12376](https://doi.org/10.1111/lsq.12376); [10.7910/DVN/VHFO7V](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHFO7V)
 
-### Reccomended Readings
+- Problem Set 4 is due via Canvas on Sunday, November 20th by 11:59 PM
+
+### Recommended Readings
 
 - Huntington-Klein, Nick. 2022. "Difference-in-Differences" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 435--467. [https://theeffectbook.net/ch-DifferenceinDifference.html](https://theeffectbook.net/ch-DifferenceinDifference.html)
 
-- Imai, Kosuke, and Song Kim. 2021. "On the Use of Two-Way Fixed Effects Regression Models for Causal Inference with Panel Data." *Political Analysis* 29(3): 405--415. doi: [10.1017/pan.2020.33](https://doi.org/10.1017/pan.2020.33); 
+- Liu, Licheng, Ye Wang, and Yiqing Xu. 2022. "A Practical Guide to Counterfactual Estimators for Causal Inference with Time-Series Cross-Sectional Data." *American Journal of Political Science*: 1--17. doi/dataverse: [10.1111/ajps.12723](https://doi.org/10.1111/ajps.12723); [10.7910/DVN/ZVC9W5](https://doi.org/10.7910/DVN/ZVC9W5)
 
 - Huntington-Klein, Nick. 2022. "Regression Discontinuity" in *The Effect: An Introduction to Research Design and Causality*. Boca Raton, FL: CRC Press, pp. 505--554. [https://theeffectbook.net/ch-RegressionDiscontinuity.html](https://theeffectbook.net/ch-RegressionDiscontinuity.html)
 
@@ -457,17 +484,15 @@ calendR::calendR(
 
 - Ladam, Christina, Jeffrey J. Harden, Jason H. Windett. 2018. "Prominent Role Models: High-Profile Female Politicians and the Emergence of Women as Candidates for Public Office." *American Journal of Political Science*, 62 (2): 369--381. doi/dataverse: [10.1017/10.1111/ajps.12351](https://doi.org/10.1111/ajps.12351); [10.7910/DVN/D5DEHM](http://doi.org/10.7910/DVN/D5DEHM)
 
-### Reccomended Readings
-
-- Blackwell, Matthew and Adam Glynn. 2018. "How to Make Causal Inferences with Time-Series Cross-Sectional Data under Selection on Observables." *American Political Science Review* 112 (4): 1067--1082. doi/dataverse: [10.1017/S0003055418000357](https://doi.org/10.1017/S0003055418000357); [10.7910/DVN/SFBX6Z](https://doi.org/10.7910/DVN/SFBX6Z)
-
-- Acharya, Avidit, Matthew Blackwell, and Maya Sen. 2016. "Explaining Causal Findings Without Bias: Detecting and Assessing Direct Effects." *American Political Science Review* 110(3): 512–-29. doi: [10.1017/S0003055416000216](https://doi.org/10.1017/S0003055416000216)
-
 ### Thursday, November 24th, 2022
 
 - No class. Thanksgiving Break
 
-- Problem Set V is due via Canvas on Sunday, November 27th by 11:59PM
+### Recommended Readings
+
+- Blackwell, Matthew and Adam Glynn. 2018. "How to Make Causal Inferences with Time-Series Cross-Sectional Data under Selection on Observables." *American Political Science Review* 112 (4): 1067--1082. doi/dataverse: [10.1017/S0003055418000357](https://doi.org/10.1017/S0003055418000357); [10.7910/DVN/SFBX6Z](https://doi.org/10.7910/DVN/SFBX6Z)
+
+- Acharya, Avidit, Matthew Blackwell, and Maya Sen. 2016. "Explaining Causal Findings Without Bias: Detecting and Assessing Direct Effects." *American Political Science Review* 110(3): 512–-29. doi: [10.1017/S0003055416000216](https://doi.org/10.1017/S0003055416000216)
 
 ## Prediction and Forecasting for Political Research
 
@@ -501,13 +526,13 @@ calendR::calendR(
 
 # Acknowledgments and License Information
 
-\noindent The content of this class relies in part on materials from courses designed by [Andrew Heiss](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com), [Matthew Blackwell], Danillo Freire, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All materials for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
+\noindent The content of this class relies in part on materials from courses designed by Andrew Heiss, Matthew Blackwell, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All content for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
 
 # Course Policies
 
 - **Canvas:** Canvas is an online course information and management program. All course documents (syllabus, assignments, etc.) will be posted on or via Canvas. You should check it regularly, and read all of the announcements carefully. Canvas also facilitates e-mail communication among class members and between class members and the instructor. Please use your UNT email address for communication about this class and check it frequently. If you do not you could miss important course information.
 
-- **Late Work, Illness and Family Emergencies:** It is expected that all work will be submitted at the scheduled times. **Late assignments will be docked 50%** after missing the deadline. After 3 days they will not be accepted. You can work on this class at your own pace, and your work is available to complete far in advance of the deadlines. This allows you to plan ahead for almost all circumstances, including busy weeks, shifting work schedules, religious holidays, family vacations, and the like. If you are unable to turn in work on time because of an emergency, you must contact me prior to the deadline. All illnesses and family emergencies must be documented with appropriate evidence.
+- **Late Work, Illness and Family Emergencies:** It is expected that all work will be submitted at the scheduled times. **Late assignments will be docked 10% per day** after missing the deadline. **After 3 days they will not be accepted.** You can work on this class at your own pace, and your work is available to complete far in advance of the deadlines. This allows you to plan ahead for almost all circumstances, including busy weeks, shifting work schedules, religious holidays, family vacations, and the like. If you are unable to turn in work on time because of an emergency, you must contact me prior to the deadline. All illnesses and family emergencies must be documented with appropriate evidence.
 
 - **COVID-19:** While completing work is expected as outlined above, it is important for all of us to be mindful of the health and safety of everyone in our community, especially given concerns about COVID-19. Please contact me if you are impacted due to a related issue regarding COVID-19. It is important that you communicate with me prior to being late as to what may be preventing you from completing your work so I may make a decision about accommodating your request to turn in late work. If you are experiencing cough, shortness of breath or difficulty breathing, fever, or any of the other possible symptoms of COVID-19 (<https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html>) please seek medical attention from the Student Health and Wellness Center (940-565-2333 or [askSHWC\@unt.edu](mailto:askSHWC@unt.edu){.email}) or your health care provider.
 

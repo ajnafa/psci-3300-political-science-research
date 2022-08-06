@@ -25,4 +25,4 @@ political science.
     Describing and Forecasting” in *Thinking Clearly with Data*.
     Princeton University Press, pp. 74–93
 
--   Problem Set II is due via Canvas on Sunday, October 9th by 11:59 PM
+-   Problem Set 2 is due via Canvas on Sunday, October 9th by 11:59PM

@@ -17,9 +17,11 @@ Continuing with our brief introduction to inferential statistics, this week we d
 
 - Johnson, Alicia A., Miles Q. Ott, Mine Dogucu. 2022. ["Chapter 4: Balance and Sequentiality in Bayesian Analyses"](https://www.bayesrulesbook.com/chapter-4.html) in *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Boca Raton, FL: CRC Press.
 
-- Allen, Michael A., et al. 2020. "Outside the Wire: U.S. Military Deployments and Public Opinion in Host States." *American Political Science Review* 114(2): 326–41. doi/dataverse: [10.1017/S0003055419000868](https://doi.org/10.1017/S0003055419000868); [10.7910/DVN/VCE7KN](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VCE7KN)
+- Allen, Michael A., et al. 2020. "Outside the Wire: U.S. Military Deployments and Public Opinion in Host States." *American Political Science Review* 114(2): 326–41. doi: [10.1017/S0003055419000868](https://doi.org/10.1017/S0003055419000868); dataverse: [10.7910/DVN/VCE7KN](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VCE7KN)
 
-### Reccomended Readings
+- Theory assignment is due via Canvas on Friday, October 14th, 2020 by 11:59 PM
+
+### Recommended Readings
 
 - Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. *Regression and Other Stories*. Cambridge University Press, pp. 113--182
 
