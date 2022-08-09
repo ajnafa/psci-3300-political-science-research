@@ -7,9 +7,9 @@ output:
     toc: false
     self_contained: true
     theme: journal
-bibliography: "../../../assets/references.bib"
-csl: "../../../assets/apsa.csl"
-css: "../../../assets/style.css"
+bibliography: "../../assets/references.bib"
+csl: "../../assets/apsa.csl"
+css: "../../assets/style.css"
 link-citations: yes
 ---
 
@@ -51,7 +51,7 @@ To begin, I recommend setting some global options for the R session as shown bel
 options(
   digits = 6, # Significant figures output
   scipen = 999, # Disable scientific notation
-  repos = getOption("repos")["CRAN"] # Install packagess from CRAN
+  repos = getOption("repos")["CRAN"] # Install packages from CRAN
 )
 
 # Set the makeflags to use multiple cores for faster compilation
