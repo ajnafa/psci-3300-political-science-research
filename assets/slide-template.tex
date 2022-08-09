@@ -210,6 +210,47 @@ $endif$
 \AtBeginSubsection{}
 \AtBeginSubsubsection{}
 
+% Table Settings
+\usepackage{
+	booktabs, %
+	longtable, %
+	multicol, %
+	supertabular, %
+	threeparttable, %
+	threeparttablex %
+}
+
+% Captions for Tables and Figures
+\usepackage{caption}
+\captionsetup*{
+	figurename=Figure,
+	tablename=Table,
+	labelsep=period,
+	justification=justified,
+	%footfont={md, footnotesize},
+	singlelinecheck=false,
+	aboveskip=0pt, 
+	belowskip=0pt
+}
+\captionsetup[table]{
+	name={Table}, 
+	aboveskip=0pt, 
+	belowskip=0pt,  
+	justification=raggedright
+}
+
+% Figure Frame Style
+\usepackage[
+framefit=yes,
+heightadjust=all
+]{floatrow}
+
+% Style for Floats
+\usepackage{float}
+\floatsetup{capposition=top, midcode=rule}
+\newcommand{\floatnote}[1]{\floatfoot{\textit{Notes: }#1}}
+\floatsetup[longtable]{LTcapwidth=table,margins=centering,font=scriptsize}
+
 % Get rid of navigation symbols.
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{caption}[numbered]
@@ -236,9 +277,9 @@ $endif$
 
 \setbeamercolor{section in sidebar}{fg=white}            %color of the active section
 \setbeamercolor{section in sidebar shaded}{fg=white}     %color of the inactive section
+\setbeamercolor{shorttitle in sidebar}{fg=white}
 %\setbeamercolor{subsection in sidebar}{fg=...}         %color of the active subsection
 %\setbeamercolor{subsection in sidebar shaded}{fg=...}  %color of the inactive subsection
-%\setbeamercolor{title in sidebar}{fg=...}              %color of the presentation title
 %
 \usepackage{xpatch}
 \xpatchcmd{\itemize}{\def\makelabel}{\setlength{\itemsep}{0.25em}\def\makelabel}{}{}

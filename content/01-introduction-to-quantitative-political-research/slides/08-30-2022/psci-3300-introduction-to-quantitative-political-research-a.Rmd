@@ -43,14 +43,13 @@ knitr::opts_chunk$set(
 
 -  PSCI 3300 is a required course for political science majors so you'll have to take it at some point
 
-- The skills taught in this course are standard across an increasing number of industries and fields research
+- The skills taught in this course are standard across an increasing number of industries and fields of research
 
   - A basic knowledge of statistics, programming, and quantitative reasoning prepares you for a range of future career opportunities or graduate school
   
   - Contemporary political science is a primarily quantitative field, so understanding the tools of the trade will help you understand and critique the things you read in your other classes
   
 - I will not require you to laugh at my jokes
-
 
 ## Teaching Philosophy
 
@@ -59,6 +58,8 @@ knitr::opts_chunk$set(
 - A college-level course in fundamentals of computer programming or elementary statistics may be helpful but is not required
 
 - Our focus in this course will be primarily on how to apply, interpret, and evaluate analyses in political science rather than on the statistical theory behind them
+
+- Course is taught primarily from a pragmatic Bayesian perspective
 
 - Though there is some basic statistics required, that means less of this $$\text{Normal}(y|\mu,\sigma) = \frac{1}{\sqrt{2 \pi}\, \sigma} \exp\left( - \, \frac{1}{2}\left(\frac{y -\mu}{\sigma} \right)^2 \right)$$
 
@@ -69,28 +70,12 @@ knitr::opts_chunk$set(
 - And more hands-on stuff like this
 
 ```{r}
-## Simulate 10,000 random draws from a standard normal distribution
+## Simulate 10,000 random draws from a standard normal dist
 std_norm <- rnorm(n = 10e3, mean = 0, sd = 1)
 
 ## Print a summary
 summary(std_norm)
 ```
-
-## Course Structure
-
-- **Class Meetings**
-
-  - Tuesday/Thursday from 9:30 AM -- 10:50 AM
-  
-  - Part of our course time will be spent on lecture and answering questions and the other half will be spent working with data in R
-  
-  - You should come to class having done the readings on the syllabus for that day so that we can discuss anything that isn't clear or appears confusing
-  
-- **Problem Sets**
-
-  - To get hands on experience writing R code, manipulating and modeling data, and thinking through the logic of cause and effect, you will complete a series of problem sets that ask you to apply the topics we cover in class using real data. 
-  
-  - *You must demonstrate that you made a good faith effort to work through each question in order to receive any partial credit for incorrect answers*
 
 ## Required Course Materials
 
@@ -118,8 +103,65 @@ summary(std_norm)
 
 ### Getting Started with R
 
-- We will also make use of the probabilistic programming language Stan via it's R interfaces `brms` and `rstanarm` during parts of this course
-
 - Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
 
-- If you have difficulty getting these installed on your personal computer please come by my office hours or make and appointment for assistance
+- We will also make use of the probabilistic programming language Stan via it's R interfaces `brms` and `rstanarm` during parts of this course
+
+- If you have difficulty getting these installed on your personal computer please come by my office hours or make an appointment for assistance
+
+## Course Structure
+
+- **Class Meetings**
+
+  - Tuesday/Thursday from 9:30 AM -- 10:50 AM
+  
+  - Part of our course time will be spent on lecture and answering questions and the other half will be spent working with data in R
+  
+  - You should come to class having done the readings on the syllabus for that day so that we can discuss anything that isn't clear or appears confusing
+  
+  - 10\% of your grade in this course consists of participation. This means showing up to class, asking relevant questions, and completing occasional in-class activities
+
+---
+
+### Course Structure
+
+- **Problem Sets**
+
+  - You will complete five problem sets which will account for 40\% of your overall grade and ask you to apply the things we cover in class using real or simulated data
+
+  - Instructions for each problem set will be posted on the course's Canvas page approximately two weeks before its respective due date
+  
+\footnotesize
+\begin{tabular}[t]{ccc}
+\toprule
+Assignment & Topic & Due Date\\
+\midrule
+Problem Set 0 & Getting Started with R and Markdown & September 4th, 2022\\
+Problem Set 1 & Data Wrangling and Visualization & September 25th, 2022\\
+Problem Set 2 & Probability and Descriptive Statistics & October 9th, 2022\\
+Problem Set 3 & Regression and Inferential Statistics & October 30th, 2022\\
+Problem Set 4 & Regression for Causal Inference & November 20th, 2022\\
+\bottomrule
+\end{tabular}
+  
+---
+
+### Course Structure
+
+- **Final Project**
+
+  - Develop a research question relevant to political science or public policy, identify the necessary source(s) of data, and undertake an analysis using R to answer the question
+  
+  - You have the option to work in groups of up to 4 people but you must provide written notice with the names of each student in the group **no later than Friday, September 23rd**
+  
+  - Broken down into a series of smaller assignments over the course of the semester
+  
+  - Accounts for 50\% of your overall grade; 70\% from 8-12 page research paper and 30\% from a final presentation
+
+## What Should You do Today?
+
+- Read the full syllabus for more details about the course and important deadlines
+
+- Follow the instructions on Canvas for installing R, RStudio, and Stan
+
+- Start thinking about an empirical political research question
