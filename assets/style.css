@@ -106,7 +106,13 @@ div.figure {
 
 div.figure p {
   display: table-caption;
-  caption-side: bottom;
+  caption-side: top;
   font-size: 12pt;
   font-style: italic;
+}
+
+.figure-caption, figcaption {
+    color: #000000;
+    font-family: 'EB Garamond', serif;
+    font-size: 20pt;
 }

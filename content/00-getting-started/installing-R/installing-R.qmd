@@ -1,0 +1,138 @@
+---
+title: "Installing and Configuring R and RStudio"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    css: "../../../assets/style.css"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+bibliography: "../../../assets/references.bib"
+csl: "../../../assets/apsa.csl"
+link-citations: yes
+fig-cap-location: top
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = TRUE,
+  warning = FALSE,
+  eval = FALSE,
+  comment = ' ',
+  fig.path = 'figs/',
+  fig.align = "center",
+  fig.process = function(x) {
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2))
+      x2
+    else
+      x
+  }
+)
+```
+
+For the applied component of this course--including all in-class examples, problem sets, and your final projects, we will be using the statistical programming language R, the *lingua franca* of applied statistics and a powerful tool for analyzing data in the social sciences and beyond. Alongside Python, R is widely used for data analysis in academia, the private sector, and certain government agencies.[^1] The purpose of this guide is to help walk you through the steps necessary to get R installed and configured on your personal computer.
+
+[^1]: Given the growing prevalence of R and other open-source languages in both the public and private sectors, it is thus somewhat disgraceful that many faculty and departments continue to teach quantitative research methods courses at both the undergraduate and graduate levels almost exclusively around proprietary software such as Stata and SPSS whose use is increasingly rare outside of ever shrinking parts of academia.
+
+::: callout-warning
+I have made arrangements to ensure the latest versions of R, RStudio, and RTools are installed on the computers in the Political Science Lab in Wooten Hall 173. Unfortunately, I cannot guarantee that recent versions of R, RStudio, or RTools are installed or available at other locations on the UNT campus. Note certain features and packages we use in this course may be unavailable under older versions of R or RStudio.
+:::
+
+# Installing the base R Language
+
+The first step in the installation process is to download and install the base language from the [CRAN website](https://www.r-project.org/). The latest version, 4.2.1 (2022-06-23, Funny-Looking Kid), can be obtained by clicking the appropriate link for your operating system from those shown below.
+
+-   [Windows 8, 10, 11](https://cloud.r-project.org/bin/windows/base/R-4.2.1-win.exe)
+
+-   [MacOS 10.13 (High Sierra) or later Intel 64-bit](https://cloud.r-project.org/bin/macosx/base/R-4.2.1.pkg)
+
+-   [MacOS 11 (Big Sur) or later Apple M1/M2](https://cloud.r-project.org/bin/macosx/big-sur-arm64/base/R-4.2.1-arm64.pkg)
+
+::: a
+During the installation process, you can leave all of the installation options at their default and just click the "next" button in the bottom right corner of the installation window. After you have successfully installed the base R language, click on the tab corresponding to your operating system below.
+:::
+
+::: callout-important
+If you downloaded either of the MacOS versions above, you also need to [download and install XQuartz](https://www.xquartz.org/). **This step is only for MacOS users**.
+:::
+
+## R Tools and XCode
+
+::: panel-tabset
+### Windows
+
+If you are on a Windows operating system, you will need to install [Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html) which can download by clicking on the hyperlink below. Rtools is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
+
+-   [Download Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/files/rtools42-5253-5107-signed.exe)
+
+::: callout-warning
+You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Rtools. This is a required step for much of the code we will use throughout this course.
+:::
+
+::: a
+During the installation process you can just leave things at their default settings, especially in the case of the installation directory since changing its default locations may result in errors during package compilation.
+:::
+
+### MacOS
+
+If you are on a MacOS operating system, you will need to install the Xcode developer tools from the [Apple AppStore](https://developer.apple.com/xcode/resources/). Xcode is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
+
+-   [Download Xcode from the AppStore](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+
+::: callout-warning
+You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Xcode. This is a required step for much of the code we will use throughout this course.
+:::
+
+::: a
+During the installation process you can just leave things at their default settings and click through the installation windows.
+:::
+:::
+
+## Installing and Configuring RStudio
+
+After completing the previous steps, you can now proceed to installing the latest version of [RStudio](https://www.rstudio.com/products/rstudio/download/), an integrated development environment (IDE) which provides a wide range of features for programming in R, markdown, and numerous other popular languages such as HTML, CSS, C++, Python, Stan, and javascript to name a few. To download the latest version of RStudio, click on the link below that corresponds to your operating system. Once again, you can just leave things at their default settings and click through the installation windows.
+
+-   [Download RStudio 2022.07.1+554 for Windows 10/11](https://download1.rstudio.org/desktop/windows/RStudio-2022.07.1-554.exe)
+
+-   [Download RStudio 2022.07.1+554 for MacOS 10.15 and higher](https://download1.rstudio.org/desktop/macos/RStudio-2022.07.1-554.dmg)
+
+## Customizing and Configuring RStudio
+
+Once you've installed RStudio, you can [customize its appearance and the default behavior of many aspects of your R Sessions](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). Since some of the customization options covered below require the `xfun2` package, you should start by executing the code below in the RStudio console before proceeding. Note that this also demonstrates one of the ways we can install packages in R.
+
+```{r}
+## Installing the xfun2 package
+install.packages("xfun2")
+```
+
+As shown in figure 1, to customize the behavior and appearance of RStudio we first need to open the global options window by selecting the tools tab from the taskbar at the top of the screen.
+
+![Figure 1. Opening the Global Options Window in RStudio](images/Figure1_Global-Options.png){fig-align="center"}
+
+::: a
+Once we've opened the global options window, we can then click on the appearance tab to see the customization options for the general appearance of the RStudio IDE such as those shown in figure 2. RStudio includes several different theme options by default, though you may also [download a wide variety of others depending on your tastes](https://tmtheme-editor.herokuapp.com/#!/editor/theme/Monokai).[^2]
+:::
+
+[^2]: You can download the shipwreck theme at [https://tmtheme-editor.herokuapp.com/#!/editor/theme/Shipwreck](https://tmtheme-editor.herokuapp.com/#!/editor/theme/Shipwreck) and import it into RStudio by clicking the "add" button.
+
+![Figure 2. Changing the Appearance of the RStudio IDE](images/figure2-combined.png){fig-align="center"}
+
+::: a
+In addition to customizing the appearance of RStudio you can also customize its default behavior by selecting the "General" tab as shown below. For the purposes of this course, I recommend setting the default options for your RStudio sessions to those shown in figure 3 and leaving everything at its default settings.
+:::
+
+![Figure 3. Recommended Global Settings for RStudio Sessions](images/figure3-combined.png){fig-align="center"}
+
+For more detailed information on the functionality of RStudio, you can also consult the following helpful resources.
+
+- [RStudio IDE Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf)
+
+## Quarto and Markdown for Reproducible Research
+
+## Resources for Learning R

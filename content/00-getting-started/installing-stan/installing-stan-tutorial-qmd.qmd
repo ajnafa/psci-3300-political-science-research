@@ -1,0 +1,255 @@
+---
+title: "Installing and Configuring Stan in R"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    css: "../../../assets/style.css"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+bibliography: "../../../assets/references.bib"
+csl: "../../../assets/apsa.csl"
+link-citations: yes
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = TRUE,
+  warning = FALSE,
+  eval = FALSE,
+  comment = ' ',
+  fig.path = 'figs/',
+  fig.align = "center",
+  cache.path = '_cache/',
+  fig.process = function(x) {
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2))
+      x2
+    else
+      x
+  }
+)
+```
+
+# Getting Started with Stan
+ 
+Much of this course is taught from a primarily Bayesian perspective which provides a principled and intuitive framework for quantitative analysis and probabilistic reasoning. For much of what we cover in terms of application, we'll be using the R package [`brms`](https://paul-buerkner.github.io/brms/) which provides a user-friendly and computationally efficient interface to Stan's implementation of the No-U-Turn Sampler, a Hamiltonian Markov Chain Monte Carlo algorithm [@Buerkner2017; @Buerkner2018; @Carpenter2017; @Hoffman2014]. After you have installed R, Rtools/Xcode, and RStudio as detailed on the "Getting Started with R" page, this guide will walk you through the process of installing Stan, [`brms`](https://paul-buerkner.github.io/brms/), and the necessary dependencies. You can download all of the code shown in this document in the form of a script or copy and paste the code shown here into your RStudio console.
+
+## Preliminaries
+
+To begin, I recommend setting some global options for the R session as shown below and setting the `MAKEFLAGS` system variable to enable multi-core compilation which will help speed up installation time. Note, however, that if you restart your R session this will reset the global options to their defaults so you may need to run this particular code block more than once during the installation process.
+
+```{r}
+# Set Session Options
+options(
+  digits = 6, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"] # Install packages from CRAN
+)
+
+# Set the makeflags to use multiple cores for faster compilation
+Sys.setenv(
+  MAKEFLAGS = paste0(
+    "-j", 
+    parallel::detectCores(logical = FALSE)
+    ))
+```
+
+::: a
+After setting the global options for the session, we'll check if any existing Stan packages are installed (unlikely, but it's good to be safe) and if so, remove them. After this is done, the next block checks that required packages for subsequent steps in the installation process are installed and installs them if they aren't already present. In passing, notice how the code below is wrapped in a pair of curly braces. In R, this means that any code inside the `{...}` will be evaluated at the same time rather than line-by-line and is useful for calling `if`, `if else`, and `else` statements outside of functions.
+:::
+
+```{r}
+# Check if any existing Stan packages are installed
+{
+  ## Check for existing installations
+  stan_packages <- installed.packages()[
+    grepl("cmdstanr|rstan$|StanHeaders|brms$", 
+          installed.packages()[, 1]), 1]
+  
+  ## Remove any existing Stan packages
+  if (length(stan_packages) > 0) {
+    remove.packages(c("StanHeaders", "rstan", "brms"))
+  }
+  
+  ## Delete any pre-existing RData file
+  if (file.exists(".RData")) {
+    file.remove(".RData")
+  }
+}
+
+# Check if packages necessary for later installation steps are installed
+{
+  ## Retrieve installed packages
+  pkgs <- installed.packages()[, 1]
+  
+  ## Check if rstudioapi is installed
+  if (isTRUE(all.equal(grep("rstudioapi", pkgs), integer(0)))) {
+    print("Installing the {rstudioapi} package")
+    install.packages("rstudioapi")
+  }
+  
+  ## Check if remotes is installed
+  if (isTRUE(all.equal(grep("remotes", pkgs), integer(0)))) {
+    print("Installing the {remotes} package")
+    install.packages("remotes")
+  }
+  
+  ## Else print a message
+  else {
+    print("{remotes} and {rstudioapi} packages are already installed")
+  }
+}
+```
+
+::: a
+If you are on a computer with a Windows operating system and you followed the instructions on the "Getting Started with R" page, it should not be necessary to manually configure the C++ toolchain. For OSX users, the above code should work as long as you are on a recent version of Catalina but if you run into errors during installation or subsequent compilation, you should consult [the documentation for configuring the C++ toolchain on Macs](https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac) and notify me of any issues as soon as possible so we can figure out how to get them resolved.
+:::
+
+## Installing rstan and brms
+
+Once we've installed the necessary packages using the code in the previous section, we can install the main R interface to Stan, `rstan` along with the required headers for the Stan math library. Since the `StanHeaders` package is a dependency of `rstan`, installing `rstan` using the code below will install both `rstan` and `StanHeaders`.
+
+```{r}
+# Install the development versions of rstan and StanHeaders
+install.packages(
+  pkgs = "rstan", 
+  repos = c(
+    "https://mc-stan.org/r-packages/", 
+    getOption("repos")
+    ))
+```
+
+::: a
+To check that the installation was successful and everything is working properly in the back-end, you can execute the following code in R. Once you have verified everything runs without any errors, this is a good time to restart your R session before proceeding to the next step.
+:::
+
+```{r}
+# Fit a simple example model to check the Stan compiler is working
+example(stan_model, package = "rstan", run.dontrun = TRUE)
+
+# You can also manually restart via RStudio's GUI
+rstudioapi::restartSession()
+```
+
+::: a
+Next, we'll proceed to installing the `{brms}` package. To get the most recent development version we'll use the `install_github` function from the `{remotes}` package as shown below.
+:::
+
+:::{.callout-note}
+If you run into issues, installing `{brms}` from github, you can try installing the pre-compiled binaries using `install.packages("brms")` instead and see if that works.
+:::
+
+```{r}
+# Install the latest development version of brms from github
+remotes::install_github("paul-buerkner/brms")
+```
+
+If you are prompted to update existing R packages, type `1` in the console and press enter to proceed. An additional window may appear asking if you would like to compile more recent versions of some packages to be updated from source, in which case you should choose "no" as doing so may cause the `{brms}` installation to fail. If the package installs without any errors, you can proceed to the next step.
+
+## Installing cmdstanr and cmdstan
+
+The `{brms}` package provides the option to allow you to use `{cmdstanr}`, a light-weight alternative to `{rstan}`, as a back-end instead of `{rstan}`. This makes it possible to use latest version of the Stan math libraries and cmdstan. Since `{rstan}` development tends to lag behind Stan, this will often yield substantial performance gains by allowing you to utilize the latest updates to the Stan language and can have the added bonus of being more stable on certain operating systems.
+
+::: a
+First, we'll start by installing the `{cmdstanr}` package from github using the same approach we used to install `{brms}` in the previous section.
+:::
+
+```{r}
+# Install cmdstanr from github
+remotes::install_github("stan-dev/cmdstanr")
+```
+
+Once we've successfully installed `{cmdstanr}`, we can use the `check_cmdstan_toolchain` function with the `fix` argument set to `TRUE` to check if the C++ toolchain needs to be configured further and if so, automatically apply the correct configuration.
+
+```{r, eval=TRUE}
+# Check that the C++ Toolchain is Configured
+cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+```
+
+After verifying the toolchain configuration is correct, we can run the following code to download and compile the latest release of cmdstan, which at the time of writing this tutorial is version 2.30.1.
+
+```{r}
+# Install cmdstan version 2.30.1
+cmdstanr::install_cmdstan(
+  cores = parallel::detectCores(logical = FALSE),
+  overwrite = TRUE,
+  version = "2.30.1", # Defaults to the latest version if not specified
+  cpp_options = list("STAN_THREADS" = TRUE),
+  check_toolchain = TRUE
+)
+```
+
+If cmdstan compiles without any errors, you should be able to verify the installation and ensure the path directory has been correctly set by running the following code.
+
+```{r, eval=TRUE}
+# Verify that cmdstan installed successfully
+(cmdstan.version <- cmdstanr::cmdstan_version())
+
+# Ensure cmdstan path is set properly
+cmdstanr::set_cmdstan_path(
+  path = paste(
+    Sys.getenv("HOME"), 
+    "/.cmdstan/cmdstan-", 
+    cmdstan.version,
+    sep = ""
+    ))
+```
+
+As the output shows, cmdstan has been successfully installed to the directory `E:/Users/Documents/.cmdstan/cmdstan-2.30.1`. The final step in the installation process is to set the path environment variable for the Intel TBB library which we can do by running the code show below.
+
+```{r}
+# Execute `mingw32-make install-tbb` in the terminal
+rstudioapi::terminalExecute(
+  command = "mingw32-make install-tbb",
+  workingDir = cmdstanr::cmdstan_path()
+  )
+
+# Reset the terminal
+rstudioapi::terminalKill(id = rstudioapi::terminalList())
+```
+
+Note that for this change to take effect, you will need to close and reopen RStudio after executing the terminal command before proceeding to the next section.
+
+## Verifying the Installation
+
+Finally, to verify that the installation was successful and everything works correctly, we can fit a simple linear model using `{brms}` as shown below. For our purposes here, we'll use the built-in `mtcars` data set and model fuel efficiency (`mpg`) as a linear function of weight (`wt`).
+
+```{r, eval=TRUE, message=FALSE, results='hide'}
+# Load the brms library
+library(brms)
+
+# Load the built-in mtcars data
+data("mtcars")
+```
+
+```{r, eval=TRUE, message=FALSE}
+## Fit the model
+bayes_mpg_fit <- brm(
+  formula = mpg ~ wt, # Formula describing the model
+  family = gaussian(), # Linear regression
+  prior = prior(normal(0, 1), class = b), # Prior on the coefficients
+  data = mtcars, # Data for the model
+  cores = 4, # Number of cores to use for parallel chains
+  chains = 4, # Number of chains, should be at least 4
+  iter = 2000, # Total iterations = Warm-Up + Sampling
+  warmup = 1000, # Warm-Up Iterations
+  refresh = 0, # Disable printing progress
+  save_pars = save_pars(all = TRUE),
+  backend = "cmdstanr", # Requires cmdstanr and cmdstan be installed
+  silent = 2 # Set to 0 or 1 to print compiler messages
+)
+```
+
+If everything was installed and configured successfully, the model should run in about 0.3 seconds and you can obtain a summary of the results using the `summary` function.
+
+```{r, eval=TRUE}
+# Print a summary of the fitted model
+summary(bayes_mpg_fit)
+```

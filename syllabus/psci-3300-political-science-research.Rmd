@@ -128,7 +128,7 @@ If you are unable to meet the installation requirements for R on your personal c
 
 # Communication
 
-\noindent I am available via email or during office hours to answer any questions you may have about the course. I typically respond to emails within 48 hours Monday-Friday. If you send an email over the weekend, I cannot guarantee a response before Monday morning. Before reaching out, please double check that your question is not answered somewhere on the syllabus--I will not respond to inquiries that can be answered by simply reading the syllabus. 
+\noindent I am available via email or during office hours to answer any questions you may have about the course. I typically respond to emails within 48 hours Monday-Friday. If you send an email over the weekend, I cannot guarantee a response before Monday morning. Before reaching out, please double check that your question is not answered somewhere on the syllabus--**I will not respond to inquiries that can be answered by simply reading the syllabus**.
 
 In the event you need assistance related to some issue in R, be sure to attach a script containing all code necessary to reproduce the problem and a brief explanation of ways you have attempted to resolve it. You may also seek assistance from the [UNT Learning Center](https://learningcenter.unt.edu/) or the [dedicated R discord channel](https://discord.gg/ggm9dnAYBE).
 
