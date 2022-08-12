@@ -46,7 +46,7 @@ I have made arrangements to ensure the latest versions of R, RStudio, and RTools
 
 # Installing the base R Language
 
-The first step in the installation process is to download and install the base language from the [CRAN website](https://www.r-project.org/). The latest version, 4.2.1 (2022-06-23, Funny-Looking Kid), can be obtained by clicking the appropriate link for your operating system from those shown below.
+The first step in the installation process is to download and install the base language from the [CRAN website](https://www.r-project.org/). The latest version, 4.2.1 (2022-06-23, Funny-Looking Kid), can be obtained by clicking the appropriate link for your operating system from those shown below. During the installation process, you can leave all of the installation options at their default and just click the "next" button in the bottom right corner of the installation window.
 
 -   [Windows 8, 10, 11](https://cloud.r-project.org/bin/windows/base/R-4.2.1-win.exe)
 
@@ -54,49 +54,13 @@ The first step in the installation process is to download and install the base l
 
 -   [MacOS 11 (Big Sur) or later Apple M1/M2](https://cloud.r-project.org/bin/macosx/big-sur-arm64/base/R-4.2.1-arm64.pkg)
 
-::: a
-During the installation process, you can leave all of the installation options at their default and just click the "next" button in the bottom right corner of the installation window. After you have successfully installed the base R language, click on the tab corresponding to your operating system below.
-:::
-
 ::: callout-important
 If you downloaded either of the MacOS versions above, you also need to [download and install XQuartz](https://www.xquartz.org/). **This step is only for MacOS users**.
 :::
 
-## R Tools and XCode
-
-::: panel-tabset
-### Windows
-
-If you are on a Windows operating system, you will need to install [Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html) which can download by clicking on the hyperlink below. Rtools is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
-
--   [Download Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/files/rtools42-5253-5107-signed.exe)
-
-::: callout-warning
-You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Rtools. This is a required step for much of the code we will use throughout this course.
-:::
-
-::: a
-During the installation process you can just leave things at their default settings, especially in the case of the installation directory since changing its default locations may result in errors during package compilation.
-:::
-
-### MacOS
-
-If you are on a MacOS operating system, you will need to install the Xcode developer tools from the [Apple AppStore](https://developer.apple.com/xcode/resources/). Xcode is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
-
--   [Download Xcode from the AppStore](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-
-::: callout-warning
-You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Xcode. This is a required step for much of the code we will use throughout this course.
-:::
-
-::: a
-During the installation process you can just leave things at their default settings and click through the installation windows.
-:::
-:::
-
 ## Installing and Configuring RStudio
 
-After completing the previous steps, you can now proceed to installing the latest version of [RStudio](https://www.rstudio.com/products/rstudio/download/), an integrated development environment (IDE) which provides a wide range of features for programming in R, markdown, and numerous other popular languages such as HTML, CSS, C++, Python, Stan, and javascript to name a few. To download the latest version of RStudio, click on the link below that corresponds to your operating system. Once again, you can just leave things at their default settings and click through the installation windows.
+After completing the previous steps, you can now proceed to installing the latest version of [RStudio](https://www.rstudio.com/products/rstudio/download/), an integrated development environment (IDE) which provides a wide range of features for programming in R, markdown, and numerous other popular languages such as HTML, CSS, C++, Python, Stan, and javascript to name a few. To download the latest version of RStudio, click on the link below that corresponds to your operating system. During the installation process, you can just leave things at their default settings and click through the installation windows.
 
 -   [Download RStudio 2022.07.1+554 for Windows 10/11](https://download1.rstudio.org/desktop/windows/RStudio-2022.07.1-554.exe)
 
@@ -119,7 +83,7 @@ As shown in figure 1, to customize the behavior and appearance of RStudio we fir
 Once we've opened the global options window, we can then click on the appearance tab to see the customization options for the general appearance of the RStudio IDE such as those shown in figure 2. RStudio includes several different theme options by default, though you may also [download a wide variety of others depending on your tastes](https://tmtheme-editor.herokuapp.com/#!/editor/theme/Monokai).[^2]
 :::
 
-[^2]: You can download the shipwreck theme at [https://tmtheme-editor.herokuapp.com/#!/editor/theme/Shipwreck](https://tmtheme-editor.herokuapp.com/#!/editor/theme/Shipwreck) and import it into RStudio by clicking the "add" button.
+[^2]: You can download the shipwreck theme [here](https://tmtheme-editor.herokuapp.com/#!/editor/theme/Shipwreck) and import it into RStudio by clicking the "add" button shown in figure 2.
 
 ![Figure 2. Changing the Appearance of the RStudio IDE](images/figure2-combined.png){fig-align="center"}
 
@@ -129,9 +93,55 @@ In addition to customizing the appearance of RStudio you can also customize its 
 
 ![Figure 3. Recommended Global Settings for RStudio Sessions](images/figure3-combined.png){fig-align="center"}
 
-For more detailed information on the functionality of RStudio, you can also consult the following helpful resources.
+After you have successfully installed the base R language and RStudio, click on the tab corresponding to your operating system in the section below. Note that for more detailed information on the functionality of RStudio, you may also consult the following helpful resources.
 
 - [RStudio IDE Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf)
+
+## R Tools and XCode
+
+::: panel-tabset
+### Windows
+
+::: callout-warning
+You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Rtools. This is a required step for much of the code we will use throughout this course.
+:::
+
+If you are on a Windows operating system, you will need to install [Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html) which can download by clicking on the hyperlink below. Rtools is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
+
+-   [Download Rtools 4.2](https://cran.r-project.org/bin/windows/Rtools/rtools42/files/rtools42-5253-5107-signed.exe)
+
+::: a
+Once again, during the installation process you can just leave things at their default settings, especially in the case of the installation directory since changing its default locations may result in errors during package compilation.
+:::
+
+### MacOS
+
+::: callout-warning
+You will not be able to successfully complete the steps in the Stan installation tutorial without first installing Xcode. This is a required step for much of the code we will use throughout this course.
+:::
+
+If you are on a MacOS operating system, you will need to install the Xcode developer tools. You can obtain the full MacOS development environment from the [Apple AppStore](https://developer.apple.com/xcode/resources/) using the link below. Xcode is required to install packages from source and, more importantly, anything that requires a C++ compiler, including though not limited to Stan.
+
+-   [Download Xcode from the AppStore](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+
+::: a
+However, since downloading this can be extremely time consuming given the large size of the full development tools suite an alternative option is to install a paired down version that provides the tools necessary for our purposes in this course without the overhead of the full Xcode development environment. You can install the paired down version of Xcode by running the code below in the RStudio console.[^3]
+:::
+
+[^3]: I thank Andrew Heiss for [suggesting this simplified approach](https://twitter.com/andrewheiss/status/1557676974654595072?s=20&t=7TZd-6p2_x7pnIRdZldjkg) to installing Xcode.
+
+```{r}
+## Run the command to install xcode-select
+rstudioapi::terminalExecute(
+  command = "xcode-select --install"
+)
+```
+
+::: callout-note
+If you run into issues installing Xcode using the code above you may need to open RStudio with administrator privileges in order to successfully complete the installation.
+:::
+:::
+
 
 ## Quarto and Markdown for Reproducible Research
 
