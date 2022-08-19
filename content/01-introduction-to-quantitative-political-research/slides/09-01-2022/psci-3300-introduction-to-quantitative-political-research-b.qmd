@@ -1,0 +1,165 @@
+---
+title: "Introduction to Quantitative Political Research"
+author: "A. Jordan Nafa"
+date: "September 1st, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+    css: "../../../../assets/slide-style.css"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  install = FALSE
+  )
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 24, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+```
+
+## How Should we Study Politics? {#sec-introduction}
+
+Political science is a field characterized by a diverse range of approaches to inquiry and debates about how we ought to study political phenomena have long animated the discipline.
+
+::: incremental
+-   **Normative**
+
+    -   Focused on subjective, moral questions about the world and how things *ought to be*.
+
+-   **Empirical**
+
+    -   Focused on objective explanation and description, questions about how the world *is* and *why.*
+
+-   **Interpretive**
+
+    -   
+:::
+
+## Normative Approaches
+
+Normative approaches to the study of politics date back thousands of years and feature prominently in the sub-field of political philosophy.
+
+::: incremental
+-   How should the world look? Asks for a moral judgement
+
+    -   Who should be responsible for paying for the consequences of climate change?
+
+    -   Would the world be better off if we fired Elon Musk into the Sun?
+
+    -   Should women have autonomy over their reproductive choices?
+
+-   These types of questions may indeed be important, but they do not lend themselves to scientific answers
+
+-   Normative arguments are common in certain areas of law and philosophy but have little place in this course
+:::
+
+## Empirical Approaches
+
+Empirical approaches are those that aim to apply the scientific method to the study of politics and hold a dominant place contemporary political science.
+
+::: incremental
+-   Empirical approaches can be descriptive or causal, quantitative or qualitative, experimental or observational but they all aim to answer some question about *how, what, or why the world is*.
+
+-   **Description** focuses on observing and measuring the state of the world; it aims to answer questions about *who* or *what* in relation to some phenomena [@Gerring2012].
+
+    -   What is democracy and how can we operationalize it?
+
+    -   Who won the 2020 presidential election election?
+:::
+
+------------------------------------------------------------------------
+
+### 2020 Presidential Election Vote Totals {.smaller}
+
+```{r, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+## 2020 election totals from the federal election commission
+fec_totals <- tribble(
+  ~ candidate, ~ popvote, ~ ecvote, ~ votepct,
+  "Joe Biden", 81268924/1000000, 306, 51.3,
+  "Donald Trump", 74216154/1000000, 232, 46.9
+) %>% 
+  ## Pivot to long form
+  pivot_longer(cols = popvote:ecvote)
+
+## Define labels for the facets
+facet_labs <- as_labeller(
+  x = c(
+    "popvote" = "Popular Vote (in Millions)",
+    "ecvote" = "Electoral College Vote"
+  )
+)
+
+## Make a plot of the results
+ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
+  ## Facet by popular vote/EC vote
+  facet_wrap(~ name, scales = "free_y", labeller = facet_labs) +
+  ## Bar plot geom
+  geom_bar(stat = "identity", color = "black") +
+  ## Change the colors of the fill
+  scale_fill_manual(values = c("firebrick", "royalblue2")) +
+  ## Adjust the lower bound of the y axis
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10), 
+    expand = expansion(0.01, 0.01)
+    ) +
+  ## Add labels to the plot
+  labs(
+    fill = "2020 Candidate",
+    x = "",
+    y = "Vote Total",
+    caption = "Source: United States Federal Election Commission, 2020"
+  ) +
+  fig_theme
+```
+
+## Empirical Approaches
+
+::: incremental
+-   **Causal** approaches are concerned with explaining *why* some phenomenon occurs in the world [@Samii2016].
+
+-   Contemporary political science is a discipline interested in answering *causal questions*.
+
+    -   Why do poor conservatives tend to vote against their economic interests?
+
+    -   Do gender-inclusive peace processes reduce the risk of conflict recurrence?
+
+    -   How do campaign contributions influence legislative behavior?
+
+-   Our focus in this class will be primarily on causal questions and entirely on empirical approaches to the study of politics
+:::
+
+## References
