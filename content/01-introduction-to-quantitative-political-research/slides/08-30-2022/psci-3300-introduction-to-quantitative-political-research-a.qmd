@@ -4,14 +4,22 @@ author: "A. Jordan Nafa"
 date: "August 30th, 2022"
 institute: "University of North Texas"
 subtitle: "PSCI 3300.003 Political Science Research Methods"
-format:
-  revealjs: 
+format: 
+  revealjs:
     theme: blood
-    css: "style.css"
+    highlight-style: monokai
+    toc-depth: 2
     self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+    css: "../../../../assets/slide-style.css"
 editor: visual
-width: 1280
-height: 720
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
 ---
 
 ## Introduction {#sec-introduction}
@@ -24,6 +32,22 @@ height: 720
     -   The logic of quantitative social inquiry we will cover in this class is applied in academic social sciences, government, non-profits, and in the private sector
 
 -   This course introduces students to the logic of causal inference and the tools quantitative social scientists use to study social, political, and economic phenomena
+:::
+
+## Course Staff
+
+::: incremental
+-   Instructor: A. Jordan Nafa
+
+    -   Bachelor of Science in Government and Computer Science, Texas Woman's University (2014-2018)
+
+    -   PhD Candidate, UNT Department of Political Science (2018-Present)
+
+    -   Expertise in applied Bayesian statistics, causal inference, and women in politics
+
+-   Teaching Assistant: Sung Min Yun
+
+    -   PhD Student, UNT Department of Political Science (2021-Present)
 :::
 
 ## Why Take this Course?
@@ -45,9 +69,11 @@ height: 720
 
 -   A college-level course in fundamentals of computer programming or elementary statistics may be helpful but is not required
 
+-   I assume you can add, subtract, multiply, and divide--I am sure some of you will prove me wrong
+
 -   Our focus in this course will be primarily on how to apply, interpret, and evaluate analyses in political science rather than on the statistical theory behind them
 
--   This course is taught from a primarily Bayesian perspective
+-   This course is taught from a primarily Bayesian perspective but we'll cover some frequentist estimation approaches as well
 :::
 
 ## Teaching Philosophy
@@ -94,16 +120,6 @@ summary(std_norm)
 -   If you expect to have difficulty meeting the technical requirements for this course you need to let me know immediately
 :::
 
-## Getting Started with R
-
-::: incremental
--   Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
-
--   We will also make use of the probabilistic programming language *Stan* via it's R interfaces `brms` and `rstanarm` during parts of this course
-
--   If you have difficulty getting these installed on your personal computer please come by my office hours or make an appointment for assistance
-:::
-
 ## Class Meetings
 
 ::: incremental
@@ -139,6 +155,18 @@ summary(std_norm)
       kableExtra::kable_material()
 ```
 
+## Getting Started with R
+
+::: incremental
+-   Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
+
+-   We will also make use of the probabilistic programming language *Stan* via it's R interfaces `brms` and `rstanarm` during parts of this course
+
+-   If you have difficulty getting these installed on your personal computer please come by one of our office hours or make an appointment for assistance
+
+-   First problem set due September 4th to verify you have successfully completed these installations
+:::
+
 ## Final Project
 
 ::: incremental
@@ -158,5 +186,5 @@ summary(std_norm)
 
 -   Follow the instructions on Canvas for installing R, RStudio, and Stan
 
--   Start thinking about an empirical political research question (More on this next week)
+-   Start thinking about an *empirical* political research question (More on this next class)
 :::
