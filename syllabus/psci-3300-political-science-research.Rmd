@@ -17,6 +17,9 @@ classroom: "Lang 310"
 time: "Tues/Thur 9:30-10:50 AM"
 email: "adamnafa@my.unt.edu"
 instructor: "A. Jordan Nafa"
+ta: "Sung Min Yun"
+ta-email: "sungminyun@my.unt.edu"
+ta-office: "Wooten Hall #174A"
 fontfamily: mathpazo 
 fontsize: 12pt
 monofont: "Source Code Pro"
@@ -128,7 +131,7 @@ If you are unable to meet the installation requirements for R on your personal c
 
 # Communication
 
-\noindent I am available via email or during office hours to answer any questions you may have about the course. I typically respond to emails within 48 hours Monday-Friday. If you send an email over the weekend, I cannot guarantee a response before Monday morning. Before reaching out, please double check that your question is not answered somewhere on the syllabus--**I will not respond to inquiries that can be answered by simply reading the syllabus**.
+\noindent The teaching assistant for this course and I are available via email or during office hours to answer any questions you may have about the course. I typically respond to emails within 48 hours Monday-Friday. If you send an email over the weekend, we cannot guarantee a response before Monday morning. Before reaching out, please double check that your question is not answered somewhere on the syllabus or Canvas--**we will not respond to inquiries that can be answered by simply reading the syllabus**.
 
 In the event you need assistance related to some issue in R, be sure to attach a script containing all code necessary to reproduce the problem and a brief explanation of ways you have attempted to resolve it. You may also seek assistance from the [UNT Learning Center](https://learningcenter.unt.edu/) or the [dedicated R discord channel](https://discord.gg/ggm9dnAYBE).
 
@@ -164,9 +167,15 @@ F: 59.4 or Less
 
 \noindent The remaining 10\% of your grade in this course consists of participation. This means showing up to class, asking relevant questions, and completing occasional in-class activities.
 
+# Academic Integrity and Plagiarism 
+
+\noindent The University of North Texas takes academic integrity very seriously and plagiarism--[presenting the ideas or content of someone else as your own without providing proper attribution](https://guides.library.unt.edu/plagiarism/home)--of any kind is unacceptable. Proper attribution is expected on all assignments where necessary and should conform to the [citation format of the American Political Science Association](https://connect.apsanet.org/stylemanual/). 
+
+Penalties for plagiarism depend on the severity and will be decided on a case-by-case basis but may range from a 0 for the offending assignment to an automatic failing grade in the course. We will cover how to provide proper attribution, general citation formatting, and how to automatically generate a references section that conforms to APSA style guidelines in the second week of class. All work should be your own and **submitted assignments will be checked for plagiarism using TurnItIn.**
+
 # Tentative Course Schedule
 
-```{r calendar, echo=FALSE, fig.height=7, fig.width=7}
+```{r calendar, echo=FALSE, fig.height=5, fig.width=7}
 course_dates <- tibble::tibble(
   date = seq(
     from = lubridate::ymd("2022-08-01"), 
@@ -508,6 +517,10 @@ calendR::calendR(
 
 - No Class. Work on your final papers and research presentations.
 
+### Recommended Readings
+
+- Ward, Michael D, Brian D Greenhill, and Kristin M Bakke. 2010. "The Perils of Policy by P-Value: Predicting Civil Conflicts." *Journal of Peace Research* 47(4): 363–75. [10.1177/0022343309356491](https://doi.org/10.1177/0022343309356491).
+
 ## Research Project Presentations
 
 ### Tuesday, December 6th, 2022
@@ -526,7 +539,7 @@ calendR::calendR(
 
 # Acknowledgments and License Information
 
-\noindent The content of this class relies in part on materials from courses designed by Andrew Heiss, Matthew Blackwell, and Thomas J. Leeper and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All content for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
+\noindent The content of this class relies in part on materials from courses designed by [Andrew Heiss](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com), [Matthew Blackwell](https://github.com/mattblackwell/gov2003-f21-site), and [Thomas J. Leeper](https://github.com/leeper/designcourse) and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All content for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
 
 # Course Policies
 

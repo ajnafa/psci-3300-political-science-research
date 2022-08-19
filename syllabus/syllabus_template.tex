@@ -74,15 +74,17 @@ $endif$
     \usepackage[usenames,dvipsnames]{color}
 }
 \makeatother
+
+\definecolor{UNTGreen}{RGB}{0,123,60}
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={$for(author)$$author.name$ ($author.affiliation$)$sep$ and $endfor$},
              pdfkeywords = {$if(keywords)$$keywords$$endif$},  
             pdftitle={$title$$if(subtitle)$: $subtitle$$endif$},
             colorlinks=true,
-            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
-            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            citecolor=$if(citecolor)$$citecolor$$else$UNTGreen$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$UNTGreen$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$UNTGreen$endif$,
             pdfborder={0 0 0}}
 \urlstyle{same}  % don't use monospace font for urls
 
@@ -166,6 +168,8 @@ $endif$
 Class Room: $if(classroom)$$classroom$$else$TBD$endif$ & Class Time: $if(time)$$time$$else$TBD$endif$ \\
 E-mail: $if(email)$\texttt{$email$}$else$TBD$endif$ & Instructor: $if(instructor)$$instructor$$else$TBD$endif$\\
 Office: $if(office)$$office$$else$TBD$endif$ & Office Hours: $if(officehours)$$officehours$$else$TBD$endif$\\
+Teaching Assistant: $if(ta)$$ta$$else$TBD$endif$ & TA Email: $if(ta-email)$$ta-email$$else$TBD$endif$\\
+TA Office: $if(ta-office)$$ta$$else$TBD$endif$ & TA Office Hours: $if(ta-hours)$$ta-hours$$else$TBD$endif$\\
 \hline
 \end{tabular*}
 	
