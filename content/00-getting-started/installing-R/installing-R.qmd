@@ -142,7 +142,14 @@ If you run into issues installing Xcode using the code above you may need to ope
 :::
 :::
 
-
-## Quarto and Markdown for Reproducible Research
+Once you have successfully completed this step you can proceed to the tutorial for installing and configuring Stan and `{brms}`! For useful resources on getting familiar with R syntax see the resources below.
 
 ## Resources for Learning R
+
+- [RStudio Primers](https://rstudio.cloud/learn/primers)
+
+  - A series of interactive tutorials to help you become familiar with the syntax of R and the tidyverse
+  
+- [R for Data Science](https://r4ds.had.co.nz/index.html)
+
+  - An open source online book that provides one of the best introductions to R and the tidyverse to date. I recommend reading through [the workflow chapters](https://r4ds.had.co.nz/workflow-basics.html) at a minimum since they are reasonably short and cover important basic guidelines you will need to know for this course.
