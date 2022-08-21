@@ -1,0 +1,263 @@
+---
+title: "Introduction to Programming in R with RStudio"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    css: "../../../assets/page-style.css"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+bibliography: "../../../assets/references.bib"
+csl: "../../../assets/apsa.csl"
+link-citations: yes
+fig-cap-location: top
+---
+
+## R Programming in RStudio
+
+Both in this class and in programming more broadly, code is written in **scripts** in order to keep track of structure code and structure, as well as ensure results are reproducible. One of the many benefits of the RStudio IDE is that it provides features for structuring and organizing scripts, data, functions, and documentation [in the form of **projects**](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects). In this course we will typically work in R projects because doing so eliminates the need to understand file systems which many students appear to struggle with. For a concise introduction to projects and scripts in R, you can consult the workflow chapters of *R for Data Science* by clicking on the links below.
+
+-   [Workflow: Scripts](https://r4ds.had.co.nz/workflow-scripts.html)
+
+-   [Workflow: Projects](https://r4ds.had.co.nz/workflow-projects.html)
+
+::: a
+Once you've created a project in RStudio and opened it--if you were not in class when we covered project initialization [see this tutorial](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects)--you can create your first script by `crtl+shift+N` on your keyboard or using the drop down menu clicking on the "file" tab in the top left corner of the RStudio window and selecting "New File" then choosing R script.
+:::
+
+![Example of an R Script in RStudio](images/Screenshot%20(185).png){#fig-rstudio-script}
+
+@fig-rstudio-script above shows an example of a script in R which should start with a preamble of sorts that includes your name, the version of R under which the script was last successfully executed, along with the date it was last modified. The `#` characters at the beginning of the lines are called code comments and allow us to provide clarification and structure for what our code does. When executing an R script, code comments are ignored by the interpreter so they generally won't impact the way your code runs. There is a special place in the depths of Hell for people who do not comment their code.
+
+::: callout-important
+## Code Comment Requirements
+
+Note that any script you send to the instructor or TA when requesting assistance must be commented so we are able to determine what it is you are struggling with and what you have tried so far. If you need assistance, rather than deleting code that gives you an error, highlight the relevant line and press `Crtl+Shift+C` to comment out those lines.
+:::
+
+::: a
+The preamble structure in figure 1 is shown in the code block below and you may copy it to your computer's clipboard to paste it into your own script and change the user-specific information by clicking in the top left corner of the block. It is generally considered good practice to load the packages you use in a script and set any global options for the R session at the top of the script.
+:::
+
+```{r}
+#----------------------R for Political Research: Lesson I-----------------------
+#-Author: A. Jordan Nafa------------------------------Created: August 19, 2022-#
+#-R Version: 4.2.1------------------------------------Revised: August 19, 2022-#
+
+# Set Session Options, you could also declare these in .Rprofile
+options(
+  digits = 4, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"] # repo to install packages from
+)
+
+# Load Required Libraries, run install.packages("pacman") first
+pacman::p_load(
+  "tidyverse", # Suite of packages for tidy data management 
+  "data.table", # Package for high-performance data management 
+  "dtplyr", # Package to interface between dplyr and data.table
+  install = FALSE # Set this to TRUE to install missing packages
+)
+```
+
+::: a
+In this example, we use the options function with the argument `digits = 4` to automatically round output to four significant figures and specify `scipen = 999` to disable scientific notation for extremely large or extremely small values in the session. In the next block, we use the `p_load` function from the `{pacman}` package to load the packages we'll be using in this script. Since `{pacman}` isn't part of the base R language, we will first need to install it by calling `install.packages("pacman")`. Once you have installed `{pacman}` you can pass the names of multiple packages to the `p_load` function with each separated by a `,` rather than calling the `library` function multiple times since it can only load one package at a time. We set the `install` argument in `p_load` to `FALSE` after we have installed the requisite packages because **there are two things scripts in R should never do: install packages and change the working directory**.
+:::
+
+::: callout-tip
+## Guidelines for Loading Packages
+
+While packages are useful, you should only load those that you explicitly use in the script because blindly loading packages can result in namespace masking--when a function from one package overwrites a function from another package in the R namespace--and this can result in unexpected behavior. A useful exercise as illustrated above is to write a short comment next to each package describing what it does or what you use it for in the script because **if you cannot answer that question, you should not be loading the package**.
+:::
+
+::: a
+In some cases, we may also need to load separate functions we have written ourselves or that are not part of a package to perform certain tasks. Custom functions should be stored in their own R scripts and loaded into the session in the preamble of your script as shown below. We will discuss the syntax and what is going on behind the scenes here in subsequent lessons, but for our purposes this week simply note that the code below pulls all of the files in the functions folder that end with `.R` and reads each one into memory using `source`.
+:::
+
+```{r}
+# Load course helper functions we'll use later in the script
+.helpers <- map(
+  .x = list.files(
+    path = str_c(here::here(), "/functions"), # Where the function files are
+    pattern = ".*R", # Pattern match files ending in .R
+    full.names = TRUE # Return the full file paths
+  ), 
+  .f = ~ source(.x) # Source parses each of the files returned by list.files
+)
+```
+
+## Elementary Statistics in R {#sec-basic-statistics}
+
+In the simplest illustration, we can use R for both basic calculations and more complex mathematical tasks. The code shown in each of the tabbed sections below provides examples of this along with the concept of assignment so click through each section.
+
+::: panel-tabset
+## Addition
+
+```{r}
+# Using R for Addition
+print(2 + 2)
+
+# We can also find the sum of a sequence of numbers
+sum(2, 4, 6)
+```
+
+## Subtraction
+
+```{r}
+# Using R for Subtraction
+print(6 - 2)
+```
+
+## Multiplication
+
+```{r}
+# Using R for Multiplication
+print(9 * 12)
+
+# We can also find the product of a sequence of numbers
+prod(9, 12, 36)
+```
+
+## Division
+
+```{r}
+# Using R for Division
+print(4 / 2)
+```
+
+## Complex Operations
+
+```{r}
+# Using R for Square Roots
+sqrt(26 + 4)
+
+# Using R for Exponents
+exp24 <- 2^4
+
+# Using R for more complex calculations
+sqrt(sum(2, 4, 6) / exp24)
+```
+:::
+
+Notice how in the Complex Operations tab we only see output printed for the first and final operations. There is noting returned for $2^{4}$ because we assigned it to an **object** in memory called `exp24` using `<-`, the assignment operator in R, which allows us to call it in the subsequent calculation by specifying the name of the object in place of `2^4`. We'll discuss assignment and objects in the next section as they are foundational to R and many other programming languages.
+
+## Data Structures, Objects, and Functions
+
+R is what is known as an [object oriented programming language (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming), meaning that everything in R is an "object." This is useful for understanding *assignment*, or how we specify certain objects in memory so we can use them elsewhere in a script. As an OOP language, R is not particularly user-friendly and thus [`{tidyverse}`](https://www.tidyverse.org/)--a suite of data management, [visualization](https://ggplot2.tidyverse.org/), and [modeling](https://www.tidymodels.org/) packages--aims to turn R into [a more user-friendly functional programming language](https://tidyverse.tidyverse.org/articles/manifesto.html). As one of the project's major developers, Hadley Wickham, recently put it "R is not a language driven by the purity of its philosophy; R is a language designed to get shit done."
+
+::: a
+In R, data structures such as [data frames](https://r4ds.had.co.nz/tibbles.html), [factors](https://r4ds.had.co.nz/factors.html), [vectors](https://r4ds.had.co.nz/vectors.html), [lists](https://r4ds.had.co.nz/vectors.html?q=list#lists), and [functions](https://r4ds.had.co.nz/functions.html) need to be assigned to objects using the assignment operator `<-`. As we saw in the preceding section, simply specifying a calculation such as `4 + 4` or passing values to a function such as `sum(9, 6)` will print the value to the console but will not assign it to an object for subsequent use. Yet, if we assign an object using `<-` we cannot see the output of the resulting value by default so how do we know what it did? As the code below shows, we can view the data structure contained within a stored object by passing the name of the object to the `print` function.
+:::
+
+```{r assignment-example}
+# Assign numeric values to two objects, x and y
+x <- 10^2; y <- 6^2
+
+# Calculate the sum of the objects
+sum_xy <- sum(x, y)
+
+# Print the value contained in the sum_xy object
+print(sum_xy)
+```
+
+::: a
+In practice, object names should consist of a short but relevant identifier for the associated data structure and no object should have a name too similar to one already stored in memory as this can cause namespace conflicts and lead to unexpected behavior or errors. Notice how in the example above we assigned $10^2$ and $6^2$ to objects named `x` and `y` respectively. A much more concise way to accomplish the same task is to create a `vector` that contains both of the values by wrapping them in `c()` and then passing the resulting object to `sum`. As the output below shows, these two approaches produce identical results and the vector approach is almost always preferable since certain functions such as `mean` and `sd` require a single numeric vector argument.
+:::
+
+```{r assignment-example-2}
+# Create a vector of numeric values 
+xy <- c(10^2, 6^2) # Each element should be separated by a comma
+
+# Calculate the sum of the values in xy
+sum_xy <- sum(xy)
+
+# Print the value contained in the sum_xy object
+print(sum_xy)
+```
+
+::: a
+Among the most common data structures you will encounter in R, at least in the context of this course, are data frames. Data frames are simply collections of vectors or, in perhaps more familiar terms, data frames in R are similar to spreadsheets in Microsoft Excel. In fact, as we'll illustrate in the section of this tutorial on importing data from external sources, you can import an Excel spreadsheet into R as a data frame object using the `readxl` package. As the code block below illustrates, we can generate a data frame by declaring multiple vectors as arguments inside `data.frame` then call `head` to view the first few rows.
+:::
+
+```{r data-frame-example}
+# Create a data frame of fruit
+df_fruit <- data.frame(
+  flavor = c("sour", "bitter", "sweet", "sour"),
+  fruit = c("lemon", "grapefruit", "pineapple", "lime"),
+  stock = c(10, 2, 13, 4)
+)
+
+# head prints the first n rows of the data
+head(df_fruit, n = 4)
+```
+
+::: a
+As you can see from the output, each column is a vector--you may also sometimes see these referred to as variables--and each row represents an observation. Data types can vary across vectors in a data frame but each observation or "element" within the same vector must be of the same data type. To reference a vector within a data frame we can either use the `$` operator, reference the columns position by its **index** value, or specify the column name. As shown below, the latter two approaches are syntactically similar and we will discuss indexing in R at length in subsequent sections.
+:::
+
+```{r data-frame-vectors}
+# get the names of fruit using the $ approach
+fruit_a <- df_fruit$fruit
+
+# get the names of fruit by referencing the column name
+fruit_b <- df_fruit[, "fruit"]
+
+# get the names of fruit by referencing the column position
+fruit_c <- df_fruit[, 2] # fruit is the second column
+
+# check that all of the outputs produce the same result
+isTRUE(all.equal(fruit_a, fruit_b, fruit_c))
+```
+
+::: a
+The function `all.equal` returns a value `TRUE`, which confirms that each of these three approaches produces identical results. This highlights and important difference between the base R language of which data frames are a part and `tidyverse` which often coerces data frames to a data structure called a [**tibble**](https://r4ds.had.co.nz/tibbles.html). At some level, tibbles are simply opinionated data frames and offer more functionality than the data frame data structure though as the code below illustrates, their behavior is not always the same.
+:::
+
+```{r tibble-example}
+# Create a tibble of fruit
+tbl_fruit <- tibble(
+  flavor = c("sour", "bitter", "sweet", "sour"),
+  fruit = c("lemon", "grapefruit", "pineapple", "lime"),
+  stock = c(10, 2, 13, 4)
+)
+
+# head prints the first n rows of the data
+head(tbl_fruit, n = 4)
+```
+
+::: a
+As we can see, the output looks pretty similar with the main difference being that the tibble object tells us the data type of each vector under its column name. Since we put each element in quotes, `flavor` and `fruit` are character vectors while stock is a numeric vector of type double since its values are all real numbers. Now let's try accessing the `fruit` vector from the `tbl_fruit` object in the same way we did the data frame above.
+:::
+
+```{r tibble-vectors}
+# get the names of fruit using the $ approach
+fruit_a <- tbl_fruit$fruit
+
+# get the names of fruit by referencing the column name
+fruit_b <- tbl_fruit[, "fruit"]
+
+# get the names of fruit by referencing the column position
+fruit_c <- tbl_fruit[, 2] # fruit is the second column
+
+# check that all of the outputs produce the same result
+isTRUE(all.equal(fruit_a, fruit_b, fruit_c))
+```
+
+::: a
+In contrast to the data frame example, the output indicates that not all of the approaches to referencing a vector in a `tibble` are equivalent. This is because while `tbl_fruit$fruit` returns a character vector, `tbl_fruit[, "fruit"]` and `tbl_fruit[, 2]` return a `tibble` object with only the `fruit` column. This difference can lead to unintended consequences if, for instance, we called something like `mean(tbl_fruit[, "stock"])` as opposed to `mean(tbl_fruit$stock)` as the code example below illustrates.
+:::
+
+```{r tibble-vectors-mean}
+# get the mean of each value in stock using $ approach
+mean(tbl_fruit$stock)
+
+# get the mean of stock by referencing the column name
+mean(tbl_fruit[, "stock"])
+```
+
+As we can see, from the output above using `tbl_fruit$stock` gives us the average of the elements in `stock` while using `tbl_fruit[, "stock"]` returns `NA` along with a warning telling us we passed a non-numeric argument to a function that takes only `logical` or `numeric` vectors. It is important to be aware of these differences because they are helpful in understanding how to resolve errors you might encounter while working in R.
