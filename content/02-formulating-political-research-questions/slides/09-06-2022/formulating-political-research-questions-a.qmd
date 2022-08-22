@@ -1,0 +1,27 @@
+---
+title: "Formulating Political Research Questions"
+author: "A. Jordan Nafa"
+date: "September 6th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    code-block-bg: "#272822"
+    css: "../../../../assets/slide-style.css"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+## Where Do Research Questions Come From? {style="font-size: 36px"}
+
+The first question in the process of scientific inquiry is formulating a research question.

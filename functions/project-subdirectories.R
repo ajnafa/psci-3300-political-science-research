@@ -39,7 +39,7 @@ make_project_dirs <- function(project_dir = NULL, ...) {
     ## Potential directory names to create
     new_dirs <- paste(
       base_dir, 
-      c("data", "scripts", "helpers", "documents", "output"), 
+      c("data", "scripts", "functions", "documents", "figures", "models"), 
       sep = "/"
     )
     
