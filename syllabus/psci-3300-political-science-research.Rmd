@@ -11,7 +11,7 @@ geometry: margin=1in
 title: "PSCI 3300 Political Science Research Methods"
 author: "A. Jordan Nafa"
 date: "Fall 2022, Section 003"
-officehours: "Tues/Wed 12:30-2:00 PM or by Apt."
+officehours: "Tues/Thur 12:30-2:00 PM or by Apt."
 office: "Wooten Hall #171"
 classroom: "Lang 310"
 time: "Tues/Thur 9:30-10:50 AM"
@@ -20,6 +20,7 @@ instructor: "A. Jordan Nafa"
 ta: "Sung Min Yun"
 ta-email: "sungminyun@my.unt.edu"
 ta-office: "Wooten Hall #174A"
+ta-hours: "Wed 2:00-5:00 PM"
 fontfamily: mathpazo 
 fontsize: 12pt
 monofont: "Source Code Pro"
