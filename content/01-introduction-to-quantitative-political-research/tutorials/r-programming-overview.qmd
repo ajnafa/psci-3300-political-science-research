@@ -28,7 +28,7 @@ htmltools::img(
 
 ## R Programming in RStudio
 
-Both in this class and in programming more broadly, code is written in **scripts** in order to keep track of structure our code, as well as ensure our analysis is computationally reproducible. One of the many benefits of the RStudio IDE is its features for structuring and organizing scripts, data, functions, and documentation [in the form of **projects**](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects). In this course we will typically work in R projects because doing so eliminates the need to understand file systems which many students appear to struggle with. For a concise introduction to projects and scripts in R, you can consult the workflow chapters of *R for Data Science* by clicking on the links below [@Wickham2017].
+Both in this class and in programming more broadly, code is written in **scripts** in order to keep track of and structure our code, as well as ensure our analysis is computationally reproducible. One of the many benefits of the RStudio IDE is its features for structuring and organizing scripts, data, functions, and documentation [in the form of **projects**](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects). In this course we will typically work in R projects because doing so eliminates the need to understand file systems which many students appear to struggle with. For a concise introduction to projects and scripts in R, you can consult the workflow chapters of *R for Data Science* by clicking on the links below [@Wickham2017].
 
 -   [Workflow: Scripts](https://r4ds.had.co.nz/workflow-scripts.html)
 
@@ -287,7 +287,7 @@ print(df_fruit[c(1, 3), 2:3])
 ```
 
 ::: a
-For the purposes of this course, we'll be working mainly with a special type of data frame called a [**tibble**](https://r4ds.had.co.nz/tibbles.html). At some level, tibbles are just *data frames with attitude* and are returned by certain `tidyverse` packages such as `dplyr`. They offer more functionality than the data frame data structure though as the code below illustrates, their behavior is not always the same and it is useful to be aware of the sometimes subtle differences. Instead of using `head` to view the tibble in the example below, we will use the `glimpse` function from the `dplyr` package which prints the data in a slightly different format [@Wickham2022].
+For the purposes of this course, we'll be working mainly with a special type of data frame called a [**tibble**](https://r4ds.had.co.nz/tibbles.html). At some level, tibbles are just *data frames with attitude* and are returned by certain `tidyverse` packages such as `{dplyr}`. They offer more functionality than the data frame data structure though as the code below illustrates, their behavior is not always the same and it is useful to be aware of the sometimes subtle differences. Instead of using `head` to view the tibble in the example below, we will use the `glimpse` function from the `{dplyr}` package which prints the data in a slightly different format [@Wickham2022].
 ::: 
 
 ```{r tibble-example}
@@ -361,8 +361,33 @@ The function defined above takes two arguments, `x` and `y` where `x` is the num
 
 ## Packages
 
-Packages are collections of predefined functions that other R users have created to streamline various programming tasks or implement complex models that are either not available or not efficiently implemented in the base R language. 
+Packages are collections of predefined functions that other R users have created to streamline various programming tasks or implement complex models that are either not available or not efficiently implemented in the base R language. To obtain a list of all currently installed packages on your system you can execute `installed.packages()` in the console. Additional packages can be installed from CRAN using the `install.packages` function or via RStudio's GUI. The development versions of packages or those not yet listed on CRAN can be be downloaded from their respective github repository using the `{remotes}` package's `install_github` function. 
 
 ::: callout-note
+## Are User Created Packages Reliable?
+
 R packages hosted on the [CRAN Repository](https://cran.r-project.org/web/packages/available_packages_by_name.html) undergo significant validation measures before being approved and in many cases the underlying mathematical foundations employed in the package are published in [The R Journal](https://journal.r-project.org/), the [Journal of Statistical Software](https://www.jstatsoft.org/index), [Political Analysis](https://www.cambridge.org/core/journals/political-analysis) and other peer-reviewed publications for computational statistics.
 :::
+
+::: a
+In some cases, you may be prompted to restart your R session when installing a package. This means that a dependency of that package needs to be modified to avoid errors during the installation process and you should do so before proceeding. On the other hand, if you are asked if you would like to install a newer version of a particular package from source instead of the CRAN binary, you should generally click no and simply proceed with installing the CRAN version unless instructed otherwise.
+:::
+
+```{r package-installs, eval=FALSE}
+# Install a single package from the CRAN repository
+install.packages("remotes")
+
+# Installing multiple packages from the CRAN repository
+install.packages(c("marginaleffects", "modelsummary"))
+
+# Load the remotes package
+library(remotes)
+
+# Installing a package from github using the remotes package
+install_github("vdeminstitute/vdemdata")
+```
+
+::: a
+To load installed packages into your current R environment, you can either use the `library` function or the `p_load` function from the `{pacman}` package [@Rinker2018]. As we noted in the first section of this tutorial, `p_load` has the advantage of being able to load multiple packages while you would need to call `library` separately for each package. It is also possible to use a specific function from a given package without loading the full package into the namespace which can be useful if you run into namespace conflicts that occur when two or more packages you have loaded share the same name for a given function--common examples are `select`, `filter`, and `recode`. For instance, we can explicitly call the `select` function from the `{dplyr}` package using the syntax `dplyr::select`.
+::: 
+
