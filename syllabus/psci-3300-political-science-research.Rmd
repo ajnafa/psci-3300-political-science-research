@@ -28,8 +28,7 @@ monofontoptions: "Scale=0.2"
 header-includes:
    - \linespread{1.0}
    - \usepackage{amsmath}
-biblio-style: chicago-authordate
-#bibliography: references.bib
+   - \usepackage{float}
 indent: FALSE
 ---
 
@@ -154,7 +153,24 @@ F: 59.4 or Less
 
 ## Problem Sets
 
-\noindent To get hands on experience writing R code, manipulating and modeling data, and thinking through the logic of cause and effect, you will complete five problem sets that ask you to apply the topics we cover in class using real or simulated data. These will account for 40\% of your overall grade. Note that *you must demonstrate you have made a good faith effort to work through each question in order to receive partial credit for incorrect answers*. Instructions for each problem set will posted on the course's Canvas page at least two weeks before its respective due date.
+\noindent To get hands on experience writing R code, manipulating and modeling data, and thinking through the logic of cause and effect, you will complete five problem sets that ask you to apply the topics we cover in class using real or simulated data. These will account for 40\% of your overall grade. Note that *you must demonstrate you have made a good faith effort to work through each question in order to receive partial credit for incorrect answers*. Instructions for problem sets 1 through 4 will be posted on the course's Canvas page at least two weeks before their respective due dates and the approximate subject of each and tentative due dates are listed in the table below.
+
+\begin{table}[h]
+\caption{PSCI 3300 Problem Sets}
+\centering
+\begin{tabular}[htp]{lcc}
+\toprule
+Assignment & Topic & Due Date\\
+\midrule
+Problem Set 0 & Getting Started with R and Markdown & September 5th\\
+Problem Set 1 & Data Wrangling and Visualization & September 25th\\
+Problem Set 2 & Probability and Descriptive Statistics & October 9th\\
+Problem Set 3 & Regression and Inferential Statistics & October 30th\\
+Problem Set 4 & Regression for Causal Inference & November 20th\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 
 ## Final Project
 
@@ -173,56 +189,6 @@ F: 59.4 or Less
 \noindent The University of North Texas takes academic integrity very seriously and plagiarism--[presenting the ideas or content of someone else as your own without providing proper attribution](https://guides.library.unt.edu/plagiarism/home)--of any kind is unacceptable. Proper attribution is expected on all assignments where necessary and should conform to the [citation format of the American Political Science Association](https://connect.apsanet.org/stylemanual/). 
 
 Penalties for plagiarism depend on the severity and will be decided on a case-by-case basis but may range from a 0 for the offending assignment to an automatic failing grade in the course. We will cover how to provide proper attribution, general citation formatting, and how to automatically generate a references section that conforms to APSA style guidelines in the second week of class. All work should be your own and **submitted assignments will be checked for plagiarism using TurnItIn.**
-
-# Tentative Course Schedule
-
-```{r calendar, echo=FALSE, fig.height=5, fig.width=7}
-course_dates <- tibble::tibble(
-  date = seq(
-    from = lubridate::ymd("2022-08-01"), 
-    to = lubridate::ymd("2022-12-31"),
-    by = 1
-  ),
-  day = lubridate::wday(date, label = TRUE, abbr = FALSE),
-  class_day = dplyr::case_when(
-    date %in% lubridate::ymd(c(
-      "2022-09-04", 
-      "2022-09-25", 
-      "2022-10-09", 
-      "2022-10-30", 
-      "2022-11-20"
-      )) ~ "Problem Set Due",
-    date %in% lubridate::ymd(c(
-      "2022-09-16",
-      "2022-10-14",
-      "2022-11-11",
-      "2022-12-15"
-    )) ~ "Research Assignment Due",
-        date %in% lubridate::ymd(c("2022-12-06", "2022-12-08")) ~ "Final Presentations",
-    date == "2022-11-24" | date == "2022-09-15" ~ "No Class",
-    day %in% c("Tuesday", "Thursday") & date > "2022-08-29" & date < "2022-12-09" ~ "Class Day"
-  )
-)
-
-# Creating the calendar
-calendR::calendR(
-  start_date = min(course_dates$date),
-  end_date = max(course_dates$date),
-  start = "M",
-  months.col = "black",
-  special.days = course_dates$class_day,
-  special.col = c("#BFEFFF", "#DBFFD6", "#ECD4FF", "#CCD4FF", "#EBFFD6"),
-  mbg.col = "white",
-  lty = 0,
-  bg.col = "white",
-  low.col = "white",
-  title = "PSCI 3300 Fall 2022 Course Calendar",
-  legend.pos = "bottom",
-  title.size = 30,
-  orientation = "p",
-  font.family = "serif"
-) 
-```
 
 # Part I: Fundamentals of Political Research
 
@@ -334,7 +300,7 @@ calendR::calendR(
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Correlation Requires Variation" in *Thinking Clearly with Data*. Princeton University Press, pp. 55--73
 
-- Gelman, Andrew,Jennifer Hill, and Aki Vehtari. 2021. "Statistical Inference" in *Regression and Other Stories*. Cambridge University Press, pp. 49--68
+- Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. "Statistical Inference" in *Regression and Other Stories*. Cambridge University Press, pp. 49--68
 
 ### Thursday, October 6th, 2022
 
@@ -442,9 +408,11 @@ calendR::calendR(
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data*. Princeton University Press, pp. 218--242
 
-- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
+- Bos, Angela L., et al. 2022. "This One’s for the Boys: How Gendered Political Socialization Limits Girls’ Political Ambition and Interest." *American Political Science Review* 116(2): 484--501. doi/dataverse: [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027); [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
 
 ### Thursday, November 10th, 2022
+
+- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
 
 - Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
 
@@ -455,8 +423,6 @@ calendR::calendR(
 - Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
 
 - Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. "Causal Inference and Randomized Experiments" in *Regression and Other Stories*. Cambridge University Press, pp. 339--356
-
-- Bos, Angela L., et al. 2022. "This One’s for the Boys: How Gendered Political Socialization Limits Girls’ Political Ambition and Interest." *American Political Science Review* 116(2): 484--501. doi/dataverse: [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027); [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
 
 ## Quasi-Experimental Designs I
 
@@ -538,9 +504,61 @@ calendR::calendR(
 
 - Final research papers are due via Canvas by 11:59PM on Thursday, December 15th, 2022
 
+# Tentative Course Schedule
+
+```{r calendar, echo=FALSE, fig.height=7, fig.width=9}
+course_dates <- tibble::tibble(
+  date = seq(
+    from = lubridate::ymd("2022-08-01"), 
+    to = lubridate::ymd("2022-12-31"),
+    by = 1
+  ),
+  day = lubridate::wday(date, label = TRUE, abbr = FALSE),
+  class_day = dplyr::case_when(
+    date %in% lubridate::ymd(c(
+      "2022-09-05", 
+      "2022-09-25", 
+      "2022-10-09", 
+      "2022-10-30", 
+      "2022-11-20"
+      )) ~ "Problem Set Due",
+    date %in% lubridate::ymd(c(
+      "2022-09-16",
+      "2022-10-14",
+      "2022-11-11",
+      "2022-12-15"
+    )) ~ "Research Assignment Due",
+        date %in% lubridate::ymd(c("2022-12-06", "2022-12-08")) ~ "Final Presentations",
+    date == "2022-11-24" | date == "2022-09-15" ~ "No Class",
+    day %in% c("Tuesday", "Thursday") & date > "2022-08-29" & date < "2022-12-09" ~ "Class Day"
+  )
+)
+
+# Creating the calendar
+calendR::calendR(
+  start_date = min(course_dates$date),
+  end_date = max(course_dates$date),
+  start = "M",
+  months.col = "black",
+  special.days = course_dates$class_day,
+  special.col = c("#BFEFFF", "#DBFFD6", "#ECD4FF", "#CCD4FF", "#EBFFD6"),
+  mbg.col = "white",
+  lty = 0,
+  bg.col = "white",
+  low.col = "white",
+  title = "PSCI 3300 Fall 2022 Course Calendar",
+  legend.pos = "bottom",
+  title.size = 30,
+  orientation = "p",
+  font.family = "serif"
+) 
+```
+
 # Acknowledgments and License Information
 
-\noindent The content of this class relies in part on materials from courses designed by [Andrew Heiss](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com), [Matthew Blackwell](https://github.com/mattblackwell/gov2003-f21-site), and [Thomas J. Leeper](https://github.com/leeper/designcourse) and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. All content for this class will be made [publicly available via GitHub](https://github.com/ajnafa/psci-3300-political-science-research) under a [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://www.creativecommons.org/licenses/by-nc/4.0/deed.en) license upon conclusion of the course.
+\noindent The content of this class relies in part on materials from courses designed by [Andrew Heiss](https://github.com/andrewheiss/evalf22.classes.andrewheiss.com), [Matthew Blackwell](https://github.com/mattblackwell/gov2003-f21-site), and [Thomas J. Leeper](https://github.com/leeper/designcourse) and I thank the authors for making their course materials publicly available. Acknowledgment should not be construed as endorsement of any of the content or materials herein. 
+
+All text and images in this course are made available for public use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/) while R, HTML, and CSS code is provided under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE). The files and code necessary to reproduce the content of this course are or will be made available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) with the exception of those covered by existing commerical copyright restrictions (i.e., copies of the assigned readings for the course).
 
 # Course Policies
 

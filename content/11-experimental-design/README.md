@@ -17,14 +17,21 @@ validity.
     Experiments” in *Thinking Clearly with Data*. Princeton University
     Press, pp. 218–242
 
+-   Bos, Angela L., et al. 2022. “This One’s for the Boys: How Gendered
+    Political Socialization Limits Girls’ Political Ambition and
+    Interest.” *American Political Science Review* 116(2): 484–501.
+    doi/dataverse:
+    [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027);
+    [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
+
+### Thursday, November 10th, 2022
+
 -   Graham, Matthew H. and Milan W. Svolik. 2020. “Democracy in America?
     Partisanship, Polarization, and the Robustness of Support for
     Democracy in the United States.” *American Political Science Review*
     114(2): 392–409. doi/dataverse:
     [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052);
     [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
-
-### Thursday, November 10th, 2022
 
 -   Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J.
     Zechmeister. 2022. “The Curious Case of Theresa May and the Public
@@ -49,10 +56,3 @@ validity.
 -   Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. “Causal
     Inference and Randomized Experiments” in *Regression and Other
     Stories*. Cambridge University Press, pp. 339–356
-
--   Bos, Angela L., et al. 2022. “This One’s for the Boys: How Gendered
-    Political Socialization Limits Girls’ Political Ambition and
-    Interest.” *American Political Science Review* 116(2): 484–501.
-    doi/dataverse:
-    [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027);
-    [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)

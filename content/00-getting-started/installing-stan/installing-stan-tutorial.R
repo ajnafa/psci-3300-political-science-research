@@ -110,6 +110,8 @@ cmdstanr::set_cmdstan_path(
     sep = ""
   ))
 
+## Step 4: WINDOWS USERS ONLY----
+
 # Execute `mingw32-make install-tbb` in the terminal
 rstudioapi::terminalExecute(
   command = "mingw32-make install-tbb",
@@ -120,9 +122,9 @@ rstudioapi::terminalExecute(
 rstudioapi::terminalKill(id = rstudioapi::terminalList())
 
 ## Note: You need to close RStudio entirely and reopen it at the 
-## end of step 3 here
+## end of step 4 here
 
-## Step 4: Verifying the Installation----
+## Step 5: Verifying the Installation----
 
 # Load the brms library
 library(brms)
@@ -130,11 +132,20 @@ library(brms)
 # Load the built-in mtcars data
 data("mtcars")
 
+## Take the log of horsepower
+mtcars$log_hp <- log(mtcars$hp)
+
+## Specify some weakly informative priors for the model parameters
+mpg_priors <- prior(student_t(10, 20.09, 2), class = Intercept) +
+  prior(normal(0, 9.24), class = b, coef = wt) +
+  prior(normal(0, 12.68), class = b, coef = log_hp) +
+  prior(exponential(1), class = sigma)
+
 ## Fit the model
 bayes_mpg_fit <- brm(
-  formula = mpg ~ wt, # Formula describing the model
+  formula = mpg ~ wt + log_hp, # Formula describing the model
   family = gaussian(), # Linear regression
-  prior = prior(normal(0, 1), class = b), # Prior on the coefficients
+  prior = mpg_priors, # Priors on the parameters
   data = mtcars, # Data for the model
   cores = 4, # Number of cores to use for parallel chains
   chains = 4, # Number of chains, should be at least 4
@@ -146,6 +157,5 @@ bayes_mpg_fit <- brm(
   silent = 2 # Set to 0 or 1 to print compiler messages
 )
 
-# Print a summary of the fitted model
+## Print a summary of the output
 summary(bayes_mpg_fit)
-
