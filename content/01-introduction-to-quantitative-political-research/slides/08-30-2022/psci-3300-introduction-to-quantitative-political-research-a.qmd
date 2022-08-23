@@ -12,7 +12,9 @@ format:
     self-contained: true
     citations-hover: true
     code-link: true
+    transition: "fade"
     code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
     css: "../../../../assets/slide-style.css"
 editor: visual
 width: 1360
