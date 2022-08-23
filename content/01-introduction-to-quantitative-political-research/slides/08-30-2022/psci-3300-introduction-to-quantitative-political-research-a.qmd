@@ -53,21 +53,21 @@ link-citations: yes
 ## Office Hours and Communication
 
 ::: incremental
--   Instructor: A. Jordan Nafa ([adamnafa@my.unt.edu](adamnafa@my.unt.edu))
+-   Instructor: A. Jordan Nafa ([adamnafa\@my.unt.edu](adamnafa@my.unt.edu))
 
-    -   Office: Wooten Hall 171 
+    -   Office: Wooten Hall 171
 
     -   Office Hours: Tuesday and Thursday 12:30-2:00 PM or by Appointment
 
--   Teaching Assistant: Sung Min Yun ([sungminyun@my.unt.edu](sungminyun@my.unt.edu))
+-   Teaching Assistant: Sung Min Yun ([sungminyun\@my.unt.edu](sungminyun@my.unt.edu))
 
     -   Office: Wooten Hall 174A
 
     -   Office Hours: Wednesday 2:00-5:00 PM
-    
+
 -   We will try to respond to emails within 48 hours Monday-Friday
 
-    - See the syllabus for details on the policy about not responding to emails asking questions that are answered by the syllabus
+    -   See the syllabus for details on the policy about not responding to emails asking questions that are answered by the syllabus
 :::
 
 ## Why Take this Course?
@@ -115,18 +115,18 @@ summary(std_norm)
 ## Structure of the Course
 
 ::: incremental
-- Part I: Fundamentals of Political Research
+-   Part I: Fundamentals of Political Research
 
-  - Research questions, surveying literature, basic logic of cause and effect, theory building, and measurement
-  
-- Part II: Foundations of Quantitative Social Science
+    -   Research questions, surveying literature, basic logic of cause and effect, theory building, and measurement
 
-  - Foundations of applied statistics, probability theory, Bayesian inference, and applied regression
-  
-- Part III: Research Design and Causal Inference
+-   Part II: Foundations of Quantitative Social Science
 
-  - Experimental design, hypothesis testing and theory evaluation, strategies for causal inference with observational data, and the limits of magical thinking
-::: 
+    -   Foundations of applied statistics, probability theory, Bayesian inference, and applied regression
+
+-   Part III: Research Design and Causal Inference
+
+    -   Experimental design, hypothesis testing and theory evaluation, strategies for causal inference with observational data, and the limits of magical thinking
+:::
 
 ## Required Course Materials
 
@@ -167,9 +167,9 @@ summary(std_norm)
 
 -   You should come to class having done the readings on the syllabus for that day so we can discuss anything that isn't clear or appears confusing
 
-    - This is not a course you can skate through without ever reading anything and if you try to do this you will very likely fail.
-    
-    - Advice on managing reading loads in the next class on Thursday
+    -   This is not a course you can skate through without ever reading anything and if you try to do this you will very likely fail.
+
+    -   Advice on managing reading loads in the next class on Thursday
 :::
 
 ## Problem Sets
@@ -204,7 +204,7 @@ summary(std_norm)
 
 -   Broken down into a series of smaller assignments over the course of the semester
 
-    - Examples of what each of these are expected to look like and document templates will be provided via Canvas
+    -   Examples of what each of these are expected to look like and document templates will be provided via Canvas
 
 -   Accounts for 50% of your overall grade; 70% from 8-12 page research paper and 30% from a final presentation
 :::
@@ -240,15 +240,15 @@ summary(std_norm)
 
 -   Follow the instructions on Canvas for installing R, RStudio, and Stan
 
-    - We will go over any issues you have getting these installed on Thursday
+    -   We will go over any issues you have getting these installed on Thursday
 
 -   Start thinking about an *empirical* political research question (More on this next class)
 :::
 
 ## Licensing and Copyright Information
 
--   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/). 
+-   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
 
--   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE). 
+-   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE).
 
 -   The files and code necessary to reproduce the content of this course are or will be made available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) with the exception of those covered by existing commercial copyright restrictions (i.e., copies of the assigned readings for the course).
