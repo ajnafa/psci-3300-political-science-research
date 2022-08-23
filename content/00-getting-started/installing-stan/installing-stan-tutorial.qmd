@@ -5,7 +5,7 @@ author: "A. Jordan Nafa"
 format: 
   html:
     toc: false
-    css: "../../../assets/style.css"
+    css: "../../../assets/page-style.css"
     theme: journal
     highlight-style: monokai
     self-contained: true
@@ -38,7 +38,7 @@ knitr::opts_chunk$set(
 
 # Getting Started with Stan
 
-Much of this course is taught from a primarily Bayesian perspective which provides a principled and intuitive framework for quantitative analysis and probabilistic reasoning. For much of what we cover in terms of application, we'll be using the R package [`brms`](https://paul-buerkner.github.io/brms/) which provides a user-friendly and computationally efficient interface to Stan's implementation of the No-U-Turn Sampler, a Hamiltonian Markov Chain Monte Carlo algorithm [@Buerkner2017; @Buerkner2018; @Carpenter2017; @Hoffman2014]. After you have installed R, Rtools/Xcode, and RStudio as detailed on the "Getting Started with R" page, this guide will walk you through the process of installing Stan, [`brms`](https://paul-buerkner.github.io/brms/), and the necessary dependencies. You can download all of the code shown in this document in the form of a script or copy and paste the code shown here into your RStudio console.
+Much of this course is taught from a primarily Bayesian perspective which provides a principled and intuitive framework for quantitative analysis and probabilistic reasoning. For much of what we cover in terms of application, we will be using the R package [`{brms}`](https://paul-buerkner.github.io/brms/) which provides a user-friendly and computationally efficient interface to Stan's implementation of the No-U-Turn Sampler, a Hamiltonian Markov Chain Monte Carlo algorithm [@Buerkner2017; @Buerkner2018; @Carpenter2017; @Hoffman2014]. After you have installed R, Rtools/Xcode, and RStudio as detailed on the "Getting Started with R" page, this guide will walk you through the process of installing Stan, [`{brms}`](https://paul-buerkner.github.io/brms/), and the necessary dependencies. You can download all of the code shown in this document in the form of a script or copy and paste the code shown here into your RStudio session by clicking in the top right corner of each code block.
 
 ## Preliminaries
 
@@ -61,7 +61,7 @@ Sys.setenv(
 ```
 
 ::: a
-After setting the global options for the session, we'll check if any existing Stan packages are installed (unlikely, but it's good to be safe) and if so, remove them. After this is done, the next block checks that required packages for subsequent steps in the installation process are installed and installs them if they aren't already present. In passing, notice how the code below is wrapped in a pair of curly braces. In R, this means that any code inside the `{...}` will be evaluated at the same time rather than line-by-line and is useful for calling `if`, `if else`, and `else` statements outside of functions.
+After setting the global options for the session, we will check if any existing Stan packages are installed (unlikely, but it is good to be safe) and if so, remove them. After this is done, the next block checks that required packages for subsequent steps in the installation process are installed and installs them if they are note already present. In passing, notice how the code below is wrapped in a pair of curly braces. In R, this means that any code inside the `{...}` will be evaluated at the same time rather than line-by-line and is useful for calling `if`, `if else`, and `else` statements outside of functions.
 :::
 
 ```{r}
@@ -108,12 +108,12 @@ After setting the global options for the session, we'll check if any existing St
 ```
 
 ::: a
-If you are on a computer with a Windows operating system and you followed the instructions on the "Getting Started with R" page, it should not be necessary to manually configure the C++ toolchain. For OSX users, the above code should work as long as you are on a recent version of Catalina but if you run into errors during installation or subsequent compilation, you should consult [the documentation for configuring the C++ toolchain on Macs](https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac) and notify me of any issues as soon as possible so we can figure out how to get them resolved.
+If you are on a computer with a Windows operating system and you followed the instructions on the "Getting Started with R" page, it should not be necessary to manually configure the C++ toolchain. For OSX users, the above code should work as long as you are on a recent version of Catalina but if you run into errors during installation or subsequent compilation, you should consult [the documentation for configuring the C++ toolchain on Macs](https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac) and notify the instructor or teaching assistant of any issues as soon as possible so we can figure out how to get them resolved.
 :::
 
 ## Installing rstan and brms
 
-Once we've installed the necessary packages using the code in the previous section, we can install the main R interface to Stan, `rstan` along with the required headers for the Stan math library. Since the `StanHeaders` package is a dependency of `rstan`, installing `rstan` using the code below will install both `rstan` and `StanHeaders`.
+Once we have installed the necessary packages using the code in the previous section, we can install `{rstan}`, the main R interface to Stan, along with the required headers for the Stan math library. Since the `{StanHeaders}` package is a dependency of `{rstan}`, installing `{rstan}` using the code below will install both `{rstan}` and `{StanHeaders}` [@SDT2022; @SDT2022a].
 
 ```{r}
 # Install the development versions of rstan and StanHeaders
@@ -126,7 +126,7 @@ install.packages(
 ```
 
 ::: a
-To check that the installation was successful and everything is working properly in the back-end, you can execute the following code in R. Once you have verified everything runs without any errors, this is a good time to restart your R session before proceeding to the next step.
+To check the installation was successful and everything is working properly in the back-end, you can execute the following code in R. Once you have verified everything runs without any errors, this is a good time to restart your R session before proceeding to the next step.
 :::
 
 ```{r}
@@ -138,11 +138,11 @@ rstudioapi::restartSession()
 ```
 
 ::: a
-Next, we'll proceed to installing the `{brms}` package. To get the most recent development version we'll use the `install_github` function from the `{remotes}` package as shown below.
+Next, we will proceed to installing the `{brms}` package. To get the most recent development version we will use the `install_github` function from the `{remotes}` package as shown below.
 :::
 
 ::: callout-note
-If you run into issues, installing `{brms}` from github, you can try installing the pre-compiled binaries using `install.packages("brms")` instead and see if that works.
+If you run into issues installing `{brms}` from github, you can try installing the pre-compiled binaries using `install.packages("brms")` instead and see if that works.
 :::
 
 ```{r}
@@ -150,14 +150,14 @@ If you run into issues, installing `{brms}` from github, you can try installing 
 remotes::install_github("paul-buerkner/brms")
 ```
 
-If you are prompted to update existing R packages, type `1` in the console and press enter to proceed. An additional window may appear asking if you would like to compile more recent versions of some packages to be updated from source, in which case you should choose "no" as doing so may cause the `{brms}` installation to fail. If the package installs without any errors, you can proceed to the next step.
+If you are prompted to update existing R packages, type `1` in the console and press enter to proceed. An additional window may appear asking if you would like to compile more recent versions of some packages to be updated from source in which case you should choose "no" as doing so may cause the `{brms}` installation to fail. If the package installs without any errors you can proceed to the next step.
 
 ## Installing cmdstanr and cmdstan
 
-The `{brms}` package provides the option to allow you to use `{cmdstanr}`, a light-weight alternative to `{rstan}`, as a back-end instead of `{rstan}`. This makes it possible to use latest version of the Stan math libraries and cmdstan. Since `{rstan}` development tends to lag behind Stan, this will often yield substantial performance gains by allowing you to utilize the latest updates to the Stan language and can have the added bonus of being more stable on certain operating systems.
+The `{brms}` package provides the option to allow you to use `{cmdstanr}`, a light-weight alternative to `{rstan}`, as a back-end instead of `{rstan}` [@Gabry2022]. This makes it possible to use the latest version of the Stan math libraries and cmdstan. Since `{rstan}` development tends to lag behind Stan, this will often yield substantial performance gains by allowing you to utilize the latest updates to the Stan language and can have the added bonus of being more stable on certain operating systems.
 
 ::: a
-First, we'll start by installing the `{cmdstanr}` package from github using the same approach we used to install `{brms}` in the previous section.
+First, we will start by installing the `{cmdstanr}` package from github using the same approach we used to install `{brms}` in the previous section.
 :::
 
 ```{r}
@@ -165,7 +165,7 @@ First, we'll start by installing the `{cmdstanr}` package from github using the 
 remotes::install_github("stan-dev/cmdstanr")
 ```
 
-Once we've successfully installed `{cmdstanr}`, we can use the `check_cmdstan_toolchain` function with the `fix` argument set to `TRUE` to check if the C++ toolchain needs to be configured further and if so, automatically apply the correct configuration.
+Once we have successfully installed `{cmdstanr}`, we can use the `check_cmdstan_toolchain` function with the `fix` argument set to `TRUE` to check if the C++ toolchain needs to be configured further and if so, automatically apply the correct configuration.
 
 ```{r, eval=TRUE}
 # Check that the C++ Toolchain is Configured
@@ -206,7 +206,7 @@ As the output shows, cmdstan has been successfully installed to the directory `E
 ::: panel-tabset
 ### Windows
 
-For those on a Windows operating system, the final step in the installation process is to set the path environment variable for the Intel TBB library which we can do by running the code show below.
+For those on a Windows operating system, the final step in the installation process is to set the path environment variable for the Intel TBB library which we can do by running the code shown below.
 
 ```{r}
 # Execute `mingw32-make install-tbb` in the terminal
@@ -223,12 +223,12 @@ Note that for this change to take effect, you will need to close and reopen RStu
 
 ### MacOS
 
-Congratulations, you have successfully installed Stan and no further steps are required for MacOS and you can proceed to the verification section below. However, I suggest closing and reopening RStudio before proceeding to the next section.
+Congratulations, you have successfully installed Stan and no further steps are required for MacOS. You can proceed to the verification section below, though I suggest closing and reopening RStudio before doing so.
 :::
 
 ## Verifying the Installation
 
-Finally, to verify that the installation was successful and everything works correctly, we can fit a simple linear model using `{brms}` as shown below. For our purposes here, we'll use the built-in `mtcars` data set and model fuel efficiency (`mpg`) as a linear function of weight (`wt`) and logged horsepower (`hp`). Formally, we can express this model as
+Finally, to verify that the installation was successful and everything works correctly, we can fit a simple linear model using `{brms}` as shown below. For our purposes here, we will use the built-in `mtcars` data and model fuel efficiency (`mpg`) as a linear function of weight (`wt`) and logged horsepower (`hp`). Formally, we can express this model as
 
 $$
 \begin{align*}
@@ -241,7 +241,7 @@ y_{i} &\sim \mathcal{N(\mu_{i}, \sigma^{2})}\\
 \sigma &\sim Exponential(1)
 \end{align*}
 $$
-Don't worry if you do not understand the math expressed here--which I assume is the case for most students--as this will all be made much clearer and explained in detail as we progress through the semester.
+Don't worry if you do not understand the math expressed here--which I assume is the case for most if not all students--as this will all be made much clearer and explained in detail as we progress through the semester.
 
 ```{r, eval=TRUE, message=FALSE, results='hide'}
 # Load the brms library
@@ -294,3 +294,17 @@ summary(bayes_mpg_fit)
 -   [Stan Discourse Forums](https://discourse.mc-stan.org/)
 
     -   Official forums for the Stan programming language. Useful resource for seeking help with troubleshooting any installation issues and other questions related to Stan and its interfaces.
+    
+## Copyright and License Information
+
+All text and images in this document are made available for public use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/) while code is provided under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE). All files necessary to reproduce this document are available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research).
+    
+## Session Information
+
+```{r, eval=TRUE, echo=FALSE}
+# Print the session information
+sessioninfo::session_info(
+  pkgs = "attached",
+  include_base = TRUE
+)
+```
