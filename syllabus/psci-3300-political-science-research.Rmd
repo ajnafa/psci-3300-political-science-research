@@ -124,10 +124,9 @@ helpdesk@unt.edu
 \end{raggedright}
 ```
 
-I assume a basic familiarity with high-school algebra and a working knowledge of computers. If you are unfamiliar with downloading and installing software programs on your Mac or PC, you may want to allocate additional time to make sure those aspects of the course go smoothly. Note that installing the R language requires [a modern version of Windows, Mac OSX, or Linux](https://cran.r-project.org/doc/FAQ/R-FAQ.html#What-machines-does-R-run-on_003f) and the Chrome OS operating system is not currently supported.[^1] 
-If you are unable to meet the installation requirements for R on your personal computer, you can access both [R](https://itservices.cas.unt.edu/software/r) and [RStudio](https://itservices.cas.unt.edu/software/rstudio) from computers on the UNT campus or sign up for [RStudio Cloud](https://rstudio.cloud/plans/plus) which provides full web-based access to the latest version of R and RStudio with both [free](https://rstudio.cloud/plans/free) and [paid](https://rstudio.cloud/plans/plus) access options. Detailed instructions on installing R and RStudio can be found on the course's Canvas page.
+I assume a basic familiarity with high-school algebra and a working knowledge of computers. If you are unfamiliar with downloading and installing software programs on your Mac or PC, you may want to allocate additional time to make sure those aspects of the course go smoothly. Note that installing the R language requires [a modern version of Windows, Mac OSX, or Linux](https://cran.r-project.org/doc/FAQ/R-FAQ.html#What-machines-does-R-run-on_003f) and the Chrome OS operating system is not currently supported. Detailed instructions on installing R and RStudio can be found on the course's Canvas page. 
 
-[^1]: However, certain Chromebook models may support Linux in which case [you can follow the instructions here](https://blog.sellorm.com/2018/12/20/installing-r-and-rstudio-on-a-chromebook/).
+If you are unable to meet the installation requirements for R on your personal computer, I have made arrangements to ensure the latest versions of R, RStudio, and RTools are installed on the computers in the Political Science Lab in Wooten Hall 173. Unfortunately, I cannot guarantee that recent versions of R, RStudio, or RTools are installed or available at other locations on the UNT campus. Note certain features and packages we use in this course may be unavailable under older versions of R or RStudio.
 
 # Communication
 
@@ -374,21 +373,47 @@ Penalties for plagiarism depend on the severity and will be decided on a case-by
 
 - Clarke, Kevin A., Brenton Kenkel, and Miguel R. Rueda. 2018. "Omitted Variables, Countervailing Effects, and the Possibility of Overadjustment." *Political Science Research and Methods* 6(2): 343--354. doi/dataverse: [10.1017/psrm.2016.46](https://doi.org/10.1017/psrm.2016.46); [10.7910/DVN/BSKHUF](https://doi.org/10.7910/DVN/BSKHUF)
 
+# Part III: Research Design and Causal Inference
+
+## Experimental Designs and Baseline Randomization
+
+\noindent The recognition that baseline random assignment of the treatment is the only way to achieve an unbiased estimate of a causal effect was perhaps one of the most important developments in twentieth century statistics. Although randomized controlled trials (RCT) are often held up as the gold standard for research design, they are not without limitations. This week we'll explore the basic logic of experimental design in the context of both traditional and natural experiments, ways random assignment can go wrong, and the trade-off between internal and external validity.
+
+### Tuesday, November 1st, 2022
+
+- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data*. Princeton University Press, pp. 218--242
+
+- Bos, Angela L., et al. 2022. "This One’s for the Boys: How Gendered Political Socialization Limits Girls’ Political Ambition and Interest." *American Political Science Review* 116(2): 484--501. doi/dataverse: [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027); [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
+
+### Thursday, November 3rd, 2022
+
+- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
+
+- Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
+
+### Recommended Readings
+
+- Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
+
+- Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. "Causal Inference and Randomized Experiments" in *Regression and Other Stories*. Cambridge University Press, pp. 339--356
+
 ## Hypothesis Testing and Theory Evaluation
 
 \noindent The dominant approach to evaluating theories of politics quantitatively often takes the form of *hypothesis testing*. Despite its persistence in the field, the most common manifestation, Null Hypothesis Significance Testing (NHST), suffers from an number of logical inconsistencies that are not always understood. This week we'll look at the basic logic of hypothesis testing in political science, the questions it can and cannot answer, and alternative approaches that are better suited to answering the questions social scientists are often interested in.
 
-### Tuesday, November 1st, 2022
+### Tuesday, November 8th, 2022
 
 - Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Over-Comparing, Under-Reporting" in *Thinking Clearly with Data*. Princeton University Press, pp. 113--156
 
 - Gross, Justin H. 2015. "Testing What Matters (If You Must Test at All): A Context-Driven Approach to Substantive and Statistical Significance." *American Journal of Political Science* 59(3): 775--788. doi: [10.1111/ajps.12149](https://doi.org/10.1111/ajps.12149)
 
-### Thursday, November 3rd, 2022
+### Thursday, November 10th, 2022
 
 - Krcmaric, Daniel. 2022. "Does the International Criminal Court Target the American Military?" *American Political Science Review*: 1--7. doi/dataverse: [10.1017/S0003055422000478](https://doi.org/10.1017/S0003055422000478); [10.7910/DVN/HHNZGT](https://doi.org/10.7910/DVN/HHNZGT)
 
 -  Rainey, Carlisle. 2014. "Arguing for a Negligible Effect." *American Journal of Political Science*, 58(4): 1083-1091. doi/dataverse: [10.1111/ajps.12102](https://doi.org/10.1111/ajps.12102); [10.7910/DVN/23818](https://doi.org/10.7910/DVN/23818)
+
+- Research Design assignment is due via Canvas on Friday, November 11th by 11:59 PM
 
 ### Recommended Readings
 
@@ -397,32 +422,6 @@ Penalties for plagiarism depend on the severity and will be decided on a case-by
 - Gill, Jeff. 1999. "The Insignificance of Null Hypothesis Significance Testing." *Political Research Quarterly* 52(3): 647–674. doi: [10.1177/106591299905200309](https://doi.org/10.1177/106591299905200309)
 
 - Bernardi, Fabrizio, Lela Chakhaia and Liliya Leopold. 2017. "‘Sing Me a Song with Social Significance’: The (Mis)Use of Statistical Significance Testing in European Sociological Research." *European Sociological Review* 33(1): 1-15. doi: [10.1093/esr/jcw047](https://doi.org/10.1093/esr/jcw047)
-
-# Part III: Research Design and Causal Inference
-
-## Experimental Designs and Baseline Randomization
-
-\noindent The recognition that baseline random assignment of the treatment is the only way to achieve an unbiased estimate of a causal effect was perhaps one of the most important developments in twentieth century statistics. Although randomized controlled trials (RCT) are often held up as the gold standard for research design, they are not without limitations. This week we'll explore the basic logic of experimental design in the context of both traditional and natural experiments, ways random assignment can go wrong, and the trade-off between internal and external validity.
-
-### Tuesday, November 8th, 2022
-
-- Bueno de Mesquita, Ethan and Anthony Fowler. 2021. "Randomized Experiments" in *Thinking Clearly with Data*. Princeton University Press, pp. 218--242
-
-- Bos, Angela L., et al. 2022. "This One’s for the Boys: How Gendered Political Socialization Limits Girls’ Political Ambition and Interest." *American Political Science Review* 116(2): 484--501. doi/dataverse: [10.1017/S0003055421001027](https://doi.org/10.1017/S0003055421001027); [10.7910/DVN/YABNFF](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YABNFF)
-
-### Thursday, November 10th, 2022
-
-- Graham, Matthew H. and Milan W. Svolik. 2020. "Democracy in America? Partisanship, Polarization, and the Robustness of Support for Democracy in the United States." *American Political Science Review* 114(2): 392--409. doi/dataverse: [10.1017/S0003055420000052](https://doi.org/10.1017/S0003055420000052); [10.7910/DVN/EEARKA](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/EEARKA)
-
-- Holman, Mirya R., Jennifer L. Merolla, and Elizabeth J. Zechmeister. 2022. "The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps." *American Political Science Review* 116(1): 249–-264. doi/dataverse: [10.1017/S0003055421000861](https://doi.org/10.1017/S0003055421000861); [10.7910/DVN/VHNPUO](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VHNPUO)
-
-- Research Design assignment is due via Canvas on Friday, November 11th by 11:59 PM
-
-### Recommended Readings
-
-- Muñoz, Jordi, Albert Falcó-Gimeno, and Enrique Hernández. 2020. "Unexpected Event during Survey Design: Promise and Pitfalls for Causal Inference." *Political Analysis* 28(2): 186–-206. doi/dataverse: [10.1017/pan.2019.27](https://doi.org/10.1017/pan.2019.27); [10.7910/DVN/RDIIVL](https://doi.org/10.7910/DVN/RDIIVL)
-
-- Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. "Causal Inference and Randomized Experiments" in *Regression and Other Stories*. Cambridge University Press, pp. 339--356
 
 ## Quasi-Experimental Designs I
 
@@ -482,7 +481,7 @@ Penalties for plagiarism depend on the severity and will be decided on a case-by
 
 ### Thursday, December 1st, 2022
 
-- No Class. Work on your final papers and research presentations.
+- Probably no class and you can have a free day to work on your final papers and presentations but this will depend on how many separate presentations we have to get through.
 
 ### Recommended Readings
 

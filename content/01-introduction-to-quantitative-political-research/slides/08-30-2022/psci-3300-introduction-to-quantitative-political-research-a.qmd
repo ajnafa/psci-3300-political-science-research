@@ -39,7 +39,7 @@ link-citations: yes
 ::: incremental
 -   Instructor: A. Jordan Nafa
 
-    -   Bachelor of Science in Government and Computer Science, Texas Woman's University (2014-2018)
+    -   Bachelor of Science in Government, Texas Woman's University (2014-2018)
 
     -   PhD Candidate, UNT Department of Political Science (2018-Present)
 
@@ -48,6 +48,26 @@ link-citations: yes
 -   Teaching Assistant: Sung Min Yun
 
     -   PhD Student, UNT Department of Political Science (2021-Present)
+:::
+
+## Office Hours and Communication
+
+::: incremental
+-   Instructor: A. Jordan Nafa ([adamnafa@my.unt.edu](adamnafa@my.unt.edu))
+
+    -   Office: Wooten Hall 171 
+
+    -   Office Hours: Tuesday and Thursday 12:30-2:00 PM or by Appointment
+
+-   Teaching Assistant: Sung Min Yun ([sungminyun@my.unt.edu](sungminyun@my.unt.edu))
+
+    -   Office: Wooten Hall 174A
+
+    -   Office Hours: Wednesday 2:00-5:00 PM
+    
+-   We will try to respond to emails within 48 hours Monday-Friday
+
+    - See the syllabus for details on the policy about not responding to emails asking questions that are answered by the syllabus
 :::
 
 ## Why Take this Course?
@@ -60,6 +80,8 @@ link-citations: yes
     -   A basic knowledge of statistics, programming, and quantitative reasoning prepares you for a range of future career opportunities or graduate school
 
 -   Contemporary political science is a primarily quantitative field, so understanding the tools of the trade will help you understand and critique the things you read in your other classes
+
+-   No exams!
 :::
 
 ## Teaching Philosophy
@@ -69,11 +91,11 @@ link-citations: yes
 
 -   A college-level course in fundamentals of computer programming or elementary statistics may be helpful but is not required
 
--   I assume you can add, subtract, multiply, and divide--I am sure some of you will prove me wrong
+-   I assume you can add, subtract, multiply, divide, and have a basic understanding of order of operations--I am sure some of you will prove me wrong
 
 -   Our focus in this course will be primarily on how to apply, interpret, and evaluate analyses in political science rather than on the statistical theory behind them
 
--   This course is taught from a primarily Bayesian perspective but we'll cover some frequentist estimation approaches as well
+-   This course is taught from a primarily Bayesian perspective but we'll cover some recent developments in frequentist estimation approaches as well
 :::
 
 ## Teaching Philosophy
@@ -89,6 +111,22 @@ std_norm <- rnorm(n = 10e3, mean = 0, sd = 1)
 ## Print a summary
 summary(std_norm)
 ```
+
+## Structure of the Course
+
+::: incremental
+- Part I: Fundamentals of Political Research
+
+  - Research questions, surveying literature, basic logic of cause and effect, theory building, and measurement
+  
+- Part II: Foundations of Quantitative Social Science
+
+  - Foundations of applied statistics, probability theory, Bayesian inference, and applied regression
+  
+- Part III: Research Design and Causal Inference
+
+  - Experimental design, hypothesis testing and theory evaluation, strategies for causal inference with observational data, and the limits of magical thinking
+::: 
 
 ## Required Course Materials
 
@@ -127,9 +165,11 @@ summary(std_norm)
 
 -   Part of our course time will be spent on lecture and answering questions and the other half will be spent working with data in R
 
--   You should come to class having done the readings on the syllabus for that day so that we can discuss anything that isn't clear or appears confusing
+-   You should come to class having done the readings on the syllabus for that day so we can discuss anything that isn't clear or appears confusing
 
--   10% of your grade in this course consists of participation. This means showing up to class, asking relevant questions, and completing occasional in-class activities
+    - This is not a course you can skate through without ever reading anything and if you try to do this you will very likely fail.
+    
+    - Advice on managing reading loads in the next class on Thursday
 :::
 
 ## Problem Sets
@@ -140,11 +180,11 @@ summary(std_norm)
     ## Tibble of the assignemnts and Due Dates
     tibble::tribble(
       ~ assignment, ~ topic, ~ date,
-      "0", "Getting Started with R and Markdown", "September 4th",
+      "0", "Getting Started with R and Markdown", "September 5th",
       "1", "Data Wrangling and Visualization", "September 25th",
       "2", "Probability and Descriptive Statistics", "October 9th",
       "3", "Regression and Inferential Statistics", "October 30th",
-      "4", "Regression for Causal Inference", "November 20th"
+      "4", "Observational Causal Inference", "November 20th"
     ) |>
       ## Kable to create a table
       kableExtra::kbl(
@@ -155,18 +195,6 @@ summary(std_norm)
       kableExtra::kable_material()
 ```
 
-## Getting Started with R
-
-::: incremental
--   Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
-
--   We will also make use of the probabilistic programming language *Stan* via it's R interfaces `brms` and `rstanarm` during parts of this course
-
--   If you have difficulty getting these installed on your personal computer please come by one of our office hours or make an appointment for assistance
-
--   First problem set due September 4th to verify you have successfully completed these installations
-:::
-
 ## Final Project
 
 ::: incremental
@@ -176,15 +204,51 @@ summary(std_norm)
 
 -   Broken down into a series of smaller assignments over the course of the semester
 
+    - Examples of what each of these are expected to look like and document templates will be provided via Canvas
+
 -   Accounts for 50% of your overall grade; 70% from 8-12 page research paper and 30% from a final presentation
 :::
 
-## What Should You do Today?
+## Course Participation
+
+::: incremental
+-   Remaining 10% of your grade is course participation
+
+-   Showing up to class, asking relevant questions, and completing occasional in-class activities
+
+-   Gives me wiggle room to pad grades at the end of the semester
+
+-   Might also have in-class extra credit opportunities on days when attendance is scarce, but no promises
+:::
+
+## Getting Started with R
+
+::: incremental
+-   Detailed instructions for installing R, RTools/Xcode, RStudio, and configuring Stan are provided on the course's Canvas page
+
+-   We will also make use of the probabilistic programming language *Stan* via it's R interfaces `brms` and `rstanarm` during parts of this course
+
+-   If you have difficulty getting these installed on your personal computer please come by one of our office hours or make an appointment for assistance
+
+-   First problem set due **Monday, September 5th** to verify you have successfully completed these installations
+:::
+
+## What Should You do This Week?
 
 ::: incremental
 -   Read the full syllabus for more details about the course and important deadlines
 
 -   Follow the instructions on Canvas for installing R, RStudio, and Stan
 
+    - We will go over any issues you have getting these installed on Thursday
+
 -   Start thinking about an *empirical* political research question (More on this next class)
 :::
+
+## Licensing and Copyright Information
+
+-   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/). 
+
+-   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE). 
+
+-   The files and code necessary to reproduce the content of this course are or will be made available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) with the exception of those covered by existing commercial copyright restrictions (i.e., copies of the assigned readings for the course).

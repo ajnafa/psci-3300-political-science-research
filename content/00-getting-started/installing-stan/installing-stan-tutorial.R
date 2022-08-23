@@ -1,6 +1,6 @@
 #-------------Setup: Getting Started with Stan, cmdstanr, and brms--------------
 #-Author: A. Jordan Nafa-------------------------------Created: August 4, 2022-#
-#-R Version: 4.2.1------------------------------------Revised: August 10, 2022-#
+#-R Version: 4.2.1------------------------------------Revised: August 22, 2022-#
 
 ## Step 1: Preliminaries----
 
@@ -159,3 +159,9 @@ bayes_mpg_fit <- brm(
 
 ## Print a summary of the output
 summary(bayes_mpg_fit)
+
+## Copyright and Licensing Notice----
+# 
+# All R, HTML, and CSS code for this course is provided for public use 
+# under a BSD 3-Clause License. For licensing terms and restrictions 
+# see https://github.com/ajnafa/psci-3300-political-science-research
