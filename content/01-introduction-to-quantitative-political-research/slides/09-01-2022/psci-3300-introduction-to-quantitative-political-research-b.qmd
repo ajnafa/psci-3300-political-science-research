@@ -12,7 +12,9 @@ format:
     self-contained: true
     citations-hover: true
     code-link: true
+    transition: "fade"
     code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
     css: "../../../../assets/slide-style.css"
 editor: visual
 width: 1360
@@ -63,10 +65,6 @@ Political science is a field characterized by a diverse range of approaches to i
 -   **Empirical**
 
     -   Focused on objective explanation and description, questions about how the world *is* and *why.*
-
--   **Interpretive**
-
-    -   
 :::
 
 ## Normative Approaches
@@ -78,13 +76,13 @@ Normative approaches to the study of politics date back thousands of years and f
 
     -   Who should be responsible for paying for the consequences of climate change?
 
-    -   Would the world be better off if we fired Elon Musk into the Sun?
+    -   Should we fire Elon Musk into the Sun?
 
     -   Should women have autonomy over their reproductive choices?
 
--   These types of questions may indeed be important, but they do not lend themselves to scientific answers
+    -   Is it fair to forgive student loan debt?
 
--   Normative arguments are common in certain areas of law and philosophy but have little place in this course
+-   Normative arguments are common in certain areas of law and philosophy but have no place in this course as they do not lend themselves to scientific answers
 :::
 
 ## Empirical Approaches
@@ -146,6 +144,12 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
   fig_theme
 ```
 
+------------------------------------------------------------------------
+
+### Evolution of Liberal Democracy in America {.smaller}
+
+![](images/Figure_2b_Democracy_in_America-02.png){fig-align="center"}
+
 ## Empirical Approaches
 
 ::: incremental
@@ -153,13 +157,35 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
 
 -   Contemporary political science is a discipline interested in answering *causal questions*.
 
-    -   Why do poor conservatives tend to vote against their economic interests?
+    -   Why do poor conservatives tend to vote against their own economic interests?
 
-    -   Do gender-inclusive peace processes reduce the risk of conflict recurrence?
+    -   How do gender-inclusive peace processes influence the risk of conflict recurrence?
 
-    -   How do campaign contributions influence legislative behavior?
+    -   How would the world change if we fired Elon Musk into the Sun?
 
 -   Our focus in this class will be primarily on causal questions and entirely on empirical approaches to the study of politics
 :::
+
+## What is Causal Inference?
+
+::: incremental
+-   Does forgiving student loan debt increase inflation?
+
+    -   Imagine student loan debt is forgiven and inflation increases
+
+    -   Would this increase have happened if student loan debt had not been forgiven?
+    
+-   How do gender-inclusive peace processes influence the risk of conflict recurrence?
+
+    -   Conflicts that terminate with gender-inclusive peace provisions tend to be less likely to recurr
+    
+    -   Would conflict have recurred in the abscence of these gender-inclusive peace provisions?
+    
+-   Causal inference is about **counterfactuals**
+::: 
+
+## Counterfactuals
+
+A **counterfactual** is what would have happened in the absence of some intervention. Counterfactuals are questions about the data we do not observe, not the data we do.
 
 ## References
