@@ -146,7 +146,7 @@ sqrt(sum(2, 4, 6) / exp24)
 :::
 
 ::: a
-Notice how in the Complex Operations tab we only see output printed for the first and final operations. There is noting returned for $2^{4}$ because we assigned it to an **object** in memory called `exp24` using `<-`, the assignment operator in R. Assigning a value to an object allows us to call it in the subsequent calculation by specifying the name of the object in place of `2^4`. We will discuss assignment and objects in the next section as they are foundational to R and many other programming languages.
+Notice how in the Complex Operations tab we only see output printed for the first and final operations. There is nothing returned for $2^{4}$ because we assigned it to an **object** in memory called `exp24` using `<-`, the assignment operator in R. Assigning a value to an object allows us to call it in the subsequent calculation by specifying the name of the object in place of `2^4`. We will discuss assignment and objects in the next section as they are foundational to R and many other programming languages.
 :::
 
 ## Data Structures

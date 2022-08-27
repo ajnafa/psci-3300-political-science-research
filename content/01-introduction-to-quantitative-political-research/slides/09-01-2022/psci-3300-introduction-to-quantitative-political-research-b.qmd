@@ -16,6 +16,7 @@ format:
     code-block-bg: "#272822"
     logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
     css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
 editor: visual
 width: 1360
 height: 800
@@ -65,6 +66,22 @@ Political science is a field characterized by a diverse range of approaches to i
 -   **Empirical**
 
     -   Focused on objective explanation and description, questions about how the world *is* and *why.*
+
+<!--# Insert color definitions here to avoid creating a seperate slide for them -->
+
+$$ 
+\definecolor{treatment}{RGB}{255, 53, 94} 
+\definecolor{treat}{RGB}{253, 91, 120} 
+\definecolor{orange}{RGB}{255, 96, 55} 
+\definecolor{neonorange}{RGB}{255, 153, 51} 
+\definecolor{lime}{RGB}{204, 255, 0} 
+\definecolor{resp}{RGB}{102, 255, 102} 
+\definecolor{index}{RGB}{170, 240, 209} 
+\definecolor{untreat}{RGB}{80, 191, 230} 
+\definecolor{pink}{RGB}{255, 110, 255} 
+\definecolor{sample}{RGB}{255, 0, 204} 
+\definecolor{operator}{RGB}{255,255,255} 
+$$
 :::
 
 ## Normative Approaches
@@ -174,18 +191,84 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
     -   Imagine student loan debt is forgiven and inflation increases
 
     -   Would this increase have happened if student loan debt had not been forgiven?
-    
+
 -   How do gender-inclusive peace processes influence the risk of conflict recurrence?
 
     -   Conflicts that terminate with gender-inclusive peace provisions tend to be less likely to recurr
-    
-    -   Would conflict have recurred in the abscence of these gender-inclusive peace provisions?
-    
--   Causal inference is about **counterfactuals**
-::: 
 
-## Counterfactuals
+    -   Would conflict have recurred in the abscence of these gender-inclusive peace provisions?
+
+-   Causal inference is about **counterfactuals**
+:::
+
+## What is Causal Inference?
 
 A **counterfactual** is what would have happened in the absence of some intervention. Counterfactuals are questions about the data we do not observe, not the data we do.
+
+::: incremental
+-   Imagine a study of $\color{sample} n$ individuals
+
+    -   $\color{treat} n_{1}$ are assigned some treatment
+
+    -   $\color{untreat} n_{0}$ do not receive the treatment
+
+-   For each individual $\color{index} i \color{operator}\in \{1, 2, \dots, \color{sample} n \color{operator}\}$ we observe the outcome $\color{resp}Y_{\color{index}i}$
+
+-   Treatment status for each individual $\color{index} i$ $$\color{treatment} X_{\color{index}i} \color{operator} = \begin{cases}\color{treat} 1 \text{  if treated}\\ \color{untreat} 0 \text{  if not treated}\end{cases}$$
+:::
+
+## What is Causal Inference?
+
+::: incremental
+-   We want to know the causal effect of $X_{i}$ on $Y_{i}$
+
+    -   If a respondent is treated, $X_{i} = 1$ and we observe some value of $Y_{i}$
+
+    -   What value of $Y_{i}$ would we have observed if $X_{i} = 0$ instead?
+
+-   **Fundamental Problem of Causal Inference**
+
+    -   For each individual $i$ we can only observe $X_{i} = 1$ or $X_{i} = 0$
+
+    -   Causal inference is a missing data problem
+
+-   How do we overcome this problem?
+
+    -   We make assumptions to bridge these parallel worlds
+
+    -   We will spend the rest of the semester on this
+:::
+
+## Why Causal Inference?
+
+As it turns out, causal inference is really, really hard so why bother at all?
+
+::: incremental
+-   We could just make some claims and use a bunch of weasel words to avoid saying "cause" and "effect" while still heavily implying causality, right?
+
+    -   "$X$ explains $Y$"
+
+    -   "$X$ has an impact on $Y$"
+
+    -   "People who do $X$ are more likely to experience $Y$"
+
+-   Lots of people still do this!
+
+    -   Makes it hard to distinguish between what is real and what is not, results in the proliferation of *pseudo-facts* [@Samii2016]
+
+    -   Need to be explicit about our assumptions, intentions, and goals
+:::
+
+## What Causal Inference is Not
+
+::: incremental
+-   Descriptions of how the world is, correlations, joint distributions, predictions, regression coefficients, odds ratios, probabilities, etc.
+
+    -   All of these things may be useful and some may have causal interpretations under specific circumstances
+
+    -   They do not, however, in and of themselves capture causal relationships without additional assumptions
+
+-   A **causal effect** is the change we would observe if we manipulated some feature of the world while holding all else constant
+:::
 
 ## References
