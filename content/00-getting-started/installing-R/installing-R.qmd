@@ -158,6 +158,12 @@ For our purposes in this course, I also suggest you install a citation managemen
 - [Pandoc](https://pandoc.org/installing.html)
 
   - Download and install the appropriate version for your operating system.
+  
+- [git](https://git-scm.com/downloads)
+
+  - Download and install the appropriate version for your operating system. This will allow you to download and sync [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) to your own computer and ensures your relative file paths are the same as mine, thus making it easier for me to assist you with any problems. 
+  
+  - You can also make a [github account](https://github.com/), but again this is optional. For a detailed introduction to git and R with RStudio, see the free online book [*Happy Git and GitHub for the useR*](https://happygitwithr.com/index.html)
 
 ## Resources for Learning R
 

@@ -86,6 +86,14 @@ link-citations: yes
 -   No exams!
 :::
 
+------------------------------------------------------------------------
+
+## ![](../../../../assets/dank-memes/methods-balloon-01.jpg){fig-align="center"}
+
+## ![](../../../../assets/dank-memes/methods-balloon-02.jpg){fig-align="center"}
+
+![](../../../../assets/dank-memes/methods-balloon-03.jpg){fig-align="center"}
+
 ## Teaching Philosophy
 
 ::: incremental
@@ -153,11 +161,17 @@ summary(std_norm)
 ::: incremental
 -   To complete the requirements for this course you will need access to a laptop or desktop computer with a stable internet connection
 
+-   I assume you have a working knowledge of computers including
+
+    -   How to download, save, move, and locate files
+
+    -   How to install software on your computer
+
 -   If you do not have access to a personal computer that meets the minimum requirements necessary to run R, you can access both R and RStudio from computers on the UNT campus
 
--   The computers in the political science lab in Wooten Hall 173 should have the most recent version of R, RStudio, and RTools
+    -   The computers in the political science lab in Wooten Hall 173 should have the most recent version of R, RStudio, and RTools
 
--   If you expect to have difficulty meeting the technical requirements for this course you need to let me know immediately
+-   If you expect to have difficulty meeting the technical requirements for this course **you need to let me know immediately**
 :::
 
 ## Class Meetings
@@ -169,9 +183,11 @@ summary(std_norm)
 
 -   You should come to class having done the readings on the syllabus for that day so we can discuss anything that isn't clear or appears confusing
 
-    -   This is not a course you can skate through without ever reading anything and if you try to do this you will very likely fail.
+    -   This is not a course you can skate through without ever reading anything and **if you try to do this you will very likely fail**.
 
-    -   Advice on managing reading loads in the next class on Thursday
+    -   Advice on managing reading loads in this course and others during class on Thursday
+
+-   It should go without saying, but **do not come to class if you are sick**
 :::
 
 ## Problem Sets
@@ -221,6 +237,18 @@ summary(std_norm)
 -   Gives me wiggle room to pad grades at the end of the semester
 
 -   Might also have in-class extra credit opportunities on days when attendance is scarce, but no promises
+:::
+
+## Additional Details
+
+::: incremental
+-   Citations are expected to conform to the style of the American Political Science Association
+
+-   Zero tolerance policy for plagiarism of any kind
+
+    -   Penalties range from a 0 for a specific assignment to an automatic failing grade in the course depending on severity
+
+-   We will cover how to automatically generate citations and manuscripts in the correct format and keep track of sources in class next Tuesday
 :::
 
 ## Getting Started with R

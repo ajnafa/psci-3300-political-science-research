@@ -11,6 +11,7 @@ format:
     self-contained: true
     citations-hover: true
     code-link: true
+    linkcolor: "#00853E"
     code-block-bg: "#272822"
 bibliography: "../../../assets/references.bib"
 csl: "../../../assets/apsa.csl"

@@ -17,6 +17,7 @@ format:
     logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
     css: "../../../../assets/slide-style.css"
     include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
 editor: visual
 width: 1360
 height: 800
@@ -27,10 +28,7 @@ link-citations: yes
 
 ```{r, include=FALSE}
 ## Load required packages
-pacman::p_load(
-  "tidyverse",
-  install = FALSE
-  )
+pacman::p_load("tidyverse", install = FALSE)
 
 ## Base theme for the figures
 fig_theme <- theme_light(base_size = 24, base_family = "serif") +
@@ -73,7 +71,7 @@ $$
 \definecolor{treatment}{RGB}{255, 53, 94} 
 \definecolor{treat}{RGB}{253, 91, 120} 
 \definecolor{orange}{RGB}{255, 96, 55} 
-\definecolor{neonorange}{RGB}{255, 153, 51} 
+\definecolor{confounders}{RGB}{255, 153, 51} 
 \definecolor{lime}{RGB}{204, 255, 0} 
 \definecolor{resp}{RGB}{102, 255, 102} 
 \definecolor{index}{RGB}{170, 240, 209} 
@@ -169,6 +167,24 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
 
 ## Empirical Approaches
 
+**Description** has a valuable place in political science and accurate description is essential to empirical research.
+
+::: incremental
+-   Descriptive approaches tend to lend themselves to dichotomous answers
+
+    -   Is country $A$ more democratic than country $B$?
+    
+    -   Is American democracy in decline?
+    
+    -   Did Donald Trump lose the 2020 U.S. presidential election?
+
+-   Yet, it is necessarily inferior to causal approaches because it cannot answer questions of *why* or *how* things happen
+
+-   We'll take a more detailed look at the role of description in quantitative political research when we discuss measurement
+:::
+
+## Empirical Approaches
+
 ::: incremental
 -   **Causal** approaches are concerned with explaining *why* some phenomenon occurs in the world [@Samii2016].
 
@@ -203,60 +219,76 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
 
 ## What is Causal Inference?
 
-A **counterfactual** is what would have happened in the absence of some intervention. Counterfactuals are questions about the data we do not observe, not the data we do.
+A **counterfactual** is what would have happened in the absence of some intervention.
 
 ::: incremental
 -   Imagine a study of $\color{sample} n$ individuals
 
-    -   $\color{treat} n_{1}$ are assigned some treatment
+    -   $\color{sample} n_{\color{treat} 1}$ are assigned some treatment
 
-    -   $\color{untreat} n_{0}$ do not receive the treatment
+    -   $\color{sample} n_{\color{untreat} 0}$ do not receive the treatment
 
 -   For each individual $\color{index} i \color{operator}\in \{1, 2, \dots, \color{sample} n \color{operator}\}$ we observe the outcome $\color{resp}Y_{\color{index}i}$
 
 -   Treatment status for each individual $\color{index} i$ $$\color{treatment} X_{\color{index}i} \color{operator} = \begin{cases}\color{treat} 1 \text{  if treated}\\ \color{untreat} 0 \text{  if not treated}\end{cases}$$
+
+-   Some set of pre-treatment covariates $\color{confounders} Z_{\color{index}i}$
 :::
 
 ## What is Causal Inference?
 
+Counterfactuals are questions about the data we do not observe, not the data we do.
+
 ::: incremental
--   We want to know the causal effect of $X_{i}$ on $Y_{i}$
+-   We want to know the causal effect of $\color{treatment} X_{\color{index} i}$ on $\color{resp} Y_{\color{index} i}$
 
-    -   If a respondent is treated, $X_{i} = 1$ and we observe some value of $Y_{i}$
+    -   If an individual is <font style="color: #FF5B78">treated</font>, $\color{treatment} X_{\color{index} i} \color{operator} = \color{treat} 1$ and we observe some value of $\color{resp} Y_{\color{index} i}$
 
-    -   What value of $Y_{i}$ would we have observed if $X_{i} = 0$ instead?
+    -   What value of $\color{resp} Y_{\color{index} i}$ would we have observed if $\color{treatment} X_{\color{index} i} \color{operator} = \color{untreat} 0$ instead?
 
 -   **Fundamental Problem of Causal Inference**
 
-    -   For each individual $i$ we can only observe $X_{i} = 1$ or $X_{i} = 0$
+    -   For each individual $\color{index} i$ we can only observe $\color{treatment}X_{\color{index} i} \color{operator} = \color{treat}1$ or $\color{treatment}X_{\color{index} i} \color{operator} = \color{untreat} 0$
 
     -   Causal inference is a missing data problem
 
 -   How do we overcome this problem?
 
     -   We make assumptions to bridge these parallel worlds
-
-    -   We will spend the rest of the semester on this
 :::
 
-## Why Causal Inference?
+## Firing Billionaires into the Sun
 
-As it turns out, causal inference is really, really hard so why bother at all?
+Imagine we are interested in whether firing billionaires into the Sun might cause some meaningful improvement in the world.
 
 ::: incremental
--   We could just make some claims and use a bunch of weasel words to avoid saying "cause" and "effect" while still heavily implying causality, right?
+-   A study of $\color{sample} n$ billionaires
 
-    -   "$X$ explains $Y$"
+-   For each billionaire $\color{index} i \color{operator}\in \{1, 2, \dots, \color{sample} n \color{operator}\}$ we observe the state of the world $\color{resp}Y_{\color{index}i}$ before and after they are assigned to either the treatment or control group
 
-    -   "$X$ has an impact on $Y$"
+-   Treatment status for each billionaire $\color{index} i$ $$\color{treatment} X_{\color{index}i} \color{operator} = \begin{cases}\color{treat} 1 \text{  if fired into the Sun}\\ \color{untreat} 0 \text{  if not fired into the Sun}\end{cases}$$
 
-    -   "People who do $X$ are more likely to experience $Y$"
+-   Some set of pre-treatment covariates $\color{confounders} Z_{\color{index}i}$
+:::
 
--   Lots of people still do this!
+## Firing Billionaires into the Sun
 
-    -   Makes it hard to distinguish between what is real and what is not, results in the proliferation of *pseudo-facts* [@Samii2016]
+::: incremental
+-   The causal effect of firing a billionaire into the Sun is
 
-    -   Need to be explicit about our assumptions, intentions, and goals
+    -   $\color{resp}Y_{\color{index}i}\color{treat}(\text{Fired into the Sun})\color{operator} - \color{resp}Y_{\color{index}i}\color{untreat}(\text{Not fired into the Sun})$
+
+-   For each billionaire $\color{index} i$ we can either <font style="color: #FF5B78">fire them into the Sun</font> or <font style="color: #50BFE6">not fire them into the Sun</font>, but it is impossible do both
+
+    -   This is the **fundamental problem of causal inference**
+
+-   Also illustrates some practical limitations
+
+    -   No IRB would ever approve this study and billionaires are a hard to sample population 😭
+
+    -   [It is really, really hard to fire subjects into the Sun](https://www.forbes.com/sites/startswithabang/2019/09/20/this-is-why-we-dont-shoot-earths-garbage-into-the-sun/?sh=1af1b4115d63)
+
+    -   More efficient to eject them out of the Solar system with a gravity assist from Jupiter instead
 :::
 
 ## What Causal Inference is Not
@@ -269,6 +301,158 @@ As it turns out, causal inference is really, really hard so why bother at all?
     -   They do not, however, in and of themselves capture causal relationships without additional assumptions
 
 -   A **causal effect** is the change we would observe if we manipulated some feature of the world while holding all else constant
+
+    -   Sometime we do not know because we cannot know--**there is no magic**
 :::
+
+---
+
+![](../../../../assets/dank-memes/causal-pidgeon-impact.jpg){fig-align="center"}
+
+## Why Causal Inference?
+
+As it turns out, causal inference is really, really hard so why bother at all?
+
+::: incremental
+-   We could just make some claims and use a bunch of weasel words to avoid saying "cause" and "effect" while still heavily implying causality, right?
+
+    -   "$\color{treatment}X$ explains $\color{resp}Y$"
+
+    -   "$\color{treatment}X$ has an impact on $\color{resp}Y$"
+
+    -   "People who do $\color{treatment}X$ are more likely to experience $\color{resp}Y$"
+
+-   Lots of people still do this!
+
+    -   Makes it hard to distinguish between what is real and what is not, results in the proliferation of *pseudo-facts* [@Samii2016]
+
+    -   Important to be explicit about our assumptions, intentions, and goals
+:::
+
+## Key Takeaways
+
+::: incremental
+- Difference between **normative** and **empirical** approaches in political science 
+
+    - Distinction between **descriptive questions** and **causal questions**
+    
+- **Counterfactuals** and the **Fundamental Problem of Causal Inference**
+
+- What causal inference is and what it is not
+
+- We will spend the rest of the semester building on this foundation
+:::
+
+## Getting Started with R and RStudio
+
+::: incremental
+-  Read the installation instructions on Canvas under the module for Week I
+
+-  Easiest way to avoid headaches involving file paths is for you to download the [course's repository from github](https://github.com/ajnafa/psci-3300-political-science-research)
+
+   - Either download a zip file of the current version and extract that somewhere on your computer
+   
+   - Or you can install [git](https://git-scm.com/downloads) which integrates with RStudio
+   
+      - [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) is a free online book on getting started with git in RStudio
+      
+      - This approach let's you pull updates from the course repo directly from RStudio
+      
+-  This will ensure your relative file paths match mine and will make it easier for me to help you
+:::
+
+## Workflow Basics
+
+::: incremental
+-  Project-Oriented Workflow
+
+    - Work in [RStudio projects](https://r4ds.had.co.nz/workflow-projects.html)
+    
+      - Helps you keep things organized in appropriate subfolders
+      
+      - All file paths are <font style="color: #00F5FF">**relative**</font> to the .Rproj file's location
+      
+    - Write code in scripts
+    
+      - Helps you keep track of and structure your data, analysis, etc.
+      
+      - Comment your code
+      
+      - Use seperate scripts for each part of your analysis, problem sets, etc.
+      
+-  We'll talk more about [Quarto](https://quarto.org/docs/guide/) and dynamically reproducible documents next week
+:::
+
+## Basic Calculations in R {auto-animate="true"}
+
+In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
+
+```r
+# Using R for Addition
+print(2 + 2)
+
+# We can also find the sum of a sequence of numbers
+sum(2, 4, 6)
+```
+
+## Basic Calculations in R {auto-animate=true}
+
+In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
+
+```r
+# Using R for Addition
+print(2 + 2)
+
+# We can also find the sum of a sequence of numbers
+sum(2, 4, 6)
+
+# Using R for Subtraction
+print(6 - 2)
+```
+
+## Basic Calculations in R {auto-animate=true}
+
+In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
+
+```r
+# Using R for Addition
+print(2 + 2)
+
+# We can also find the sum of a sequence of numbers
+sum(2, 4, 6)
+
+# Using R for Subtraction
+print(6 - 2)
+
+# Using R for Multiplication
+print(9 * 12)
+
+# We can also find the product of a sequence of numbers
+prod(9, 12, 36)
+```
+
+## Basic Calculations in R {auto-animate=true}
+
+In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
+
+```r
+# Using R for Addition
+print(2 + 2)
+
+# We can also find the sum of a sequence of numbers
+sum(2, 4, 6)
+
+# Using R for Subtraction
+print(6 - 2)
+
+# Using R for Multiplication
+print(9 * 12)
+
+# We can also find the product of a sequence of numbers
+prod(9, 12, 36)
+
+# Using R for Division
+print(4 / 2)
+```
 
 ## References
