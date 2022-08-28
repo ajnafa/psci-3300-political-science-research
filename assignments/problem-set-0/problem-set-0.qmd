@@ -1,0 +1,112 @@
+---
+title: "Problem Set 0: Getting Started with R and Markdown"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author:
+  - "*Your Name Here*" # replace this with your name
+  - "University of North Texas"
+bibliography: "../../assets/references.bib"
+csl: "../../assets/apsa.csl"
+link-citations: yes
+fig-cap-location: top
+format: 
+  docx:
+    toc: false
+    reference-doc: "../../assets/Manuscript_Template.docx"
+    highlight-style: monokai
+    linkcolor: "#00853E"
+---
+
+# Instructions
+
+Welcome to PSCI 3300.003 Political Science Research Methods! Quarto allows us to create dynamically reproducible self-contained documents and reports. We'll use R and Quarto for problem sets this semester. In this class our uses will be fairly simple, but if you run into problems the [Quarto documentation](https://quarto.org/docs/guide/) is a great resource. You can also consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/) and the [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/) which provide detailed book-length open-source resources that should also be applicable to Quarto since it is Rmarkdown's successor.
+
+Since this document is tied directly to a custom Microsoft word template, assuming you downloaded the course repository from github as suggested, you should be able to render this file without issue. Once you have successfully rendered this file, submit the resulting **MS Word document** under the Problem Set 0 assignment on the course's Canvas page. This assignment is due by Monday, September 5th at 11:59 PM CST.
+
+## Displaying Code in Documents
+
+As you can see from the code below, Quarto and Markdown allow us to embed code directly in MS Word documents, PDF files, or html pages. When working through problem sets in this class, you should always embed your code in this way so that we can grade your work and so you can receive partial credit for any incorrect answers. Remember, if we aren't able to tell what it is you were trying to do we have no way of helping you.
+
+```{r}
+#-----------------R for Political Research: Problem Set 0----------------------
+#-Author: A. Jordan Nafa-----------------------------Created: August 19, 2022-#
+#-R Version: 4.2.1-----------------------------------Revised: August 27, 2022-#
+
+# Set Session Options, you could also declare these in .Rprofile
+options(
+  digits = 4, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"] # repo to install packages from
+)
+
+# Load Required Libraries, run install.packages("pacman") first
+pacman::p_load(
+  "tidyverse", # Suite of packages for tidy data management 
+  "data.table", # Package for high-performance data management 
+  "dtplyr", # Package to interface between dplyr and data.table
+  install = FALSE # Set this to TRUE to install missing packages
+)
+
+```
+
+## Figures and Graphs in Documents
+
+To illustrate how we can also embed graphs and figures directly in documents, the code below uses ggplot2 to recreate a graph from the second class's lecture slides. Notice, however, that the data preparation code chunk is not printed in the rendered word document while the code for the graph is. This is because we set `echo=FALSE` in the code chunk's arguments which runs the code but does not show it. If we instead wanted to display the code without running it, we would specify `eval=FALSE` instead.
+
+
+```{r, echo=FALSE}
+
+# 2020 election totals from the federal election commission
+fec_totals <- tribble(
+  ~ candidate, ~ popvote, ~ ecvote, ~ votepct,
+  "Joe Biden", 81268924/1000000, 306, 51.3,
+  "Donald Trump", 74216154/1000000, 232, 46.9
+) %>% 
+  # Pivot to long form
+  pivot_longer(cols = popvote:ecvote)
+
+# Define labels for the facets
+facet_labs <- as_labeller(
+  x = c(
+    "popvote" = "Popular Vote (in Millions)",
+    "ecvote" = "Electoral College Vote"
+  )
+)
+```
+
+```{r, fig.height=9, fig.width=16, fig.align='center'}
+# Make a plot of the results
+ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
+  # Facet by popular vote/EC vote
+  facet_wrap(~ name, scales = "free_y", labeller = facet_labs) +
+  # Bar plot geom
+  geom_bar(stat = "identity", color = "black") +
+  # Change the colors of the fill
+  scale_fill_manual(values = c("firebrick", "royalblue2")) +
+  # Adjust the lower bound of the y axis
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 10), 
+    expand = expansion(0.01, 0.01)
+    ) +
+  # Add labels to the plot
+  labs(
+    fill = "2020 Candidate",
+    title = "Figure 1. 2020 Presidential Election Vote Totals",
+    x = "",
+    y = "Vote Total",
+    caption = "Source: United States Federal Election Commission, 2020"
+  ) +
+  # Apply theme settings
+  theme_bw(base_size = 24, base_family = "serif")
+```
+
+## Session Information
+
+Finally, for purposes of troubleshooting and reproducibility it is helpful to have the information for your specific R session. You can include this in each problem set using the following code.
+
+```{r}
+# Print the session information
+sessioninfo::session_info(
+  pkgs = "attached",
+  include_base = TRUE
+)
+```
