@@ -11,20 +11,20 @@ questions they are capable of answering, and their various trade-offs.
 
 ### Tuesday, August 30th, 2022
 
--   Course Introduction and Syllabus Overview
+- Course Introduction and Syllabus Overview
 
--   Read through the “Getting Started with R and Stan” module on the
-    course’s Canvas page
+- Read through the “Getting Started with R and Stan” module on the
+  course’s Canvas page
 
 ### Thursday, September 1st, 2022
 
--   Samii, Cyrus. 2016. “Causal Empiricism in Quantitative Research.”
-    *Journal of Politics* 78(3): 941–955. doi:
-    [10.1086/686690](https://doi.org/10.1086/686690)
+- Samii, Cyrus. 2016. “Causal Empiricism in Quantitative Research.”
+  *Journal of Politics* 78(3): 941–955. doi:
+  [10.1086/686690](https://doi.org/10.1086/686690)
 
--   Gerring, John. 2012. “Mere Description.” *British Journal of
-    Political Science* 42(4): 721–746. doi:
-    [10.1017/S0007123412000130](https://doi.org/10.1017/S0007123412000130)
+- Gerring, John. 2012. “Mere Description.” *British Journal of Political
+  Science* 42(4): 721–746. doi:
+  [10.1017/S0007123412000130](https://doi.org/10.1017/S0007123412000130)
 
--   Problem Set 0 is Due via Canvas by Sunday, September 4th, 2022 at
-    11:59 PM
+- Problem Set 0 is Due via Canvas by Monday, September 5th, 2022 at
+  11:59 PM

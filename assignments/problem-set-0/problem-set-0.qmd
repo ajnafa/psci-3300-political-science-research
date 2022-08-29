@@ -20,7 +20,7 @@ format:
 
 Welcome to PSCI 3300.003 Political Science Research Methods! Quarto allows us to create dynamically reproducible self-contained documents and reports. We'll use R and Quarto for problem sets this semester. In this class our uses will be fairly simple, but if you run into problems the [Quarto documentation](https://quarto.org/docs/guide/) is a great resource. You can also consult [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/) and the [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/) which provide detailed book-length open-source resources that should also be applicable to Quarto since it is Rmarkdown's successor.
 
-Since this document is tied directly to a custom Microsoft word template, assuming you downloaded the course repository from github as suggested, you should be able to render this file without issue. Once you have successfully rendered this file, submit the resulting **MS Word document** under the Problem Set 0 assignment on the course's Canvas page. This assignment is due by Monday, September 5th at 11:59 PM CST.
+Since this document is tied directly to a custom Microsoft word template, assuming you downloaded the [course repository from github as suggested](https://github.com/ajnafa/psci-3300-political-science-research), you should be able to render this file without issue. Once you have successfully rendered this file, submit the resulting **MS Word document** under the Problem Set 0 assignment on the course's Canvas page. This assignment is due by Monday, September 5th at 11:59 PM CST.
 
 ## Displaying Code in Documents
 

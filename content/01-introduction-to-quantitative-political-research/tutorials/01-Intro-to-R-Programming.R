@@ -182,7 +182,12 @@ quotient(x = 10, y = 3)
 install.packages("remotes")
 
 # Installing multiple packages from the CRAN repository
-install.packages(c("marginaleffects", "modelsummary"))
+install.packages(c(
+  "downlit",
+  "xml2", 
+  "rmarkdown", 
+  "sessioninfo"
+))
 
 # Installing packages from a non-CRAN repository
 install.packages(

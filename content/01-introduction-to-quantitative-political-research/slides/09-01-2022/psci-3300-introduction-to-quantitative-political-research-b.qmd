@@ -173,9 +173,9 @@ ggplot(fec_totals, aes(y = value, x = candidate, fill = candidate)) +
 -   Descriptive approaches tend to lend themselves to dichotomous answers
 
     -   Is country $A$ more democratic than country $B$?
-    
+
     -   Is American democracy in decline?
-    
+
     -   Did Donald Trump lose the 2020 U.S. presidential election?
 
 -   Yet, it is necessarily inferior to causal approaches because it cannot answer questions of *why* or *how* things happen
@@ -293,6 +293,18 @@ Imagine we are interested in whether firing billionaires into the Sun might caus
 
 ## What Causal Inference is Not
 
+![](../../../../assets/dank-memes/causal-pidgeon-impact-correlation.jpg){fig-align="center"}
+
+## What Causal Inference is Not
+
+![](../../../../assets/dank-memes/causal-pidgeon-regression-impact.jpg){fig-align="center"}
+
+## What Causal Inference is Not
+
+![](../../../../assets/dank-memes/causal-pidgeon-impact-or.jpg){fig-align="center"}
+
+## What Causal Inference is Not
+
 ::: incremental
 -   Descriptions of how the world is, correlations, joint distributions, predictions, regression coefficients, odds ratios, probabilities, etc.
 
@@ -302,12 +314,8 @@ Imagine we are interested in whether firing billionaires into the Sun might caus
 
 -   A **causal effect** is the change we would observe if we manipulated some feature of the world while holding all else constant
 
-    -   Sometime we do not know because we cannot know--**there is no magic**
+    -   Sometimes we do not know because we cannot know--**there is no magic**
 :::
-
----
-
-![](../../../../assets/dank-memes/causal-pidgeon-impact.jpg){fig-align="center"}
 
 ## Why Causal Inference?
 
@@ -332,62 +340,89 @@ As it turns out, causal inference is really, really hard so why bother at all?
 ## Key Takeaways
 
 ::: incremental
-- Difference between **normative** and **empirical** approaches in political science 
+-   Difference between **normative** and **empirical** approaches in political science
 
-    - Distinction between **descriptive questions** and **causal questions**
-    
-- **Counterfactuals** and the **Fundamental Problem of Causal Inference**
+    -   Distinction between **descriptive questions** and **causal questions**
 
-- What causal inference is and what it is not
+-   **Counterfactuals** and the **Fundamental Problem of Causal Inference**
 
-- We will spend the rest of the semester building on this foundation
+-   What causal inference is and what it is not
+
+-   We will spend the rest of the semester building on this foundation
 :::
 
 ## Getting Started with R and RStudio
 
 ::: incremental
--  Read the installation instructions on Canvas under the module for Week I
+-   Read the installation instructions on Canvas under the module for Week I
 
--  Easiest way to avoid headaches involving file paths is for you to download the [course's repository from github](https://github.com/ajnafa/psci-3300-political-science-research)
+-   Easiest way to avoid headaches involving file paths is for you to download the [course's repository from github](https://github.com/ajnafa/psci-3300-political-science-research)
 
-   - Either download a zip file of the current version and extract that somewhere on your computer
-   
-   - Or you can install [git](https://git-scm.com/downloads) which integrates with RStudio
-   
-      - [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) is a free online book on getting started with git in RStudio
-      
-      - This approach let's you pull updates from the course repo directly from RStudio
-      
--  This will ensure your relative file paths match mine and will make it easier for me to help you
+    -   Either download a zip file of the current version and extract that somewhere on your computer
+
+    -   Or you can install [git](https://git-scm.com/downloads) which integrates with RStudio
+
+        -   [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) is a free online book on getting started with git in RStudio
+
+        -   This approach let's you pull updates from the course repo directly from RStudio
+
+-   This will ensure your relative file paths match mine and will make it easier for me to help you
 :::
 
 ## Workflow Basics
 
 ::: incremental
--  Project-Oriented Workflow
+-   Project-Oriented Workflow
 
-    - Work in [RStudio projects](https://r4ds.had.co.nz/workflow-projects.html)
-    
-      - Helps you keep things organized in appropriate subfolders
-      
-      - All file paths are <font style="color: #00F5FF">**relative**</font> to the .Rproj file's location
-      
-    - Write code in scripts
-    
-      - Helps you keep track of and structure your data, analysis, etc.
-      
-      - Comment your code
-      
-      - Use seperate scripts for each part of your analysis, problem sets, etc.
-      
--  We'll talk more about [Quarto](https://quarto.org/docs/guide/) and dynamically reproducible documents next week
+    -   Work in [RStudio projects](https://r4ds.had.co.nz/workflow-projects.html)
+
+        -   Helps you keep things organized in appropriate subfolders
+
+        -   All file paths are <font style="color: #00F5FF">**relative**</font> to the .Rproj file's location
+
+    -   Write code in scripts
+
+        -   Helps you keep track of and structure your data, analysis, etc.
+
+        -   Comment your code
+
+        -   Use seperate scripts for each part of your analysis, problem sets, etc.
+
+-   We'll talk more about [Quarto](https://quarto.org/docs/guide/) and dynamically reproducible documents next week
 :::
+
+## Scripts in R
+
+It is generally considered good practice to load the packages you use in a script and set any global options for the R session at the top of the script.
+
+```{r, echo=TRUE, eval=FALSE}
+#---------------------R for Political Research: Lesson I-----------------------
+#-Author: A. Jordan Nafa-----------------------------Created: August 19, 2022-#
+#-R Version: 4.2.1-----------------------------------Revised: August 28, 2022-#
+
+# Set Session Options, you could also declare these in a .Rprofile
+options(
+  digits = 4, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"] # repo to install packages from
+)
+
+# Load Required Libraries, run install.packages("pacman") first
+pacman::p_load(
+  "tidyverse", # Suite of packages for tidy data management 
+  "data.table", # Package for high-performance data management 
+  "dtplyr", # Package to interface between dplyr and data.table
+  install = FALSE # Set this to TRUE to install missing packages
+)
+```
+
+Since code is executed sequentially, this ensures any dependencies required for later code chunks have already been loaded prior to their execution.
 
 ## Basic Calculations in R {auto-animate="true"}
 
 In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
 
-```r
+``` r
 # Using R for Addition
 print(2 + 2)
 
@@ -395,11 +430,11 @@ print(2 + 2)
 sum(2, 4, 6)
 ```
 
-## Basic Calculations in R {auto-animate=true}
+## Basic Calculations in R {auto-animate="true"}
 
 In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
 
-```r
+``` r
 # Using R for Addition
 print(2 + 2)
 
@@ -410,11 +445,11 @@ sum(2, 4, 6)
 print(6 - 2)
 ```
 
-## Basic Calculations in R {auto-animate=true}
+## Basic Calculations in R {auto-animate="true"}
 
 In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
 
-```r
+``` r
 # Using R for Addition
 print(2 + 2)
 
@@ -431,11 +466,11 @@ print(9 * 12)
 prod(9, 12, 36)
 ```
 
-## Basic Calculations in R {auto-animate=true}
+## Basic Calculations in R {auto-animate="true"}
 
 In the simplest illustration, we can use R for both basic calculations like addition, subtraction, multiplication, and division
 
-```r
+``` r
 # Using R for Addition
 print(2 + 2)
 
@@ -454,5 +489,85 @@ prod(9, 12, 36)
 # Using R for Division
 print(4 / 2)
 ```
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+-   Useful for understanding the concept of **assignment**, or how we specify certain objects in memory so we can use them elsewhere in a session
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+-   Useful for understanding the concept of **assignment**, or how we specify certain objects in memory so we can use them elsewhere in a session
+
+```{r, echo=TRUE}
+# This just prints the square root of 30
+sqrt(26 + 4)
+```
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+-   Useful for understanding the concept of **assignment**, or how we specify certain objects in memory so we can use them elsewhere in a session
+
+```{r, echo=TRUE}
+# This just prints the square root of 30
+sqrt(26 + 4)
+
+# We don't get any output for this one though. Why?
+sqrt_30 <- sqrt(26 + 4)
+```
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+-   Useful for understanding the concept of **assignment**, or how we specify certain objects in memory so we can use them elsewhere in a session
+
+```{r, echo=TRUE}
+# This just prints the square root of 30
+sqrt(26 + 4)
+
+# We don't get any output for this one though. Why?
+sqrt_30 <- sqrt(26 + 4)
+```
+
+-   There is nothing returned for the second operation because we assigned it to an object in memory called `sqrt_30` using `<-`, the **assignment operator**
+
+## Objects and Assignment
+
+R is what is known as an [object oriented programming language (OOP)](https://adv-r.hadley.nz/oo.html), meaning that everything in R is an **object**
+
+-   Useful for understanding the concept of **assignment**, or how we specify certain objects in memory so we can use them elsewhere in a session
+
+```{r, echo=TRUE}
+# This just prints the square root of 30
+sqrt(26 + 4)
+
+# We don't get any output for this one though. Why?
+sqrt_30 <- sqrt(26 + 4)
+```
+
+-   There is nothing returned for the second operation because we assigned it to an object in memory called `sqrt_30` using `<-`, the **assignment operator**
+
+```{r, echo=TRUE}
+# We can get the contents of sqrt_30 using print()
+print(sqrt_30)
+```
+
+## Licensing and Copyright Information
+
+-   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
+
+-   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE).
+
+-   The files and code necessary to reproduce the content of this course are or will be made available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) with the exception of those covered by existing commercial copyright restrictions (i.e., copies of the assigned readings for the course).
 
 ## References

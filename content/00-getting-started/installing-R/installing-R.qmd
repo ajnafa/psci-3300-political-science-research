@@ -71,7 +71,7 @@ After completing the previous steps, you can now proceed to installing the lates
 
 ## Customizing and Configuring RStudio
 
-Once you have installed RStudio, you can [customize its appearance and the default behavior of many aspects of your R Sessions](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). Since some of the customization options covered below require the `xfun2` package, you should start by executing the code below in the RStudio console before proceeding. Note this also demonstrates one of the ways we can install packages in R.
+Once you have installed RStudio, you can [customize its appearance and the default behavior of many aspects of your R Sessions](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). Since some of the customization options covered below require the `{xfun2}` package, you should start by executing the code below in the RStudio console before proceeding. Note this also demonstrates one of the ways we can install packages in R.
 
 ```{r}
 ## Installing the xfun2 package
@@ -147,7 +147,7 @@ If you run into issues installing Xcode using the code above you may need to ope
 
 Once you have successfully completed this step you can proceed to the tutorial for installing and configuring Stan and `{brms}`! For useful resources on getting familiar with R syntax see the resources below.
 
-## Additional Installations
+## Additional Installations (Optional but Strongly Reccomended)
 
 For our purposes in this course, I also suggest you install a citation management software--I personally use JabRef since it will export to any citation format in existence--and the latest version of pandoc. You can obtain each of these for your operating system by following the links below.
 
