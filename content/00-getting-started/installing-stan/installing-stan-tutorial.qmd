@@ -180,7 +180,6 @@ After verifying the toolchain configuration is correct, we can run the following
 cmdstanr::install_cmdstan(
   cores = parallel::detectCores(logical = FALSE),
   overwrite = TRUE,
-  version = "2.30.1", # Defaults to the latest version if not specified
   cpp_options = list("STAN_THREADS" = TRUE),
   check_toolchain = TRUE
 )

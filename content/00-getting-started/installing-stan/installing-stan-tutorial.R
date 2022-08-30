@@ -90,7 +90,6 @@ cmdstanr::check_cmdstan_toolchain(fix = TRUE)
 cmdstanr::install_cmdstan(
   cores = parallel::detectCores(logical = FALSE),
   overwrite = TRUE,
-  version = "2.30.1", # Defaults to the latest version if not specified
   cpp_options = list("STAN_THREADS" = TRUE),
   check_toolchain = TRUE
 )
