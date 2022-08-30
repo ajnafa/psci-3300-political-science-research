@@ -13,8 +13,6 @@ format:
     code-link: true
     linkcolor: "#00853E"
     code-block-bg: "#272822"
-bibliography: "../../../assets/references.bib"
-csl: "../../../assets/apsa.csl"
 link-citations: yes
 fig-cap-location: top
 ---
@@ -36,6 +34,10 @@ knitr::opts_chunk$set(
   }
 )
 ```
+
+::: callout-important
+If you have a [Chromebook](https://en.wikipedia.org/wiki/Chromebook) rather than a Windows or Mac computer, these installation instructions will not work. While there are ways to install R, RStudio, and other software on Chromebooks the process for doing so is different depending on what version of ChromeOS you have. If this problem applies to you, please make an appointment or come by during office hours as soon as possible so we can figure out what the appropriate steps to get everything up and running are.
+:::
 
 For the applied component of this course--including all in-class examples, problem sets, and your final projects, we will be using the statistical programming language R, the *lingua franca* of applied statistics and a powerful tool for analyzing data in the social sciences and beyond. Alongside Python, R is widely used for data analysis in academia, the private sector, and certain government agencies.[^1] The purpose of this guide is to help walk you through the steps necessary to get R installed and configured on your personal computer.
 
@@ -71,14 +73,14 @@ After completing the previous steps, you can now proceed to installing the lates
 
 ## Customizing and Configuring RStudio
 
-Once you have installed RStudio, you can [customize its appearance and the default behavior of many aspects of your R Sessions](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). Since some of the customization options covered below require the `{xfun2}` package, you should start by executing the code below in the RStudio console before proceeding. Note this also demonstrates one of the ways we can install packages in R.
+Once you have installed RStudio, you can [customize its appearance and the default behavior of many aspects of your R Sessions](https://support.rstudio.com/hc/en-us/articles/200549016-Customizing-RStudio). Since some of the customization options covered below require the `{xfun}` package, you should start by executing the code below in the RStudio console before proceeding. Note this also demonstrates one of the ways we can install packages in R.
 
 ```{r}
-## Installing the xfun2 package
-install.packages("xfun2")
+## Installing the xfun package
+install.packages("xfun")
 ```
 
-As shown in figure 1, to customize the behavior and appearance of RStudio we first need to open the global options window by selecting the tools tab from the taskbar at the top of the screen.
+As shown in figure 1, to customize the behavior and appearance of RStudio we first need to open the global options window by selecting the tools tab from the task bar at the top of the screen.
 
 ![Figure 1. Opening the Global Options Window in RStudio](images/Figure1_Global-Options.png){fig-align="center"}
 
