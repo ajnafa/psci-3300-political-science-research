@@ -1,0 +1,51 @@
+---
+title: "Political Research Question Assignment"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    bibliography: "../../assets/references.bib"
+    csl: "../../assets/apsa.csl"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    linkcolor: "#00853E"
+    code-block-bg: "#272822"
+css: "../../assets/page-style.css"
+link-citations: yes
+fig-cap-location: top
+editor: visual
+---
+
+# Formulating a Research Question 
+
+The first step in your final project for this course will be to formulate a research question of relevance to some sub-field of **empirical political science**. To successfully complete this assignment you will need to do each of the following
+
+-   Identify a topic in political science that is of interest to you
+
+-   From this topic, derive and clearly state a **causal research question**
+
+-   Provide a brief explanation of how your paper fits into the existing literature on your topic.
+
+::: a
+Your research question should clearly imply the causal relationship you are interested and for our purposes in this class, should be answerable with existing data. To get an idea of possible data sources you might use for your paper this semester, you can consult this [comprehensive archive of publicly available political science data sets by topic](https://github.com/erikgahner/PolData). In total, your submission should be approximately two double spaced pages in length with 12 point Times New Roman font. An example of what the *ideal* submission should look like is provided here.
+
+To provide a brief example, imagine we are interested in whether gender-inclusive peace processes adopted as part of the conflict termination process reduce the risk of conflict recurrence. We would state our research question as "How do gender-inclusive peace processes influence the risk of conflict recurrence?" In this case, we are clearly stating that we are interested in the causal effect of gender-inclusive peace processes (X) on the time until conflict recurrence (Y). To evaluate this quantitatively, we could use [data on countries that experienced conflict](https://ucdp.uu.se/) and compare those that ended in [gender-inclusive peace processes](https://journals.sagepub.com/doi/full/10.1177/0192512118808608) to those that did not.
+
+This assignment should be submitted via Canvas in either PDF or docx file format and is due **Tuesday, September 18th by 11:59 PM**
+:::
+
+### Additional Requirements
+
+-   In framing your research question and discussing previous literature, your submission should reference at least five sources from peer-reviewed **political science journals**. Avoid citing blog posts, white papers, law reviews, podcasts and other non-scientific materials. We covered how to perform precise keyword searches by term and journal name in google scholar during class.
+
+-   References should conform to the style of the American Political Science Association, which uses a variant of the Chicago Manual of Style, 17th edition. The example document illustrating what your submission is expected to look like adheres to this format and you can use it for reference if necessary.
+
+-    Remember, for the final project you have the option to work in groups of up to three. If you already know you will be working in a group, please include the names of all of your group's members on your submission but each of you should submit a copy of the assignment via Canvas separately.
+
+## Copyright and License Information
+
+All text and images in this document are made available for public use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/) while code is provided under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE). All files necessary to reproduce this document are available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research).

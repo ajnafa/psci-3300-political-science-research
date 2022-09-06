@@ -136,6 +136,9 @@ However, since downloading this can be extremely time consuming given the large 
 [^3]: I thank Andrew Heiss for [suggesting this simplified approach](https://twitter.com/andrewheiss/status/1557676974654595072?s=20&t=7TZd-6p2_x7pnIRdZldjkg) to installing Xcode.
 
 ```{r}
+## MacOS Users may need to install the rstudioapi manually first
+install.packages("rstudioapi")
+
 ## Run the command to install xcode-select
 rstudioapi::terminalExecute(
   command = "xcode-select --install"

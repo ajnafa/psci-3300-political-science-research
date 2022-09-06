@@ -86,7 +86,7 @@ In some cases, we may also need to load separate functions we have written ourse
 
 ```{r, eval=FALSE}
 # Load the function for creating working directories in projects
-source(str_c(here::here(), "/functions/project-subdirectories.R"))
+source("functions/project-subdirectories.R")
 
 # Add data, scripts, functions, documents, figures, and models folders
 make_project_dirs(project_dir = NULL)
@@ -393,14 +393,11 @@ install.packages(
   repos = "https://easystats.r-universe.dev"
   )
 
-# Easy stats also provides a way to installed its dependencies
-easystats::install_suggested()
-
 # Load the remotes package
 library(remotes)
 
 # Installing a package from github using the remotes package
-install_github("vdeminstitute/vdemdata")
+install_github("RobinHankin/Brobdingnag")
 ```
 
 ::: a
