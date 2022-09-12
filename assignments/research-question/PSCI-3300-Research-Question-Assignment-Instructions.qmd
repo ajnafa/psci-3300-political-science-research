@@ -20,7 +20,7 @@ fig-cap-location: top
 editor: visual
 ---
 
-# Formulating a Research Question 
+# Formulating a Research Question
 
 The first step in your final project for this course will be to formulate a research question of relevance to some sub-field of **empirical political science**. To successfully complete this assignment you will need to do each of the following
 
@@ -35,7 +35,7 @@ Your research question should clearly imply the causal relationship you are inte
 
 To provide a brief example, imagine we are interested in whether gender-inclusive peace processes adopted as part of the conflict termination process reduce the risk of conflict recurrence. We would state our research question as "How do gender-inclusive peace processes influence the risk of conflict recurrence?" In this case, we are clearly stating that we are interested in the causal effect of gender-inclusive peace processes (X) on the time until conflict recurrence (Y). To evaluate this quantitatively, we could use [data on countries that experienced conflict](https://ucdp.uu.se/) and compare those that ended in [gender-inclusive peace processes](https://journals.sagepub.com/doi/full/10.1177/0192512118808608) to those that did not.
 
-This assignment should be submitted via Canvas in either PDF or docx file format and is due **Tuesday, September 18th by 11:59 PM**
+This assignment should be submitted via Canvas in either PDF or docx file format and is due **Sunday, September 18th by 11:59 PM**
 :::
 
 ### Additional Requirements
@@ -44,7 +44,7 @@ This assignment should be submitted via Canvas in either PDF or docx file format
 
 -   References should conform to the style of the American Political Science Association, which uses a variant of the Chicago Manual of Style, 17th edition. The example document illustrating what your submission is expected to look like adheres to this format and you can use it for reference if necessary.
 
--    Remember, for the final project you have the option to work in groups of up to three. If you already know you will be working in a group, please include the names of all of your group's members on your submission but each of you should submit a copy of the assignment via Canvas separately.
+-   Remember, for the final project you have the option to work in groups of up to three. If you already know you will be working in a group, please include the names of all of your group's members on your submission but each of you should submit a copy of the assignment via Canvas separately.
 
 ## Copyright and License Information
 

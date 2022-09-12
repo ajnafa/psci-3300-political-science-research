@@ -1,0 +1,376 @@
+% This is a manuscript template for use with Rmarkdown
+\documentclass[twoside, $if(fontsize)$$fontsize$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{article}
+
+% Much of the latex code here is adapted from Steven V. Miller's example templates which are available here http://svmiller.com/stevetemplates/
+
+% Set the page margins
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+
+% Language and encodings
+\usepackage[english]{babel}
+\usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Font Family Options
+$if(fontfamily)$
+\usepackage[$fontfamilyoptions$]{$fontfamily$}
+\usepackage{textcase, lettrine, xpatch, fontspec}
+$else$
+\usepackage{textcase, lettrine, xpatch, lmodern, fontspec}
+$endif$
+
+% Drop Cap Settings
+\appto{\LettrineFontHook}{\mdseries}
+\renewcommand{\LettrineTextFont}{\upshape}
+\renewcommand{\LettrineSecondString}{l}
+\newcommand{\dropcap}[2][]{\lettrine[lines=2, slope=-2pt, #1] #2}
+
+% Mathematics and Symbols
+\usepackage{amsmath}
+\linespread{1.00}
+
+% Hypothesis Theorem Settings
+\usepackage{ntheorem}
+\theoremseparator{:}
+\newtheorem{hypx}{Hypothesis}
+\newenvironment{hyp}{\hypx[H\textsubscript{\thehypx}]}{\endhypx}
+\newcommand{\hypref}[1]{\textup{H\textsubscript{\ref{#1}}}}
+
+\makeatletter
+\newcounter{subhyp} 
+\let\savedc@hypx\c@hypx
+\newenvironment{subhyp}
+{%
+	\setcounter{subhyp}{0}%
+	\stepcounter{hypx}%
+	\edef\saved@hypx{\thehypx}% Save the current value of hyp
+	\let\c@hypx\c@subhyp     % Now hyp is subhyp
+	\renewcommand{\thehypx}{\saved@hypx\alph{hypx}}%
+}
+{}
+\newcommand{\normhyp}{%
+	\let\c@hypx\savedc@hypx % revert to the old one
+	\renewcommand\thehypx{\arabic{hypx}}%
+} 
+\makeatother
+
+% Cover Page and Formatting
+\usepackage[style]{abstract}
+\usepackage{environ}
+\usepackage[explicit]{titlesec}
+\usepackage{tikz, pgffor}
+\usepackage{fancyhdr, lastpage}
+
+% Abstract and Title Page Settings
+\renewcommand{\abstitlestyle}[1]{}
+\setlength{\absleftindent}{12pt}
+\setlength{\absrightindent}{12pt}
+\setlength{\absparindent}{0pt}
+
+% Line and Text Spacing
+\usepackage{setspace}
+\setlength{\columnsep}{0cm}
+\setlength{\parskip}{0em}
+\setcounter{DefaultLines}{3}
+\setlength{\DefaultFindent}{0pt}
+\setlength{\DefaultNindent}{0pt}
+
+% Appendix Settings
+$if(appendix)$
+\renewcommand*\thetable{$appendixletter$.\arabic{table}}
+\renewcommand*\thefigure{$appendixletter$.\arabic{figure}}
+$endif$
+
+$if(listings)$
+\usepackage{listings}
+$endif$
+$if(lhs)$
+\lstnewenvironment{code}{\lstset{language=r,basicstyle=\footnotesize\ttfamily}}{}
+$endif$
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$if(verbatim-in-note)$
+\usepackage{fancyvrb}
+$endif$
+% Packages for tables
+\usepackage{booktabs, longtable, multicol, supertabular, pdflscape, tabu, threeparttable, threeparttablex}
+
+% Captions for Tables and Figures
+\usepackage{caption}
+\captionsetup*{
+	figurename=Figure,
+	tablename=Table,
+	labelsep=period,
+	justification=justified,
+	%footfont={md, footnotesize},
+	singlelinecheck=false,
+	aboveskip=0pt, 
+	belowskip=0pt
+}
+\captionsetup[table]{
+	name={Table}, 
+	aboveskip=0pt, 
+	belowskip=0pt,  
+	justification=raggedright
+}
+\captionsetup[longtable]{
+	name={Table}, 
+	aboveskip=0pt, 
+	belowskip=0pt, 
+	labelfont=bf, 
+	textfont=bf, 
+	justification=raggedright
+}
+
+% Figure Frame Style
+\usepackage[
+framefit=yes,
+heightadjust=all
+]{floatrow}
+
+% Style for Floats
+\usepackage{float}
+\floatsetup{capposition=$tbl-cap-location$}
+\newcommand{\floatnote}[1]{\floatfoot{\textit{Notes: }#1}}
+\floatsetup[longtable]{LTcapwidth=table,margins=centering,font=scriptsize}
+
+$if(graphics)$
+\usepackage{graphicx, grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+$endif$
+
+% Bibliography Settings
+$if(natbib)$
+\usepackage{natbib}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+\usepackage[strings]{underscore} % protect underscores in most circumstances
+$endif$
+
+$if(biblatex)$
+\usepackage{csquotes}
+\usepackage[natbib,authordate,backend=biber,sorting=nyt]{biblatex-chicago}
+$if(biblatexoptions)$\ExecuteBibliographyOptions{$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$}$endif$
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
+$if(listings)$
+\usepackage{listings}
+$endif$
+
+$if(title)$
+\title{$title$$if(subtitle)$ $subtitle$$endif$ $if(thanks)$\thanks{$thanks$} $endif$}
+$endif$
+
+% Formatting for Section Headers
+\setcounter{secnumdepth}{0}
+\titleformat{\section}{\fontsize{16pt}{16pt}\selectfont\bfseries\raggedright}{}{0pt}{#1}
+\titleformat{\subsection}{\fontsize{14pt}{14pt}\selectfont\bfseries}{}{0pt}{#1}
+\titleformat{\subsubsection}{\fontsize{12pt}{12pt}\selectfont\itshape}{}{0pt}{#1}
+
+\titlespacing*{\section}{0pt}{8pt}{8pt}
+\titlespacing*{\subsection}{0pt}{6pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{6pt}
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\makeatletter
+\@ifpackageloaded{hyperref}{}{%
+	\ifxetex
+	\PassOptionsToPackage{hyphens}{url}\usepackage[setpagesize=false, % page size defined by xetex
+	unicode=false, % unicode breaks when used with xetex
+	xetex]{hyperref}
+	\else
+	\PassOptionsToPackage{hyphens}{url}\usepackage[draft,unicode=true]{hyperref}
+	\fi
+}
+
+\@ifpackageloaded{color}{
+	\PassOptionsToPackage{usenames,dvipsnames}{color}
+}{%
+	\usepackage[usenames,dvipsnames]{color}
+}
+\makeatother
+\definecolor{untgreen}{RGB}{5,144,51}
+\hypersetup{
+	breaklinks=true,
+	bookmarks=true,
+	pdfauthor={$if(anonymous)$$else$$for(author)$$author.name$ ($author.affiliation$)$sep$ and $endfor$$endif$},
+	pdfkeywords = {$if(keywords)$$keywords$$endif$},
+	pdftitle={$title$$if(subtitle)$: $subtitle$$endif$},
+	pdfborder={0 0 0},
+	colorlinks=true,
+	citecolor=$if(citecolor)$$citecolor$$else$untgreen$endif$,
+	urlcolor=$if(urlcolor)$$urlcolor$$else$untgreen$endif$,
+	linkcolor=$if(linkcolor)$$linkcolor$$else$untgreen$endif$,
+	filecolor=$if(filecolor)$$filecolor$$else$untgreen$endif$
+}
+\urlstyle{same}
+
+\usepackage{cleveref}
+
+% Icons for ORC-ID and Github -- Requires rendering engine xelatex
+\usepackage{academicons}
+\newcommand{\orcid}[1]{\href{https://orcid.org/#1}{\textcolor[HTML]{A6CE39}{\aiOrcid}}}
+\newcommand{\openmaterials}[1]{\href{https://github.com/ajnafa/#1}{\textcolor[HTML]{000000}{\aiOpenMaterials}}} % Replace this with your github repo base url
+
+\usepackage{fontawesome}
+\newcommand{\gitrepo}[1]{\href{https://github.com/ajnafa/#1}{\textcolor[HTML]{000000}{\faGithub}}}
+
+% Add an option for endnotes
+$if(endnotes)$
+\usepackage{endnotes}
+\renewcommand{\enotesize}{\normalsize}
+\let\footnote=\endnote
+$endif$
+
+% Configure the page header and footer styles
+\fancypagestyle{titlepage}{
+	\renewcommand{\headrulewidth}{0.0pt}
+	\fancyhf{}
+	$if(date)$
+	\fancyhead[L]{Last Revised: $date$}
+	$else$
+	\fancyhead[L]{Last Revised: \today}
+	$endif$
+}
+
+\fancypagestyle{bodypage}{
+	\renewcommand{\headrulewidth}{0.0pt}
+	\fancyhf{}
+	\fancyhead[LE]{$title$}
+	\fancyhead[RO]{$if(anonymous)$$else$$runninghead$$endif$}
+	\fancyhead[LO, RE]{\thepage}
+}
+
+\fancypagestyle{landscapepage}{
+	\renewcommand{\headrulewidth}{0.0pt}
+	\pagestyle{empty}
+}
+
+% Add tightlist
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\usepackage[marginal]{footmisc}
+\setlength{\footnotemargin}{0.25em}
+
+\makeatletter
+\def\blfootnote{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+% Author-Date Citation Possessive
+\usepackage{etoolbox}
+\newcommand{\citepos}[1]{\citeauthor{#1}'s (\citeyear{#1})}
+
+\renewcommand*{\tableautorefname}{table}
+\renewcommand*{\figureautorefname}{figure}
+\usepackage{placeins}
+
+%\tolerance=1
+%\emergencystretch=\maxdimen
+%\hyphenpenalty=10000
+%\hbadness=10000
+
+\begin{document}
+	\pagestyle{bodypage}
+	$if(title)$
+	% Distinct title Page Style Settings
+	\thispagestyle{titlepage}
+	\vspace*{2pt}
+	\begin{flushleft}
+		\fontsize{28pt}{28pt}\selectfont{%
+			\bfseries $title$$if(subtitle)$ $subtitle$$endif$
+		}\fontsize{18pt}{18pt}\blfootnote{\hspace*{-\footnotemargin}% 
+			$if(firstfooter)$$firstfooter$$endif$
+		}\\%
+	\end{flushleft}
+	\vspace*{6pt}
+	$if(twoauthor)$
+	\begin{center}
+		\begin{tabular}[H]{ccc}
+			\fontsize{22pt}{22pt}\selectfont\textit{$first-author.name$} \fontsize{16pt}{16pt}$if(first-author.orcid)$\orcid{$first-author.orcid$}$endif$ & & \fontsize{22pt}{22pt}\selectfont\textit{$second-author.name$} \fontsize{16pt}{16pt}$if(second-author.orcid)$\orcid{$second-author.orcid$}$endif$\\
+			\addlinespace[0.3em]
+			\fontsize{16pt}{16pt}\selectfont $first-author.affiliation$ & & \fontsize{16pt}{16pt}\selectfont $second-author.affiliation$
+		\end{tabular}
+	\end{center}
+	$elseif(multiauthor)$
+	\begin{center}
+		\begin{tabular}[H]{ccc}
+			\fontsize{22pt}{22pt}\selectfont\textit{$first-author.name$} \fontsize{16pt}{16pt}$if(first-author.orcid)$\orcid{$first-author.orcid$}$endif$\gitrepo{$github$} & & \fontsize{22pt}{22pt}\selectfont\textit{$second-author.name$} \fontsize{16pt}{16pt}$if(second-author.orcid)$\orcid{$second-author.orcid$}$endif$\\
+			\addlinespace[0.3em]
+			\fontsize{16pt}{16pt}\selectfont $first-author.affiliation$ & & \fontsize{16pt}{16pt}\selectfont $second-author.affiliation$\\
+			\addlinespace[2em]
+			\fontsize{22pt}{22pt}\selectfont\textit{$third-author.name$} \fontsize{16pt}{16pt}$if(third-author.orcid)$\orcid{$third-author.orcid$}$endif$ & & \fontsize{22pt}{22pt}\selectfont\textit{$fourth-author.name$} \fontsize{16pt}{16pt}$if(fourth-author.orcid)$\orcid{$fourth-author.orcid$}$endif$\\
+			\addlinespace[0.3em]
+			\fontsize{16pt}{16pt}\selectfont $third-author.affiliation$ & & \fontsize{16pt}{16pt}\selectfont $fourth-author.affiliation$\\
+		\end{tabular}
+	\end{center}
+	$else$
+	\begin{flushleft}
+		\vspace*{6pt}
+		\fontsize{26pt}{26pt}\selectfont\textit{$if(anonymous)$$else$$author.name$$endif$}
+		\fontsize{18pt}{18pt}\selectfont\orcid{$author.orcid$} \openmaterials{$github$} \\
+		\vspace*{12pt}                                                                                  
+		\fontsize{18pt}{18pt}\selectfont \textbf{$if(anonymous)$$else$$author.affiliation$$endif$}
+	\end{flushleft}
+	$endif$
+	$if(wordcount)$
+	\begin{center}
+		\textit{Word Count:} $wordcount$
+	\end{center}
+	$endif$
+	$if(abstract)$
+	\begin{abstract}
+		\noindent\normalsize $abstract$
+	\end{abstract}
+	$endif$
+	\vspace*{8pt}
+	$if(keywords)$
+	\textit{Keywords:} \textit{$keywords$}
+	$endif$
+	\vspace*{10pt}
+	$endif$
+	
+	$if(double-spacing)$\doublespacing$else$\onehalfspacing$endif$
+	\fontsize{$fontsize$}{$fontsize$} $body$
+	
+	$if(endnotes)$
+	\newpage
+	\theendnotes
+	$endif$
+	\newpage
+	\singlespacing
+	$if(natbib)$
+	$if(bibliography)$
+	$if(biblio-title)$
+	$if(book-class)$
+	\renewcommand\bibname{$biblio-title$}
+	$else$
+	\renewcommand\refname{$biblio-title$}
+	$endif$
+	$endif$
+	\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+	$endif$
+	$endif$
+	$if(biblatex)$
+	\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+	$endif$
+	$for(include-after)$
+	$include-after$
+	$endfor$
+	
+\end{document}

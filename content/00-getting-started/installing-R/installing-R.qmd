@@ -146,7 +146,7 @@ Due to a bug in the `{dbplyr}` package--a dependency of `{tidyverse}`--related t
 
 ```{r}
 # Installing a package from github using the remotes package
-install_github("RobinHankin/Brobdingnag")
+remotes::install_github("RobinHankin/Brobdingnag")
 ```
 
 ::: callout-important
@@ -214,7 +214,7 @@ Due to a bug in the `{dbplyr}` package--a dependency of `{tidyverse}`--related t
 
 ```{r}
 # Installing a package from github using the remotes package
-install_github("RobinHankin/Brobdingnag")
+remotes::install_github("RobinHankin/Brobdingnag")
 ```
 
 ::: callout-important
