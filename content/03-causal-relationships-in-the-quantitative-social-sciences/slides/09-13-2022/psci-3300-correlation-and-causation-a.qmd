@@ -1,0 +1,754 @@
+---
+title: "Causal Relationships in the Quantitative Social Sciences I"
+author: "A. Jordan Nafa"
+date: "September 13th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  "vdemdata", 
+  install = FALSE
+  )
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 24, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+```
+
+## Overview
+
+::: incremental
+-   Better understanding of correlation and causation
+
+-   Ways of thinking about and formally expressing causal relationships
+
+-   No class Thursday, I will be at a conference in Canada
+
+-   Research Question Assignment is due Sunday, September 18th
+
+-   Problem set two will be posted on Canvas by the end of the day today
+:::
+
+$$
+\definecolor{treat}{RGB}{27,208,213}
+\definecolor{outcome}{RGB}{98,252,107}
+\definecolor{baseconf}{RGB}{244,199,58}
+\definecolor{covariates}{RGB}{178,26,1}
+\definecolor{index}{RGB}{37,236,167}
+\definecolor{timeid}{RGB}{244,101,22}
+\definecolor{mu}{RGB}{71,119,239}
+\definecolor{sigma}{RGB}{219,58,7}
+\newcommand{normalcolor}{\color{white}}
+\newcommand{treat}[1]{\color{treat} #1 \normalcolor}
+\newcommand{resp}[1]{\color{outcome} #1 \normalcolor}
+\newcommand{sample}[1]{\color{baseconf} #1 \normalcolor}
+\newcommand{covar}[1]{\color{covariates} #1 \normalcolor}
+\newcommand{obs}[1]{\color{index} #1 \normalcolor}
+\newcommand{tim}[1]{\color{timeid} #1 \normalcolor}
+\newcommand{mean}[1]{\color{mu} #1 \normalcolor}
+\newcommand{vari}[1]{\color{sigma} #1 \normalcolor}
+$$
+
+## What is Correlation?
+
+**Correlation** is the degree to which two or more features of the world tend to occur in tandem.
+
+::: incremental
+-   We'll call these features of the world "variables"
+
+-   If two variables $\treat{X}$ and $\resp{Y}$ tend to occur together or increase at the same rate, we would say they are **positively correlated**
+
+-   If the occurrence of $\treat{X}$ unrelated to $\resp{Y}$, we would say these two variables are **uncorrelated**
+
+-   If when $\treat{X}$ occurs we are less likely to observe $\resp{Y}$, we would say these two variables are **negatively correlated**
+:::
+
+## The Resource Curse
+
+Consider the case of the resource curse in comparative politics--an alleged negative correlation between dependence on oil production and democracy
+
+|               | Not a Major Oil Producer | Major Oil Producer |
+|---------------|:------------------------:|:------------------:|
+| Democracy     |            78            |         15         |
+| Non-Democracy |            58            |         26         |
+
+-   Probability that a country is a democracy and a major oil producer
+
+    -   $\Pr(\mathrm{Democracy} | \mathrm{No~Oil}) = \frac{78}{78+58} \approx 0.5735$
+
+    -   $\Pr(\mathrm{Democracy} | \mathrm{Oil}) = \frac{15}{15+26} \approx 0.3659$
+
+## Example: The Resource Curse
+
+Consider the case of the resource curse in comparative politics--an alleged negative correlation between dependence on oil production and democracy
+
+|                   | Not a Major Oil Producer | Major Oil Producer | Pr(Oil) |
+|-------------------|:------------------------:|:------------------:|:-------:|
+| **Democracy**     |            78            |         15         | 0.1613  |
+| **Autocracy**     |            58            |         26         | 0.3095  |
+| **Pr(Democracy)** |          0.5735          |       0.3659       |         |
+
+-   Oil producing countries are less likely to be democracies than non-oil producing countries. Why?
+
+## Democracy and Gender Equality
+
+```{r continuous-correlation, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center', cache=TRUE}
+gender_data <- vdem %>% 
+  # Use just the year 2018
+  filter(year == 2018) %>%  
+  # Transmute a subset of the data for plotting
+  select(
+    country_name,
+    v2x_polyarchy, 
+    v2x_gender
+    )
+
+# Initiate the plot object
+ggplot(gender_data, aes(x = v2x_gender, y = v2x_polyarchy)) +
+  # Add the data points
+  geom_point(
+    aes(fill = country_name), 
+    show.legend = FALSE, 
+    shape = 21,
+    size = 3
+    ) +
+  # Color for the fill
+  scale_fill_viridis_d() +
+  # Labels for the plot
+  labs(
+    x = "Women's Political Empowerment Index",
+    y = "Procedural Democracy"
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Add annotation
+  annotate(
+    "text",
+    x = 0.3,
+    y = 0.7,
+    size = 12,
+    color = "white",
+    family = "serif",
+    label = latex2exp::TeX(r'($\rho_{x,y} = 0.7954$)'),
+    parse = TRUE
+  ) +
+  # Plot theme settings
+  fig_theme
+```
+
+## What is Correlation Good For?
+
+::: incremental
+- **Description**
+
+  - Suppose we want to know whether countries where gender equality is higher are more democratic on average
+  
+  - We might be interested in the correlation between **gender equality** and **democracy**
+  
+  - If our data is good, we can provide a yes or no answer to this question with few assumptions needed
+:::
+
+## What is Correlation Good For?
+
+We can estimate this correlation in R with a simple linear model and data from the Varieties of Democracy project's `{vdemdata}` package
+
+```{r, echo=TRUE, eval=FALSE}
+# Load the tidyverse library
+pacman::p_load(
+  "tidyverse",
+  "latex2exp"
+  )
+
+# Install the vdemdata package if you didn't read the R programming tutorial
+remotes::install_github("vdeminstitute/vdemdata")
+```
+
+## What is Correlation Good For?
+
+We can estimate this correlation in R with a simple linear model and data from the Varieties of Democracy project's `{vdemdata}` package
+
+```{r, echo=TRUE}
+# Get the data we need from the vdemdata package
+vdem_df <- vdemdata::vdem %>% 
+  # We'll use just the year 2018 here for simplicity
+  filter(year == 2018) %>%  
+  # Transmute a subset of the data for plotting
+  transmute(
+    country_name, 
+    v2x_polyarchy = v2x_polyarchy*10, 
+    v2x_gender = v2x_gender*10
+    )
+
+# Estimate the linear relationship
+lm_democ_gender <- lm(v2x_polyarchy ~ v2x_gender, data = vdem_df)
+
+# Print a summary of the result
+broom::tidy(lm_democ_gender)
+```
+
+## Democracy and Gender Equality
+
+```{r continuous-correlation-fit, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center', cache=TRUE}
+# Initiate the plot object
+ggplot(vdem_df, aes(x = v2x_gender, y = v2x_polyarchy)) +
+  # Add the data points
+  geom_point(
+    aes(fill = country_name), 
+    show.legend = FALSE, 
+    shape = 21,
+    size = 3
+    ) +
+  # Color for the fill
+  scale_fill_manual(values = viridisLite::turbo(n = length(vdem_df$country_name))) +
+  # Labels for the plot
+  labs(
+    x = "Women's Political Empowerment Index",
+    y = "Procedural Democracy",
+    title = latex2exp::TeX(r'($E\[Y_{i} | X_{i}\] = -3.03 + 1.12\times X_{i}$ or $E\[Y_{i} | X_{i}\] = \alpha + \beta_{1}X_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Plot the linear regression line
+  geom_abline(
+    intercept = -3.03, 
+    slope = 1.12,
+    color = "white",
+    lty = 2,
+    size = 2
+    ) +
+  # Plot theme settings
+  fig_theme
+```
+
+## What is Correlation Good For?
+
+::: incremental
+- **Prediction and Forecasting**
+
+  - Suppose we want to predict which financial transactions are likely to be fraudulent
+  
+  - With large amounts of data on legitimate consumer transactions, we could develop a model that detects anomalies that are likely to be fraudulent
+  
+  - Major financial firms have entire teams dedicated to predicting and preventing fraud in this manner
+  
+  - Other examples of prediction include election forecasting, self-driving cars, and many other tasks
+:::
+
+## What is Correlation Good For?
+
+::: incremental
+- **Causal Inference**
+
+  - Suppose we want to know if high school students would be more successful in life if they were forced to take calculus
+  
+  - The observed correlation between calculus and future success might be useful
+  
+  - But we would have to assume that the students taking calculus are otherwise the same as everyone else in terms of their underlying chances of success
+  
+  - Aside from very special circumstances, this kind of assumption will be hard to defend
+  
+  - As a general rule, correlation does not imply causation
+:::
+
+## Descriptive Statistics
+
+For every variable we observe, we can compute a number of different statistics. Three that are particularly useful for understanding data are **mean**, **variance**, and **standard deviation**
+
+::: incremental
+- Mean $\mean{\mu}_{\treat{x}}$: $\frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} \treat{x}_{\obs{i}}}{\sample{N}}$
+
+- Variance $\vari{\sigma}_{\treat{x}}^{2}$: $\frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu}_{\treat{x}})^{2}}{\sample{N}}$
+
+- Standard Deviation $\vari{\sigma}_{\treat{x}}$: $\sqrt{\vari{\sigma}_{\treat{x}}^{2}}$
+
+- The mean and variance are known as the first and second moments of a variable's distribution
+::: 
+
+## Univariate Descriptive Statistics in R
+
+Continuing with our previous example, we can calculate the mean, standard deviation, and variance of a numeric variable in R
+
+## Univariate Descriptive Statistics in R
+
+Continuing with our previous example, we can calculate the mean, standard deviation, and variance of a numeric variable in R
+
+```{r, echo=TRUE}
+# Mean of women's political empowerment in 2018
+mean(vdem_df$v2x_gender, na.rm = TRUE)
+```
+
+## Univariate Descriptive Statistics in R
+
+Continuing with our previous example, we can calculate the mean, standard deviation, and variance of a numeric variable in R
+
+```{r, echo=TRUE}
+# Mean of women's political empowerment in 2018
+mean(vdem_df$v2x_gender, na.rm = TRUE)
+
+# Standard deviation of women's political empowerment in 2018
+sd(vdem_df$v2x_gender, na.rm = TRUE)
+```
+
+## Univariate Descriptive Statistics in R
+
+Continuing with our previous example, we can calculate the mean, standard deviation, and variance of a numeric variable in R
+
+```{r, echo=TRUE}
+# Mean of women's political empowerment in 2018
+mean(vdem_df$v2x_gender, na.rm = TRUE)
+
+# Standard deviation of women's political empowerment in 2018
+sd(vdem_df$v2x_gender, na.rm = TRUE)
+
+# Variance of women's political empowerment in 2018
+var(vdem_df$v2x_gender, na.rm = TRUE)
+```
+
+## Univariate Descriptive Statistics in R
+
+Continuing with our previous example, we can calculate the mean, standard deviation, and variance of a numeric variable in R
+
+```{r, echo=TRUE}
+# Mean of women's political empowerment in 2018
+mean(vdem_df$v2x_gender, na.rm = TRUE)
+
+# Standard deviation of women's political empowerment in 2018
+sd(vdem_df$v2x_gender, na.rm = TRUE)
+
+# Variance of women's political empowerment in 2018
+var(vdem_df$v2x_gender, na.rm = TRUE)
+```
+
+These are univariate statistics, meaning they describe the distribution of a single variable
+
+## Bivariate Descriptive Statistics
+
+Now that we’ve learned some notation, and we can compute useful statistics for a single variable, we can start thinking about how to measure the correlation between two variables
+
+::: incremental
+- One useful measure of correlation is the **covariance**
+
+  - $Cov_{\treat{x}, \resp{y}} = \frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu}_{\treat{x}})(\resp{y}_{\obs{i}} - \mean{\mu}_{\resp{y}})}{\sample{N}}$
+  
+- A second is the **correlation coefficient**
+
+  - $\rho_{\treat{x}, \resp{y}} = \frac{Cov_{\treat{x}, \resp{y}}}{\vari{\sigma}_{\treat{x}} \cdot \vari{\sigma}_{\resp{y}}}$
+::: 
+
+## Bivariate Descriptive Statistics in R
+
+We can calculate the covariance and correlation coefficient for two numeric variables in R
+
+## Bivariate Descriptive Statistics in R
+
+We can calculate the covariance and correlation coefficient for two numeric variables in R
+
+```{r, echo=TRUE}
+# Covariance for gender and democracy
+cov(x = vdem_df$v2x_gender, y = vdem_df$v2x_polyarchy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We can calculate the covariance and correlation coefficient for two numeric variables in R
+
+```{r, echo=TRUE}
+# Covariance for gender and democracy
+cov(x = vdem_df$v2x_gender, y = vdem_df$v2x_polyarchy)
+
+# Correlation coefficient for gender and democracy
+cor(x = vdem_df$v2x_gender, y = vdem_df$v2x_polyarchy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We can calculate the covariance and correlation coefficient for two numeric variables in R
+
+```{r, echo=TRUE}
+# Covariance for gender and democracy
+cov(x = vdem_df$v2x_gender, y = vdem_df$v2x_polyarchy)
+
+# Correlation coefficient for gender and democracy
+cor(x = vdem_df$v2x_gender, y = vdem_df$v2x_polyarchy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+
+# (x_{i} - mu_{x})(y_{i} - mu_{y})
+cov_xy <- cov_x*cov_y
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+
+# (x_{i} - mu_{x})(y_{i} - mu_{y})
+cov_xy <- cov_x*cov_y
+
+# Sum of (x_{i} - mu_{x})(y_{i} - mu_{y})
+sum_cov_xy <- sum(cov_xy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+
+# (x_{i} - mu_{x})(y_{i} - mu_{y})
+cov_xy <- cov_x*cov_y
+
+# Sum of (x_{i} - mu_{x})(y_{i} - mu_{y})
+sum_cov_xy <- sum(cov_xy)
+
+# Covariance of x and y
+(cov_result <- sum_cov_xy/length(cov_xy))
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+
+# (x_{i} - mu_{x})(y_{i} - mu_{y})
+cov_xy <- cov_x*cov_y
+
+# Sum of (x_{i} - mu_{x})(y_{i} - mu_{y})
+sum_cov_xy <- sum(cov_xy)
+
+# Covariance of x and y
+(cov_result <- sum_cov_xy/length(cov_xy))
+
+# sigma_{x} sigma_{y}
+sigma_xy <- sd(vdem_df$v2x_gender)*(vdem_df$v2x_polyarchy)
+```
+
+## Bivariate Descriptive Statistics in R
+
+We could calculate the correlation and covariance manually as well for illustrative purposes
+
+```{r, echo=TRUE}
+# (x_{i} - mu_{x})
+cov_x <- vdem_df$v2x_gender - mean(vdem_df$v2x_gender)
+
+# (y_{i} - mu_{y})
+cov_y <- vdem_df$v2x_polyarchy - mean(vdem_df$v2x_polyarchy)
+
+# (x_{i} - mu_{x})(y_{i} - mu_{y})
+cov_xy <- cov_x*cov_y
+
+# Sum of (x_{i} - mu_{x})(y_{i} - mu_{y})
+sum_cov_xy <- sum(cov_xy)
+
+# Covariance of x and y
+(cov_result <- sum_cov_xy/length(cov_xy))
+
+# sigma_{x} sigma_{y}
+sigma_xy <- sd(vdem_df$v2x_gender)*(vdem_df$v2x_polyarchy)
+
+# Correlation
+cov_result/(sd(vdem_df$v2x_gender)*sd(vdem_df$v2x_polyarchy))
+```
+
+## Measuring Correlation
+
+::: incremental
+- The correlation coefficient tells us about the tightness of the relationship between two variables. 
+
+- But we often care more about the substantive magnitude of the relationship. How much does $\resp{Y}$ vary as $\treat{X}$ varies?
+
+- To answer this question, we want to know the **slope** of the regression line.
+
+- $\beta = \frac{Cov_{\treat{x}, \resp{y}}}{\vari{\sigma}_{\treat{x}}^{2}}$
+
+- On average, for every one-unit increase in $\treat{X}$, $\resp{Y}$ increases by...
+:::
+
+## Measuring Correlation
+
+```{r linear-fit-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(vdem_df, aes(x = v2x_gender, y = v2x_polyarchy)) +
+  # Add the data points
+  geom_point(
+    aes(fill = country_name), 
+    show.legend = FALSE, 
+    shape = 21,
+    size = 3
+    ) +
+  # Color for the fill
+  scale_fill_manual(values = viridisLite::turbo(n = length(vdem_df$country_name))) +
+  # Labels for the plot
+  labs(
+    x = "Women's Political Empowerment Index",
+    y = "Procedural Democracy",
+    title = latex2exp::TeX(r'($E\[Y_{i} | X_{i}\] = -3.03 + 1.12\times X_{i}$ or $E\[Y_{i} | X_{i}\] = \alpha + \beta_{1}X_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Plot the linear regression line
+  geom_abline(
+    intercept = -3.03, 
+    slope = 1.12,
+    color = "white",
+    lty = 2,
+    size = 2
+    ) +
+  # Plot theme settings
+  fig_theme
+```
+
+## When $y = mx + b$ Fails
+
+::: incremental
+- An unfortunate fact of life, though one some social scientists all too often fail to appreciate, is that not everything is approximately linear and additive
+
+- In cases of non-linear relationships, calculating the linear correlation between two variables will give us the wrong answer
+
+  - **If you make stupid assumptions, you will get stupid results**
+  
+  - Causation need not imply **linear correlation**
+  
+- Lots of interesting relationships are non-linear and there are ways of analyzing these relationships
+
+  - Pro-tip: The two most power tools for data analysis ever created are the histogram and the scatter plot
+::: 
+
+## Non-Linear Relationships
+
+Easiest way to to illustrate the problem is usually through simulation
+
+```{r, echo=TRUE}
+# Simulate some non-linear relationships
+nonlinear_sims <- tibble(
+  x = runif(n = 2e3, min = -10, max = 10),
+  y_posquad = x + x^2 + rnorm(2e3, 0, 2),
+  y_negquad = x - x^2 + rnorm(2e3, 0, 2),
+  y_sin = sin(x*3.14) + rnorm(2e3, 0, 0.5),
+  y_linear = x + rnorm(2e3, 0, 2)
+)
+```
+
+## Non-Linear Relationships
+
+Easiest way to to illustrate the problem is usually through simulation
+
+```{r, echo=TRUE}
+# Simulate some non-linear relationships
+nonlinear_sims <- tibble(
+  x = runif(n = 2e3, min = -10, max = 10),
+  y_posquad = x + x^2 + rnorm(2e3, 0, 2),
+  y_negquad = x - x^2 + rnorm(2e3, 0, 2),
+  y_sin = sin(x*3.14) + rnorm(2e3, 0, 0.5),
+  y_linear = x + rnorm(2e3, 0, 2)
+)
+```
+
+Then we can use `{ggplot2}` to make scatter plots of the relationships in the simulated variables
+
+## Non-Linear Relationships
+
+```{r echo=TRUE}
+# Initiate the plot object
+posquad_plot <- ggplot(nonlinear_sims, aes(x = x, y = y_posquad, fill = x)) +
+  # Add the data points
+  geom_point(shape = 21, size = 3) +
+  # Add the linear fit
+  geom_smooth(method = "lm", size = 2, se = FALSE, lty = 2, color = "white") +
+  # Tweak the fill color scheme
+  scale_fill_viridis_c() +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = X_{i} + X_{i}^{2} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8))
+```
+
+## Non-Linear Relationships
+
+```{r quadratic-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Print the plot object
+posquad_plot +
+  # Plot theme settings
+  fig_theme +
+  # Disable legends
+  guides(fill = "none")
+```
+
+## Non-Linear Relationships
+
+```{r echo=TRUE}
+# Initiate the plot object
+negquad_plot <- ggplot(nonlinear_sims, aes(x = x, y = y_negquad, fill = x)) +
+  # Add the data points
+  geom_point(shape = 21, size = 3) +
+  # Add the linear fit
+  geom_smooth(method = "lm", size = 2, se = FALSE, lty = 2, color = "white") +
+  # Tweak the fill color scheme
+  scale_fill_viridis_c() +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = X_{i} - X_{i}^{2} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8))
+```
+
+## Non-Linear Relationships
+
+```{r negquadratic-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Print the plot object
+negquad_plot +
+  # Plot theme settings
+  fig_theme +
+  # Disable legends
+  guides(fill = "none")
+```
+
+## Non-Linear Relationships
+
+```{r echo=TRUE}
+# Initiate the plot object
+sin_plot <- ggplot(nonlinear_sims, aes(x = x, y = y_sin, fill = x)) +
+  # Add the data points
+  geom_point(shape = 21, size = 3) +
+  # Add the linear fit
+  geom_smooth(method = "lm", size = 2, se = FALSE, lty = 2, color = "white") +
+  # Tweak the fill color scheme
+  scale_fill_viridis_c() +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = Sin(X_{i}\cdot \pi) + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8))
+```
+
+## Non-Linear Relationships
+
+```{r sin-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Print the plot object
+sin_plot +
+  # Plot theme settings
+  fig_theme +
+  # Disable legends
+  guides(fill = "none")
+```
+
+## Licensing and Copyright Information
+
+-   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
+
+-   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE).
+
+-   The files and code necessary to reproduce the content of this course are or will be made available via [the course's github repository](https://github.com/ajnafa/psci-3300-political-science-research) with the exception of those covered by existing commercial copyright restrictions (i.e., copies of the assigned readings for the course).
+
+## References
