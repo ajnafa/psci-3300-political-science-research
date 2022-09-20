@@ -195,15 +195,15 @@ ggplot(vdem_df, aes(x = gender_equality, y = polyarchy)) +
 -   **Variance** $\vari{\sigma}_{\treat{x}}^{2}$: $\frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu}_{\treat{x}})^{2}}{\sample{N}}$
 
     -   A measure of how much variation a variable exhibits. It is the average of the square of the deviations from the mean
-
--   **Standard Deviation** $\vari{\sigma}_{\treat{x}}$: $\sqrt{\vari{\sigma}_{\treat{x}}^{2}}$
-
-    -   Another measure of the variability in some variable. It is the square root of the variance and has the advantage of being on roughly the same scale as the the variable itself
 :::
 
 ## Review of Key Terms
 
 ::: incremental
+-   **Standard Deviation** $\vari{\sigma}_{\treat{x}}$: $\sqrt{\vari{\sigma}_{\treat{x}}^{2}}$
+
+    -   Another measure of the variability in some variable. It is the square root of the variance and has the advantage of being on roughly the same scale as the the variable itself
+    
 -   **Covariance** $Cov_{\treat{x}, \resp{y}} = \frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu}_{\treat{x}})(\resp{y}_{\obs{i}} - \mean{\mu}_{\resp{y}})}{\sample{N}}$
 
     -   A measure of the correlation between two variables. It is calculated as the average of the product of the deviations from the mean
@@ -291,8 +291,6 @@ ggplot(vdem_df, aes(x = gender_equality, y = polyarchy)) +
 -   This can be complicated for certain immutable characteristics such as race, sex, etc.
 
     -   One option is to focus on places where we could, at least in theory, manipulate these characteristics
-
-    -   Another is "Gap-Closing" Estimands which we'll talk about much later in the course [@Lundberg2022]
 :::
 
 ## Estimands
