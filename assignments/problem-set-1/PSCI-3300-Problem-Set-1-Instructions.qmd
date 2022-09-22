@@ -34,6 +34,6 @@ The second problem set for this course covers the basics of data visualization, 
 
 -   [Iterate](https://rstudio.cloud/learn/primers/5)
 
-After you have successfully completed these, you will need to answer each of the questions in this Quarto document as we discussed in class. Once you have done this successfully, you will need to render the document and upload it to Canvas the same way you did for problem set 0.
+After you have successfully completed these, you will need to answer each of the questions in this Quarto document as we discussed in class. Step by step instructions for the problem set are provided in the `PSCI-3300-Problem-Set-1.qmd` document and once you have answered each question you will need to render the document and upload it to Canvas the same way you did for problem set 0.
 
 **This assignment is due Friday, September 30th by 11:59 PM**.
