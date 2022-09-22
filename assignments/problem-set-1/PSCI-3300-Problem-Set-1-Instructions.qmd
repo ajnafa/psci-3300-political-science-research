@@ -1,0 +1,39 @@
+---
+title: "Problem Set I: Data Wrangling and Visualization with R"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    bibliography: "../../assets/references.bib"
+    csl: "../../assets/apsa.csl"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    linkcolor: "#00853E"
+    code-block-bg: "#272822"
+css: "../../assets/page-style.css"
+link-citations: yes
+fig-cap-location: top
+editor: visual
+---
+
+# Instructions
+
+The second problem set for this course covers the basics of data visualization, transformation, and understanding quantitative relationships. For this assignment, you will first need to work through the following RStudio primer tutorials
+
+-   [The Basics](https://rstudio.cloud/learn/primers/1)
+
+-   [Work with Data](https://rstudio.cloud/learn/primers/2)
+
+-   [Visualize Data](https://rstudio.cloud/learn/primers/3)
+
+-   [Tidy Your Data](https://rstudio.cloud/learn/primers/4)
+
+-   [Iterate](https://rstudio.cloud/learn/primers/5)
+
+After you have successfully completed these, you will need to answer each of the questions in this Quarto document as we discussed in class. Once you have done this successfully, you will need to render the document and upload it to Canvas the same way you did for problem set 0.
+
+**This assignment is due Friday, September 30th by 11:59 PM**.

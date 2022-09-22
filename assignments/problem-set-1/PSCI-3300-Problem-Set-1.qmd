@@ -1,0 +1,81 @@
+---
+title: "Problem Set I: Data Wrangling and Visualization with R"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author:
+  - "*Your Name Here*" # replace this with your name
+  - "University of North Texas"
+fig-cap-location: top
+format: 
+  docx:
+    toc: false
+    reference-doc: "../../assets/Manuscript_Template.docx"
+    highlight-style: monokai
+    linkcolor: "#00853E"
+---
+
+# Instructions
+
+Once you have worked through each of the RStudio primer tutorials linked in the instructions on the course's Canvas page, you can answer each of the questions in this document by typing your answer below the header and including any required code in one of the pre-defined chunks. Rendering this document follows the same process as your submission for problem set 0. I recommend typing out the code for your answers in a script first and copying the relevant parts into their respective code blocks below once you have verified that everything runs without errors. Please remember that in order to receive partial credit for incorrect answers, you must at least attempt to answer the question and comment your code appropriately. **This assignment is due Friday, September 30th by 11:59 PM**.
+
+## Loading Libraries
+
+First, we'll need to load the `tidyverse` library which contains all of the functions you'll need to complete the data manipulation and visualization tasks in this assignment.
+
+```{r library-load}
+
+```
+
+## Loading Data in R
+
+For this assignment we will be using data from the Varieties of Democracy Project (V-Dem) which is available through the V-Dem package. In the code block below, type the code to load the V-Dem data in R
+
+```{r data-load}
+
+```
+
+## Subsetting and Filtering Data
+
+For our purposes here we only need a subset of the data. To extract specific variables from a data frame we can use the `select` function from the `{dplyr}` package. Using the `vdem` data frame object you loaded above, select the following columns from the data: `country_name`, `year`, `v2x_polyarchy`, `v2x_corr` and the use the `filter` function to keep only the years 1990, 2000, 2010, and 2020 and assign the result to a new object called `vdem_df`.
+
+```{r subsetting}
+
+```
+
+## Transforming Data
+
+On their original scales, the variables `v2x_polyarchy` and `v2x_corr` range from 0 to 1. For the purpose of interpretability, create two new variables called `polyarchy` and `corruption` whose respective values are the original variables multiplied by 100. Assign the result to an object called `vdem_df` since we are simply adding new columns to the existing `vdem_df` object.
+
+```{r transforming}
+
+```
+
+## Summarizing Data
+
+Next, calculate the mean, standard deviation, and pairwise correlation between procedural democracy (`polyarchy`) and political corruption (`corruption`) for each year (you can use `group_by` and `summarize` to accomplish this). Assign the result to an object called `vdem_summary` and use the `print` function to print the resulting tibble.
+
+```{r summarizing}
+
+```
+
+Provide a brief description of how the average levels of procedural democracy and political corruption have or have not changed over time. Interpret the mean and standard deviation for each variable and the correlation between them. Type your answer below.
+
+
+
+
+## Visualizing Relationships
+
+  Using the `ggplot2` package, create a scatter plot of the relationship between political corruption and procedural democracy for the full subset of the data and by year. You can use the `facet_wrap` geom to create separate panels for the relationship in each decade. Be sure to label your graph appropriately.
+  
+```{r scatterplot-full}
+
+```
+
+```{r scatterplot-years}
+
+```
+
+Do you see any general relationship between corruption and procedural democracy in any of these plots? What is the direction of the correlation and does it vary across years? Type your answer below.
+
+
+
+
