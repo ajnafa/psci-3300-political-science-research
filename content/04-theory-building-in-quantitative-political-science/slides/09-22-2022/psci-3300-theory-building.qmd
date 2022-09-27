@@ -1942,6 +1942,18 @@ full_quota_prof + full_quota_pers & plot_annotation(
                         intervals for the posterior expectations", width = 110)) & fig_theme
 ```
 
+## Summary
+
+::: incremental
+-  We use nodes to represent concepts and their operationalizations, which we'll call variables
+
+-  Causal relationships are comprised of concepts that influence one another
+
+-  We can represent dependencies between concepts in the form of a network structure
+
+-  If the validity of our conclusions rests fundamentally on our assumptions about the data generation process, we ought to explicit about those assumptions
+:::
+
 ## Licensing and Copyright Information
 
 -   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
