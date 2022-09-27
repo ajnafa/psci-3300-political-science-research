@@ -63,7 +63,7 @@ Sys.setenv(
 
 # Install the development versions of rstan and StanHeaders
 install.packages(
-  pkgs = "rstan", 
+  pkgs = "rstan",
   repos = c(
     "https://mc-stan.org/r-packages/", 
     getOption("repos")

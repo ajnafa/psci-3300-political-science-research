@@ -1,0 +1,1951 @@
+---
+title: "Theory Building and Causal Processes in Poitical Science"
+author: "A. Jordan Nafa"
+date: "September 27th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    code-line-numbers: false
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  "kableExtra",
+  "tidybayes",
+  "dagitty",
+  "ggraph",
+  "ggdag",
+  "arrow",
+  "patchwork",
+  install = FALSE
+)
+
+# Set Session Options
+options(
+  digits = 6, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"],
+  knitr.kable.NA = ''
+)
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 24, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+
+## Base theme for the DAGs
+dag_theme <- function(.base_size, ...) {
+    # Apply theme settings
+  theme_dag(
+    base_size = .base_size,
+    base_family = "serif",
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white", vjust = 1),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top",
+    ...
+  )
+}
+
+shorten_dag_arrows <- function(tidy_dag, proportion){
+  # Update underlying ggdag object
+  tidy_dag$data <- dplyr::mutate(tidy_dag$data, 
+                                 xend = (1-proportion/2)*(xend - x) + x, 
+                                 yend = (1-proportion/2)*(yend - y) + y,
+                                 xstart = (1-proportion/2)*(x - xend) + xend,
+                                 ystart = (1-proportion/2)*(y-yend) + yend)
+  return(tidy_dag)
+}
+```
+
+## Overview
+
+::: incremental
+-   Formal and informal representations of theories of politics
+
+    -   Connecting research question, data, and theory gives us substance
+
+    -   Directed Acyclic Graphs [@Greenland1999; @VanderWeele2007]
+
+-   From concept to measurement
+
+    -   Problems of conceptual stretching
+
+    -   Measurement validity
+:::
+
+$$
+\definecolor{treat}{RGB}{27,208,213}
+\definecolor{outcome}{RGB}{98,252,107}
+\definecolor{baseconf}{RGB}{244,199,58}
+\definecolor{covariates}{RGB}{178,26,1}
+\definecolor{index}{RGB}{37,236,167}
+\definecolor{timeid}{RGB}{244,101,22}
+\definecolor{mu}{RGB}{71,119,239}
+\definecolor{sigma}{RGB}{219,58,7}
+\newcommand{normalcolor}{\color{white}}
+\newcommand{treat}[1]{\color{treat} #1 \normalcolor}
+\newcommand{resp}[1]{\color{outcome} #1 \normalcolor}
+\newcommand{sample}[1]{\color{baseconf} #1 \normalcolor}
+\newcommand{covar}[1]{\color{covariates} #1 \normalcolor}
+\newcommand{obs}[1]{\color{index} #1 \normalcolor}
+\newcommand{tim}[1]{\color{timeid} #1 \normalcolor}
+\newcommand{mean}[1]{\color{mu} #1 \normalcolor}
+\newcommand{vari}[1]{\color{sigma} #1 \normalcolor}
+$$
+
+## Review of Key Terms
+
+::: incremental
+-   **Potential Outcomes**: A way of formally expressing each of the possible outcomes unit $i$ could experience under a given treatment regime
+
+-   **Causal Effect**: The change we would expect to observe if we altered some feature of the world compared to what would have happened in the absence of such a manipulation
+
+-   **Estimand**: The causal effect we are trying to estimate. The estimand connect research question, theory, and statistics.
+
+-   **Directed Acyclic Graphs (DAGs)**: Non-parametric graphical representations of causal relationships.
+:::
+
+## Types of Data
+
+::: incremental
+-   **Experimental**
+
+    -   You have direct control over which units get treatment and can thus rely on random assignment to identify the causal path $\mathrm{\treat{X}_{\obs{i}}} \longrightarrow \mathrm{\resp{Y}_{\obs{i}}}$
+
+-   **Observational**
+
+    -   You don't have control over which units get assigned the treatment and thus cannot rely on random assignment to identify causal effects
+
+    -   This makes causal inference difficult, but by no means impossible, in many areas of political science and most of international relations
+
+-   Common misconception that experiments can "prove" causality
+
+    -   For both practical and epistemological reasons, it is impossible to "prove" a causal relationship and you should avoid using the word
+:::
+
+## Causal Diagrams
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   Directed Acyclic Graphs (DAGs)
+
+    -   **Directed**
+
+        -   Each node has an arrow that points to another node
+
+    -   **Acyclic**
+
+        -   You can't cycle back to a node and arrows only have one direction
+
+    -   **Graph**
+
+        -   It's... um... a graph
+:::
+:::
+
+::: {.column width="60%"}
+```{r simple-dag, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=8, fig.align='center', cache=TRUE}
+# Define the dag using ggdag
+simple_dag <- dagify(
+  X ~ Z,
+  Y ~ X + Z,
+  labels = list(X = "X", Y = "Y", Z = "Z"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 0.5),
+    y = c(X = 0, Y = 0, Z = 1)
+  ),
+  outcome = "Y",
+  exposure = "X"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty()
+
+# Adjust the length of the edges
+simple_dag <- shorten_dag_arrows(
+  simple_dag, 
+  proportion = 0.06
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+simple_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label),
+    parse = TRUE,
+    size = 22,
+    color = "white",
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24)
+
+```
+:::
+:::
+
+## Causal Diagrams
+
+::: incremental
+-   DAGs are a type of non-parametric graphical causal model
+
+    -   Graphical model of the data generation process (DGP)
+
+    -   Maps your theory of the process to a model
+
+    -   Fancy math called "do-calculus" tells you what to adjust for to isolate and identify causation
+
+        -   More importantly, perhaps, it tells you what not to adjust for
+
+    -   Makes our assumptions about the causal process explicit
+:::
+
+## Acyclicity
+
+::: incremental
+-   What if there's something that really is cyclical?
+
+    -   $\mathrm{Democracy} \longrightarrow \mathrm{Development} \longrightarrow \mathrm{Democracy}$
+
+    -   This isn't acyclic!
+
+    -   $\mathrm{Democracy} \longleftrightarrow \mathrm{Development}$
+
+    -   Remember the causal ordering assumption we talked about last time
+
+        -   No reverse causality or simultaneity
+
+    -   If a process is truly cyclical, we can represent that using a time index
+
+        -   $\mathrm{Democracy_{\tim{t-1}}} \longrightarrow \mathrm{Development_{\tim{t}}} \longrightarrow \mathrm{Democracy_{\tim{t+1}}}$
+:::
+
+# Causal Graphs and Theory Building
+
+## List Variables
+
+Imagine we are interested in whether the adoption of gender quotas in has a causal effect on the level of female representation in a country's government.
+
+::: incremental
+-   Our first step is to make a list of the theoretically relevant variables.
+
+-   Gender quota is the <font style="color:#00F2FF">treatment</font> and female representation is the <font style="color: #62FC6B">outcome</font> of interest
+
+    -   $\mathrm{\treat{Quota}_{\tim{t}}} \longrightarrow \mathrm{\resp{Female~Representation}_{\tim{t}}}$ at each time $\tim{t} \in \{1,2,\dots,\tim{T}\}$
+
+-   What other factors could influence Quota adoption, female representation in government, or both?
+:::
+
+## List Variables
+
+::: incremental
+-   Political corruption [@Esarey2019; @Stockemer2011]
+
+-   Electoral institutions [@Tripp2008; @SchwindtBayer2009; @Paxton2006]
+
+-   Women's civil society engagement [@Irvine2007; @Hughes2015a]
+
+-   Attitudes towards women in society and politics [@Alexander2012]
+
+-   Other country-specific or time varying features of the world that are more difficult to observe [@Paxton2010; @Paxton2015]?
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-1, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X,
+  labels = list(X = "X[t]", Y = "Y[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1),
+    y = c(X = 0, Y = 0)
+  ),
+  outcome = "Y",
+  exposure = "X"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-2, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z,
+  X ~ Z,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1),
+    y = c(X = 0, Y = 0, Z = 0.5)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "Z"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Electoral institutions $\covar{V}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-3, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z + V,
+  Z ~ V,
+  X ~ V + Z,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = c("Z", "V")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Electoral institutions $\covar{V}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-4, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z + V + W,
+  Z ~ V,
+  X ~ V + W + Z,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]", W = "W[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0, W  = 0),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5, W = -0.5)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = c("Z", "V", "W")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Electoral institutions $\covar{V}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Attitudes towards women in politics $\covar{U}_{\tim{t}}$ are affected by <font style="color:#00F2FF">Quota Adoption</font> and have an effect on <font style="color: #62FC6B">Female Representation</font>
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-5, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z + V + W + U,
+  Z ~ V,
+  X ~ V + W + Z,
+  U ~ X,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]", W = "W[t]", U = "U[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0, W  = 0, U = 1),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5, W = -0.5, U = -0.5)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = c("Z", "V", "W", "U")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Electoral institutions $\covar{V}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Attitudes towards women in politics $\covar{U}_{\tim{t}}$ are affected by <font style="color:#00F2FF">Quota Adoption</font> and have an effect on <font style="color: #62FC6B">Female Representation</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on attitudes towards women in politics $\covar{U}_{\tim{t}}$
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-6, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z + V + W + U,
+  Z ~ V,
+  X ~ V + W + Z,
+  U ~ X + W,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]", W = "W[t]", U = "U[t]"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0, W  = 0, U = 1),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5, W = -0.5, U = -0.5)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = c("Z", "V", "W", "U")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+base_quota_dag %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white"
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  # Adjust the color of the nodes to match the slides
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+```
+:::
+:::
+
+## Make Connections {.smaller}
+
+::: columns
+::: {.column width="40%"}
+-   <font style="color:#00F2FF">Gender Quotas</font> $\treat{X}_{\tim{t}}$ cause an increase in <font style="color: #62FC6B">Female Representation</font> $\resp{Y}_{\tim{t}}$
+
+-   Political Corruption $\covar{Z}_{\tim{t}}$ has a causal effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Electoral institutions $\covar{V}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on <font style="color: #62FC6B">Female Representation</font> and <font style="color:#00F2FF">Quota Adoption</font>
+
+-   Attitudes towards women in politics $\covar{U}_{\tim{t}}$ are affected by <font style="color:#00F2FF">Quota Adoption</font> and have an effect on <font style="color: #62FC6B">Female Representation</font>
+
+-   Women's civil society organizations $\covar{W}_{\tim{t}}$ have an effect on attitudes towards women in politics $\covar{U}_{\tim{t}}$
+
+-   Time invariant differences $\upsilon$?
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-7, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+# Define the dag using ggdag
+base_quota_dag <- dagify(
+  Y ~ X + Z + V + W + U + C,
+  Z ~ V + C,
+  V ~ C,
+  X ~ V + W + Z,
+  U ~ X + W + C,
+  W ~ C,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]", W = "W[t]", U = "U[t]", C = "upsilon"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0, W  = 0, U = 1, C = 0.5),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5, W = -0.5, U = -0.5, C = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = c("Z", "V", "W", "U")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Adjust the length of the edges
+base_quota_dag <- shorten_dag_arrows(
+  base_quota_dag, 
+  proportion = 0.08
+  )
+
+# Generate the DAG for the contemporaneous effect of X on Y
+full_quota_plot <- base_quota_dag %>% 
+  mutate(.line_type = if_else(name == "C",  "solid", "dashed")) %>% 
+  ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart, edge_linetype = .line_type), 
+    edge_width = 1.5,
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    edge_color = "white",
+    show.legend = FALSE
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  dag_theme(.base_size = 24) +
+  #
+  scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B"))
+
+full_quota_plot
+```
+:::
+:::
+
+## Make Connections
+
+::: incremental
+-   We can then express each node as function of those that influence it
+
+    -   $\mathrm{\resp{Female~Representation}}_{\tim{t}} = f(\treat{X}_{\tim{t}}, \covar{Z}_{\tim{t}}, \covar{V}_{\tim{t}}, \covar{W}_{\tim{t}}, \covar{U}_{\tim{t}}, \upsilon)$
+
+    -   $\mathrm{\treat{Gender~Quota}}_{\tim{t}} = f(\covar{V}_{\tim{t}}, \covar{W}_{\tim{t}}, \covar{U}_{\tim{t}}, \covar{Z}_{\tim{t}})$
+
+    -   $\mathrm{\covar{Political~Corruption}}_{\tim{t}} = f(\covar{V}_{\tim{t}}, \upsilon, \dots)$
+
+    -   $\mathrm{\covar{Electoral~Institutions}}_{\tim{t}} = f(\upsilon, \dots)$
+
+    -   $\mathrm{\covar{Womens~CSOs}}_{\tim{t}} = f(\upsilon, \dots)$
+
+    -   $\mathrm{\covar{Gender~Attitudes}}_{\tim{t}} = f(\treat{X}_{\tim{t}}, \covar{W}_{\tim{t}}, \upsilon, \dots)$
+
+-   Which of these do we need to measure to identify the path $\mathrm{\treat{Gender~Quota}}_{\tim{t}} \longrightarrow \mathrm{\resp{Female~Representation}}_{\tim{t}}$?
+:::
+
+## Causal Identification
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   Using theory and existing research, we've identified possible relationships between **concepts** (nodes)
+
+-   We only care about $\treat{X}_{\tim{t}} \longrightarrow \resp{Y}_{\tim{t}}$, but what do we do about all the other nodes?
+
+-   A causal effect is **identified** if the association between treatment and outcome is properly stripped and isolated
+:::
+:::
+
+::: {.column width="60%"}
+```{r quota-dag-8, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+full_quota_plot
+```
+:::
+:::
+
+## Paths and Associations
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   Arrows in a DAG transmit **associations** between nodes
+
+-   We need to redirect and control these paths by **adjusting** or **conditioning** in order to isolate the relationship we are interested in
+
+-   Without additional often strong assumptions, it is only possible to adjust for things we can observe
+:::
+:::
+
+::: {.column width="60%"}
+```{r echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+full_quota_plot
+```
+:::
+:::
+
+## Types of Associations
+
+```{r bias-types, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Define the dag using ggdag
+causal_dag <- dagify(
+  Y ~ X,
+  Y ~ Z,
+  labels = list(X = "X", Y = "Y", Z = "Z"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 0.5),
+    y = c(X = 0, Y = 0, Z = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "Z"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status() %>% 
+  # Set line type for biasing path
+  mutate(.edge_color = "white")
+
+# Define the dag using ggdag
+confounding_dag <- dagify(
+  Y ~ X + Z,
+  X ~ Z,
+  labels = list(X = "X", Y = "Y", Z = "Z"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 0.5),
+    y = c(X = 0, Y = 0, Z = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "Z"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status() %>% 
+  # Set line type for biasing path
+  mutate(.edge_color = if_else(
+    to == "Z",  
+    "#FF355E", "white"
+  ))
+
+# Define the dag using ggdag
+mediation_dag <- dagify(
+  Y ~ X + Z,
+  Z ~ X,
+  labels = list(X = "X", Y = "Y", Z = "Z"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 0.5),
+    y = c(X = 0, Y = 0, Z = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "Z"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status() %>% 
+  # Set line type for biasing path
+  mutate(.edge_color = if_else(
+    to == "Z" | name == "Z",   
+    "#FF355E", "white"
+  ))
+
+# Define the dag using ggdag
+collision_dag <- dagify(
+  Z ~ Y + X,
+  Y ~ X,
+  labels = list(X = "X", Y = "Y", Z = "Z"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 0.5),
+    y = c(X = 0, Y = 0, Z = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "Z"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status() %>% 
+  # Set line type for biasing path
+  mutate(.edge_color = if_else(
+    to == "Z",  
+    "#FF355E", "white"
+  ))
+
+# Make a plot for each of the types of bias paths
+bias_plots <- map2(
+  .x = list(causal_dag, confounding_dag, mediation_dag, collision_dag),
+  .y = c("Causal Effect", "Confounding Bias", "Post-Treatment Bias", "Endogenous Selection Bias"),
+  # Adjust the length of the arrows
+  .f = ~ shorten_dag_arrows(.x, proportion = 0.08) %>% 
+    # Inititialize the ggplot object
+    ggplot(., aes(x = x, y = y, xend = xend, yend = yend)) +
+    # Add the graph edges
+    geom_dag_edges(
+      aes(x = xstart, y = ystart, edge_color = .edge_color), 
+      edge_width = 1.5,
+      arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed")
+    ) +
+    # Add the graph nodes
+    geom_dag_node(alpha = 0) +
+    # Add the graph text
+    geom_dag_text(
+      aes(label = label, color = status),
+      parse = TRUE,
+      size = 20,
+      family = "serif",
+      show.legend = FALSE
+    ) +
+    # Make the edge colors parse correctly
+    scale_edge_color_identity() +
+    # Add the plot titles
+    labs(title = .y) +
+    # Set the colors
+    scale_color_manual(values = c("#00F2FF", "#B21A01", "#62FC6B")) +
+    # Tweak the legend aesthetics
+    guides(edge_color = "none")
+)
+
+(bias_plots[[1]] | bias_plots[[2]])/(bias_plots[[3]] | bias_plots[[4]]) &
+      dag_theme(.base_size = 30)
+```
+
+## Confounding
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   $\treat{X}$ causes $\resp{Y}$
+
+-   But $\covar{Z}$ causes both $\treat{X}$ and $\resp{Y}$
+
+-   $\covar{Z}$ confounds the $\treat{X} \longrightarrow \resp{Y}$ association
+
+-   Failing to adjust for the confounder $\covar{Z}$ results in **omitted variable bias**
+
+-   The causal path $\treat{X} \longleftarrow \covar{Z} \longrightarrow \resp{Y}$ is called a **backdoor**
+:::
+:::
+
+::: {.column width="60%"}
+```{r confounding-dag, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center', cache=TRUE}
+bias_plots[[2]] + labs(title = "") + dag_theme(.base_size = 30)
+```
+:::
+:::
+
+## Closing Backdoors
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   $\treat{X}$ and $\resp{Y}$ are **d-connected** because associations can pass through a third variable, $\covar{Z}$
+
+-   The relationship between $\treat{X}$ and $\resp{Y}$ is not causally identified unless we close the backdoor created by $\covar{Z}$
+
+-   To do this, we need to somehow adjust for $\covar{Z}$
+
+-   Most common method of adjustment is to include $\covar{Z}$ in a regression model
+:::
+:::
+
+::: {.column width="60%"}
+```{r confounding-dag-1, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+bias_plots[[2]] + labs(title = "") + dag_theme(.base_size = 30)
+```
+:::
+:::
+
+## Closing Backdoors
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   Returning to our earlier example, what do we need to adjust for to identify the causal path $\treat{X}_{\tim{t}} \longrightarrow \resp{Y}_{\tim{t}}$ under the assumed data generation process?
+
+-   Answer is fairly straightforward in this example, but for illustrative purposes we'll use the `{dagitty}` and `{ggdag}` packages to figure it out
+:::
+:::
+
+::: {.column width="60%"}
+```{r echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+full_quota_plot
+```
+:::
+:::
+
+## Closing Backdoors
+
+Our first step is to define the DAG for our theoretical model
+
+```{r echo=TRUE}
+# Define the DAG for the causal relationship
+quota_dag <- dagify(
+  Y ~ X + Z + V + W + U + C,
+  Z ~ V + C,
+  V ~ C,
+  X ~ V + W + Z,
+  U ~ X + W + C,
+  W ~ C,
+  labels = list(X = "X[t]", Y = "Y[t]", Z = "Z[t]", V = "V[t]", 
+                W = "W[t]", U = "U[t]", C = "upsilon"),
+  coords = list(
+    x = c(X = 0, Y = 1, Z = 1, V = 0, W  = 0, U = 1, C = 0.5),
+    y = c(X = 0, Y = 0, Z = 0.5, V = 0.5, W = -0.5, U = -0.5, C = 1)
+  ),
+  outcome = "Y",
+  exposure = "X",
+  latent = "C"
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status() 
+```
+
+## Closing Backdoors
+
+Next we can use the `adjustmentSets` from the `{dagitty}` package to get the nodes we need to adjust for to identify the path $\treat{X}_{\tim{t}} \longrightarrow \resp{Y}_{\tim{t}}$
+
+```{r echo=TRUE}
+# Get the minimum adjustment set
+quota_dag$dag %>% 
+  adjustmentSets()
+```
+
+## Closing Backdoors
+
+Next we can use the `adjustmentSets` from the `{dagitty}` package to get the nodes we need to adjust for to identify the path $\treat{X}_{\tim{t}} \longrightarrow \resp{Y}_{\tim{t}}$
+
+```{r echo=TRUE}
+# Get the minimum adjustment set
+quota_dag$dag %>% 
+  adjustmentSets()
+```
+
+Then we use `adjust_for` from `{ggdag}` to adjust for the variables in the output and use `mutate` to wrangle some new columns for color and transparency
+
+```{r echo=TRUE}
+# Adjust for the variables in the output
+quota_dag_adjusted <- quota_dag %>% 
+  adjust_for(var = c("V", "W", "Z")) %>% 
+  # Create a columns color coding the nodes and edges
+  mutate(status_color = case_when(
+    is.na(status) | status == "latent" ~ as.character(adjusted),
+    TRUE ~ as.character(status)
+    )) %>% 
+  # Adjust the length of the arrows slightly
+  shorten_dag_arrows(., proportion = 0.08)
+```
+
+## Closing Backdoors
+
+```{r echo=TRUE, eval=FALSE}
+# Generate the DAG for the contemporaneous effect of X on Y
+ggplot(quota_dag_adjusted, aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart, edge_alpha = if_else(status_color == "adjusted", 0, 1)), 
+    edge_width = 1.5,
+    edge_color = "white",
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    show.legend = FALSE
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status_color),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Set the color scale for the text
+  scale_color_manual(values = c("#B21A01", "#00F2FF", "#62FC6B", "#9C9C9C"))
+```
+
+## Closing Backdoors
+
+```{r dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center', cache=TRUE}
+# Generate the DAG for the contemporaneous effect of X on Y
+ggplot(quota_dag_adjusted, aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the graph edges
+  geom_dag_edges(
+    aes(x = xstart, y = ystart, edge_alpha = if_else(status_color == "adjusted", 0, 1)), 
+    edge_width = 1.5,
+    edge_color = "white",
+    arrow_directed = grid::arrow(length = grid::unit(10, "pt"), type = "closed"),
+    show.legend = FALSE
+  ) +
+  # Add the graph nodes
+  geom_dag_node(alpha = 0) +
+  # Add the graph text
+  geom_dag_text(
+    aes(label = label, color = status_color),
+    parse = TRUE,
+    size = 22,
+    family = "serif",
+    show.legend = FALSE
+  ) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Set the color scale for the text
+  scale_color_manual(values = c("#B21A01", "#00F2FF", "#62FC6B", "#9C9C9C"))
+```
+
+## Intermediate Outcomes
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   $\treat{X}$ causes $\resp{Y}$
+
+-   But $\treat{X}$ also causes $\covar{Z}$ which has a causal effect on $\resp{Y}$
+
+-   Should you adjust for $\covar{Z}$?
+
+-   No! In this case $\covar{Z}$ is a **mediator** or an **intermediate outcome**
+
+-   Adjusting for an **intermediate outcome** induces **post-treatment bias** [@Montgomery2018]
+:::
+:::
+
+::: {.column width="60%"}
+```{r mediation-dag, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+bias_plots[[3]] + labs(title = "") + dag_theme(.base_size = 30)
+```
+:::
+:::
+
+------------------------------------------------------------------------
+
+![](../../../../assets/dank-memes/mediation_bias_p1.jpg){fig-align="center"}
+
+------------------------------------------------------------------------
+
+![](../../../../assets/dank-memes/mediation_bias_p2.jpg){fig-align="center"}
+
+------------------------------------------------------------------------
+
+![](../../../../assets/dank-memes/mediation_bias_p3.jpg){fig-align="center"}
+
+------------------------------------------------------------------------
+
+![](../../../../assets/dank-memes/mediation_bias_p4.jpg){fig-align="center"}
+
+## Colliders and Selection Bias
+
+::: columns
+::: {.column width="40%"}
+::: incremental
+-   $\treat{X}$ causes $\covar{Z}$
+
+-   $\resp{Y}$ also causes $\covar{Z}$
+
+-   Should you adjust for $\covar{Z}$?
+
+-   No! In this case $\covar{Z}$ is a **collider**, a common effect of both $\treat{X}$ and $\resp{Y}$
+
+-   Colliders can create a fake causal effects or hide real ones
+
+-   Conditioning on a collider induces **endogenous selection bias**
+:::
+:::
+
+::: {.column width="60%"}
+```{r collider-dag, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=8, fig.width=8, fig.align='center'}
+bias_plots[[4]] + labs(title = "") + dag_theme(.base_size = 30)
+```
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Reproducing Barnes and Holman (2020)
+
+```{r, echo=FALSE}
+# HTML (note the recommended option use_xaringan, see documentation for details)
+htmltools::includeHTML(
+  namedropR::drop_name(
+    str_c(here::here(), "/assets/references.bib"),
+    cite_key = "Barnes2020a",
+    export_as = "html_full",
+    style = "classic",
+    vc_width = 1200,
+    author_size = "60px",
+    journal_size = "50px",
+    title_size = "80px",
+    include_qr = "none",
+    title_color = "#FFFFFF",
+    journal_color = "#FFFFFF",
+    author_color = "#FFFFFF",
+    use_xaringan = TRUE
+  )
+)
+```
+
+------------------------------------------------------------------------
+
+### How Quotas Influence Legislative Diversity
+
+::: incremental
+-   The adoption of gender quotas contributes to the erosion of gendered understandings of "candidate quality" and leads to the expansion of party recruitment networks
+
+-   Over time, this leads leads to both increases in female representation--the goal of gender quotas--but also serves to increase legislative diversity by changing candidate recruitment
+
+-   Authors theorize about a **causal mechanism**, a complex process by which things influence one another both directly and indirectly to produce some outcome
+
+-   They test their argument on subnational data from Argentina between 2004 and 2018
+::: 
+
+##
+
+```{r dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
+## Define the coordinates for the DAG
+dag_coords <- list(
+  x = c(femleg = 0.5, quality = 0, quota = 0, diversity = 1, recruitment = 1, 
+        GDI = 1, unemployment = 0.5, distmag = 0, senate = 0.5),
+  y = c(femleg = 0, quality = 0, quota = 0.4, diversity = 0, recruitment = 0.4, 
+        GDI = -0.4, unemployment = -0.4, distmag = -0.4, senate = 0.3)
+)
+
+## Plotmath labels for the DAG
+dag_labels <- list(
+  femleg = "'Female Representation'[t]", 
+  quality = "'Candidate Quality'[t]", 
+  quota = "'Time Since Quota'[t]", 
+  diversity = "'Legislative Diversity'[t]",
+  recruitment = "'Candidate Recruitment'[t]",
+  GDI = "'Gender Development'[t]",
+  unemployment = "'Unemployment'[t]",
+  distmag = "'District Magnitude'[t]",
+  senate = "'Senate Chamber'[j]"
+)
+
+# Make the DAG
+main_dag <- dagify(
+  femleg ~ quality + quota + GDI + distmag + senate,
+  quality ~ quota + senate,
+  recruitment ~ quota + senate + femleg,
+  diversity ~ quota + femleg + recruitment + GDI + unemployment + distmag + senate,
+  quota ~ unemployment + senate,
+  GDI ~ unemployment,
+  coords = dag_coords,
+  labels = dag_labels,
+  outcome = "diversity",
+  exposure = c("femleg", "quota"),
+  latent = c("recruitment", "quality")
+) %>% 
+  # Convert the DAG into a tibble
+  tidy_dagitty() %>% 
+  # Set node status
+  node_status()
+
+# Plot of the full DAG
+ggplot(main_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the nodes to the graph
+  geom_dag_point(aes(color = status)) +
+  # Add edges to the graph
+  geom_dag_edges(
+    arrow_directed = grid::arrow(
+      length = grid::unit(10, "pt"), 
+      type = "closed"
+    ),
+    edge_color = "white",
+    edge_width = 1.25
+    ) +
+  # Add labels to the graph
+  geom_label(
+    aes(label = label, fill = status), 
+    color = "white", 
+    fontface = "bold", 
+    size = 6,
+    nudge_y = -0.045, 
+    nudge_x = 0.02,
+    parse = TRUE, 
+    family = "serif"
+  ) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Disable guides
+  guides(color = "none", fill = "none", label = "none")
+```
+
+##
+
+```{r quota-dag-rep, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center', cache=TRUE}
+main_dag %>% 
+  adjust_for(var = c("senate", "unemployment", "GDI", "distmag", "femleg")) %>% 
+  mutate(.edge_alpha = if_else(adjusted == "adjusted", 0, 1)) %>% 
+  # Plot of the full DAG
+  ggplot(., aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the nodes to the graph
+  geom_dag_point(aes(color = status, shape = adjusted)) +
+  # Add edges to the graph
+  geom_dag_edges(
+    aes(edge_alpha = .edge_alpha),
+    arrow_directed = grid::arrow(
+      length = grid::unit(10, "pt"), 
+      type = "closed"
+    ),
+    edge_color = "white",
+    edge_width = 1.25
+    ) +
+  # Add labels to the graph
+  geom_label(
+    aes(label = label, fill = status), 
+    color = "white", 
+    fontface = "bold", 
+    size = 6,
+    nudge_y = -0.045, 
+    nudge_x = 0.02,
+    parse = TRUE, 
+    family = "serif"
+  ) +
+  # Set the shape
+  scale_shape_manual(values = c(15, 16)) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Disable guides
+  guides(
+    color = "none", 
+    fill = "none", 
+    label = "none", 
+    shape = "none",
+    edge_alpha = "none"
+    )
+```
+
+## 
+
+```{r femleg-dag-rep, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
+main_dag %>% 
+  adjust_for(var = c("senate", "quota", "GDI", "distmag", "unemployment")) %>% 
+  mutate(.edge_alpha = if_else(adjusted == "adjusted", 0, 1)) %>% 
+  # Plot of the full DAG
+  ggplot(., aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the nodes to the graph
+  geom_dag_point(aes(color = status, shape = adjusted)) +
+  # Add edges to the graph
+  geom_dag_edges(
+    aes(edge_alpha = .edge_alpha),
+    arrow_directed = grid::arrow(
+      length = grid::unit(10, "pt"), 
+      type = "closed"
+    ),
+    edge_color = "white",
+    edge_width = 1.25
+    ) +
+  # Add labels to the graph
+  geom_label(
+    aes(label = label, fill = status), 
+    color = "white", 
+    fontface = "bold", 
+    size = 6,
+    nudge_y = -0.045,
+    nudge_x = 0.02,
+    parse = TRUE, 
+    family = "serif"
+  ) +
+  # Set the shape
+  scale_shape_manual(values = c(15, 16)) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Disable guides
+  guides(
+    color = "none", 
+    fill = "none", 
+    label = "none", 
+    shape = "none",
+    edge_alpha = "none"
+    )
+```
+
+##
+
+```{r femleg-causal-paths, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
+femleg_paths <- main_dag %>% 
+  # Identify the paths conditional on the confounders 
+  dag_paths(
+    to = "diversity", 
+    from = "quota", 
+    adjust_for = c("senate", "unemployment", "GDI", "distmag", "femleg")
+    ) %>% 
+  # Filter open paths after adjustment
+  filter(path == "open path") %>% 
+  # Create an identifier for direct and indirect paths
+  mutate(causal_path = if_else(
+    to == "recruitment" | name == "recruitment", 
+    "Indirect", 
+    "Direct"
+    ))
+
+femleg_paths %>% 
+  # Plot of the full DAG
+  ggplot(., aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the nodes to the graph
+  geom_dag_point(aes(color = status)) +
+  # Add edges to the graph
+  geom_dag_edges(
+    aes(edge_color = causal_path),
+    arrow_directed = grid::arrow(
+      length = grid::unit(10, "pt"), 
+      type = "closed"
+    ),
+    edge_width = 1.25
+    ) +
+  # Add labels to the graph
+  geom_label(
+    aes(label = label, fill = status), 
+    color = "white", 
+    fontface = "bold", 
+    size = 6,
+    nudge_y = -0.03,
+    parse = TRUE, 
+    family = "serif"
+  ) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Disable guides
+  guides(
+    color = "none", 
+    fill = "none", 
+    label = "none", 
+    shape = "none",
+    edge_color = "none"
+    )
+```
+
+##
+
+```{r quota-causal-paths, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
+quota_paths <- main_dag %>% 
+  # Identify the paths conditional on the confounders 
+  dag_paths(
+    to = "diversity", 
+    from = "femleg", 
+    adjust_for = c("senate", "quota", "GDI", "distmag", "unemployment")
+    ) %>% 
+  # Filter open paths after adjustment
+  filter(path == "open path") %>% 
+  # Create an identifier for direct and indirect paths
+  mutate(causal_path = if_else(
+    to == "recruitment" | name == "recruitment", 
+    "Indirect", 
+    "Direct"
+    ))
+
+quota_paths %>% 
+  # Plot of the full DAG
+  ggplot(., aes(x = x, y = y, xend = xend, yend = yend)) +
+  # Add the nodes to the graph
+  geom_dag_point(aes(color = status)) +
+  # Add edges to the graph
+  geom_dag_edges(
+    aes(edge_color = causal_path),
+    arrow_directed = grid::arrow(
+      length = grid::unit(10, "pt"), 
+      type = "closed"
+    ),
+    edge_width = 1.25
+    ) +
+  # Add labels to the graph
+  geom_label(
+    aes(label = label, fill = status), 
+    color = "white", 
+    fontface = "bold", 
+    size = 6,
+    nudge_y = -0.03, 
+    parse = TRUE, 
+    family = "serif"
+  ) +
+  # Apply the theme settings for the slides
+  dag_theme(.base_size = 24) +
+  # Disable guides
+  guides(
+    color = "none", 
+    fill = "none", 
+    label = "none", 
+    shape = "none",
+    edge_color = "none"
+    )
+```
+
+## Replication in R
+
+::: incremental
+-   Download the [replication data for the article](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9TFMSG) from the JOP dataverse archive
+
+    -   If you installed [git](https://git-scm.com/downloads) when you were installing R and RStudio, you can just type `git pull` in the terminal window in RStudio **from within the course's R project** to get the data and R code
+
+    -   If you haven't installed git, you should install git because it will allow you to automatically sync your local files with updates I make to the course repository instead of having to download them from Canvas (i.e., for problem sets, data, code, and lecture slides)
+:::
+
+## Packages and Settings {auto-animate="true"}
+
+``` r
+# Set Session Options
+options(
+  digits = 6, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"],
+  knitr.kable.NA = '',
+  brms.backend = "cmdstanr",
+  modelsummary_get = "broom"
+)
+```
+
+## Packages and Settings {auto-animate="true"}
+
+``` r
+# Set Session Options
+options(
+  digits = 6, # Significant figures output
+  scipen = 999, # Disable scientific notation
+  repos = getOption("repos")["CRAN"], # Install packages from CRAN
+  knitr.kable.NA = '', # Set NA values to blank when making tables
+  brms.backend = "cmdstanr", # Use cmdstanr as a backend for {brms}
+  modelsummary_get = "broom" # Custom tiody method for modelsummary
+)
+
+# Load the necessary libraries
+pacman::p_load(
+  "sjlabelled", # Package for working with labeled data
+  "tidyverse", # Suite of packages for data management 
+  "haven", # Reading in data from proprietary software (Stata, SPSS, SAS) 
+  "brms", # Bayesian regression models with Stan
+  "tidybayes", # Functions for wrangling posteriors tidy-style
+  "modelsummary", # Package for making tables of model output
+  "kableExtra", # Package for customizing html and latex tables
+  "patchwork", # Combining multiple plots into one
+  "future", # Package for parallel computation
+  install = FALSE
+)
+```
+
+## Helper Functions
+
+Assuming you're in the course's project directory, you should be able to load the custom functions we'll use here with the following code
+
+``` r
+# Source the helper functions, assumes you're working in the course's R project
+.helpers <- map(
+  .x = list.files(
+    path = "functions/", 
+    pattern = ".*R", 
+    full.names = TRUE
+  ), 
+  .f = ~ source(.x)
+)
+```
+
+## Reading and Processing Data {auto-animate="true"}
+
+We need to use the `read_dta` function from `{haven}` since the replication data is in Stata's proprietary file format
+
+``` r
+# Load the replication data
+jop_data <- read_dta("data/Barnes_and_Holman_JOP2020.dta")
+```
+
+## Reading and Processing Data {auto-animate="true"}
+
+We need to use the `read_dta` function from `{haven}` since the replication data is in Stata's proprietary file format
+
+``` r
+# Load the replication data
+jop_data <- read_dta("data/Barnes_and_Holman_JOP2020.dta")
+
+# Extract the data for the models
+model_data <- jop_data %>% 
+  # Select will return a subset with just the specified variables
+  select(chamber_year:senate, diversity_person:logdm) %>% 
+  # Get the time index
+  mutate(
+    # Apply value labels from chamber year
+    chamber_year = factor(
+      chamber_year,
+      levels = get_values(chamber_year),
+      labels = get_labels(chamber_year)
+    ),
+    # Get the year from chamber_year
+    year = str_extract(chamber_year, "20[0-9][0-9]") %>% as.integer()
+  )
+```
+
+## Specifying the Models
+
+- @Barnes2020a consider six different versions of their outcome, legislative diversity. For each outcome $\resp{y}$, their model specification can be expressed as
+
+$$
+\begin{align*}
+\resp{y}_{\obs{i}} &\sim \mathcal{N(\mean{\mu}_{\obs{i}}, \sigma^{2})}\\
+\mean{\mu}_{\obs{i}} =& \alpha + \beta_{1} \mathrm{Female~Representation} + \beta_{2}\mathrm{Time~Since~Quota} + \\
+& \quad \beta_{3} \mathrm{Gender-Related~Development} + \beta_{4}\mathrm{Unemployment} + \\
+& \quad \beta_{5}\mathrm{Log~District~Magnitude} + \beta_{6}\mathrm{Senate~Chamber} + \sigma\\
+\end{align*}
+$$
+
+## Specifying the Models {auto-animate="true"}
+
+We need to start by building the model formulas and to save time we'll use a custom function `formula_builder` that we loaded earlier
+
+``` r
+# Character vector of response variables for each model in table 1 on pp. 1279
+responses <- c(
+  "prof_diversity", 
+  "diversity_person", 
+  "prof_diversity_f", 
+  "diversity_person_f",
+  "prof_diversity_m",
+  "diversity_person_m"
+)
+``` 
+
+## Specifying the Models {auto-animate="true"}
+
+We need to start by building the model formulas and to save time we'll use a custom function `formula_builder` that we loaded earlier
+
+``` r
+# Character vector of response variables for each model in table 1 on pp. 1279
+responses <- c(
+  "prof_diversity", 
+  "diversity_person", 
+  "prof_diversity_f", 
+  "diversity_person_f",
+  "prof_diversity_m",
+  "diversity_person_m"
+)
+
+# Formula for the LHS which are the same across models in table 1
+rhs_form <- "~female + quotayear + logdm + senate + unemployment + gdi"
+``` 
+
+## Specifying the Models {auto-animate="true"}
+
+We need to start by building the model formulas and to save time we'll use a custom function `formula_builder` that we loaded earlier
+
+``` r
+# Character vector of response variables for each model in table 1 on pp. 1279
+responses <- c(
+  "prof_diversity", 
+  "diversity_person", 
+  "prof_diversity_f", 
+  "diversity_person_f",
+  "prof_diversity_m",
+  "diversity_person_m"
+)
+
+# Formula for the LHS which are the same across models in table 1
+rhs_form <- "~female + quotayear + logdm + senate + unemployment + gdi"
+
+# Build the list of formulas
+model_forms <- formula_builder(lhs = responses, rhs = rhs_form)
+``` 
+
+## Priors for the Model
+
+We need to specify priors on the model parameters (more on this in later classes) and its usually a good idea to save each model to local storage so you don't have to run things again
+
+``` r
+# Specify the priors object to pass to brm
+model_priors <- prior(normal(0, 1.5), class = "b") +
+  prior(normal(mean(Y), 2*sd(Y)), class = "Intercept") +
+  prior(exponential(1/sd(Y)), class = "sigma")
+
+# Build a list of file paths to save the models to
+model_paths <- str_c(
+  "models/Barnes-and-Holman-2020/gaussian_", 
+  responses, 
+  "_full"
+)
+```
+
+## Fitting the Models
+
+Since I'm lazy, we're just going to fit each model iteratively using the `map` function from `{purrr}`. Basically, for each index in the list object `model_forms`, we fit the model and the result is a list of model objects of the same length
+
+```{r echo=TRUE, eval=FALSE}
+# Fit each of the models (6 chains, 5k iterations)
+bayes_gaussian_fits <- map(
+  .x = seq_along(model_forms),
+  .f = ~ brm(
+    formula = bf(model_forms[[.x]], decomp = "QR"),
+    family = brmsfamily("gaussian", link = "identity"),
+    prior = model_priors,
+    data = model_data,
+    cores = 6, # Adjust chains and cores based on your computer's hardware
+    chains = 6, # Should be at least 4
+    iter = 5000,
+    warmup = 3000,
+    refresh = 1000,
+    control = list(max_treedepth = 12),
+    save_pars = save_pars(all = TRUE),
+    seed = 12345,
+    backend = "cmdstanr",
+    file = model_paths[.x]
+  )
+)
+```
+
+## Fitting the Models
+
+The looking code is equivalent to that on the previous slide but has the disadvantage of being much less elegant
+
+```{r echo=TRUE, eval=FALSE}
+# Initialize a list ot store the models in
+bayes_gaussian_fits <- list()
+
+# Fit each of the models (6 chains, 5k iterations)
+for (i in seq_along(model_forms)) {
+  bayes_gaussian_fits[[i]] <- brm(
+    formula = bf(model_forms[[i]], decomp = "QR"),
+    family = brmsfamily("gaussian", link = "identity"),
+    prior = model_priors,
+    data = model_data,
+    cores = 6,
+    chains = 6,
+    iter = 5000,
+    warmup = 3000,
+    refresh = 1000,
+    control = list(max_treedepth = 12),
+    save_pars = save_pars(all = TRUE),
+    seed = 12345,
+    backend = "cmdstanr",
+    file = model_paths[i]
+  )
+}
+```
+
+## 
+
+```{r replication-fig-1, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center', cache=TRUE}
+# Read in the predictions for professional diversity
+full_female_epreds_prof <- read_parquet("data/full_female_epreds_prof.gz.parquet")
+
+# Read in the predictions for personal diversity
+full_female_epreds_pers <- read_parquet("data/full_female_epreds_pers.gz.parquet")
+
+# Professional Diversity Plot
+full_female_prof <- full_female_epreds_prof %>% 
+  ggplot(., aes(x = female, y = .epred)) +
+    ## Add a lineribbon geom
+    stat_lineribbon(
+      aes(fill_ramp = stat(.width)),
+      .width = ppoints(50),
+      alpha = 1/8,
+      fill = "royalblue1",
+      color = "white",
+      point_interval = "mean_qi",
+      show.legend = FALSE
+    ) +
+    ## Generate the color gradients
+    ggdist::scale_fill_ramp_continuous(range = c(1, 0)) +
+    ## Adjust the scale of the y axis
+    scale_y_continuous(
+      breaks = seq(0.2, 0.5, by = 0.05),
+      limits = c(0.2, 0.525)
+      ) +
+    ## Adjust the scale of the x axis
+    scale_x_continuous(
+      breaks = seq(0, 0.5, by = 0.1), 
+      expand = c(0.001, 0.005),
+      labels = scales::percent
+    ) +
+    ## Add labels to the plot
+    labs(
+      x = "% Female Legislators",
+      y = "Professional Diversity"
+    ) +
+  # Plot theme settings
+  fig_theme
+
+# Professional Diversity Plot
+full_female_pers <- full_female_epreds_pers %>% 
+  ggplot(., aes(x = female, y = .epred)) +
+    ## Add a lineribbon geom
+    stat_lineribbon(
+      aes(fill_ramp = stat(.width)),
+      .width = ppoints(50),
+      alpha = 1/8,
+      fill = "firebrick",
+      color = "white",
+      point_interval = "mean_qi",
+      show.legend = FALSE
+    ) +
+    ## Generate the color gradients
+    ggdist::scale_fill_ramp_continuous(range = c(1, 0)) +
+    ## Adjust the scale of the y axis
+    scale_y_continuous(
+      breaks = seq(0.2, 0.5, by = 0.05),
+      limits = c(0.2, 0.525)
+      ) +
+    ## Adjust the scale of the x axis
+    scale_x_continuous(
+      breaks = seq(0, 0.5, by = 0.1),
+      expand = c(0.001, 0.005),
+      labels = scales::percent
+    ) +
+    ## Add labels to the plot
+    labs(
+      x = "% Female Legislators",
+      y = "Personal Diversity"
+    )
+
+full_female_prof + full_female_pers & plot_annotation(
+    title = "Figure 3A. Chamber-Wide Professional (Left) and Personal (Right) Legislative Diversity",
+    subtitle = str_wrap("Expectations are estimated based on the mean of 12,000 draws from the posterior distributions of models 1
+                        and 2 holding all covariates constant at their respective means. Gradients represent Bayesian credible 
+                        intervals for the posterior expectations", width = 110)) & fig_theme
+```
+
+## 
+
+```{r replication-fig-2, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center', cache=TRUE}
+# Read in the predictions for professional diversity
+full_quota_epreds_prof <- read_parquet("data/full_quotayear_epreds_prof.gz.parquet")
+
+# Read in the predictions for personal diversity
+full_quota_epreds_pers <- read_parquet("data/full_quotayear_epreds_pers.gz.parquet")
+
+# Professional Diversity Plot
+full_quota_prof <- full_quota_epreds_prof %>% 
+  ggplot(., aes(x = quotayear, y = .epred)) +
+    ## Add a lineribbon geom
+    stat_lineribbon(
+      aes(fill_ramp = stat(.width)),
+      .width = ppoints(50),
+      alpha = 1/8,
+      fill = "royalblue1",
+      color = "white",
+      point_interval = "mean_qi",
+      show.legend = FALSE
+    ) +
+    ## Generate the color gradients
+    ggdist::scale_fill_ramp_continuous(range = c(1, 0)) +
+    ## Adjust the scale of the y axis
+    scale_y_continuous(
+      breaks = seq(0.1, 0.55, by = 0.05), 
+      limits = c(0.1, 0.55)
+    ) +
+    ## Adjust the scale of the x axis
+    scale_x_continuous(
+      breaks = seq(0, 20, by = 5), 
+      expand = c(0.001, 0.005)
+    ) +
+    ## Add labels to the plot
+    labs(
+      x = "Time Since Quota Adoption",
+      y = "Professional Diversity"
+    ) +
+  # Plot theme settings
+  fig_theme
+
+# Professional Diversity Plot
+full_quota_pers <- full_quota_epreds_pers %>% 
+  ggplot(., aes(x = quotayear, y = .epred)) +
+    ## Add a lineribbon geom
+    stat_lineribbon(
+      aes(fill_ramp = stat(.width)),
+      .width = ppoints(50),
+      alpha = 1/8,
+      fill = "firebrick",
+      color = "white",
+      point_interval = "mean_qi",
+      show.legend = FALSE
+    ) +
+    ## Generate the color gradients
+    ggdist::scale_fill_ramp_continuous(range = c(1, 0)) +
+    ## Adjust the scale of the y axis
+    scale_y_continuous(
+      breaks = seq(0.1, 0.55, by = 0.05), 
+      limits = c(0.1, 0.55)
+    ) +
+    ## Adjust the scale of the x axis
+    scale_x_continuous(
+      breaks = seq(0, 20, by = 5), 
+      expand = c(0.001, 0.005)
+    ) +
+    ## Add labels to the plot
+    labs(
+      x = "Time Since Quota Adoption",
+      y = "Personal Diversity"
+    )
+
+full_quota_prof + full_quota_pers & plot_annotation(
+    title = "Figure 3B. Chamber-Wide Professional (Left) and Personal (Right) Legislative Diversity",
+    subtitle = str_wrap("Expectations are estimated based on the mean of 12,000 draws from the posterior distributions of models 1
+                        and 2 holding all covariates constant at their respective means. Gradients represent Bayesian credible 
+                        intervals for the posterior expectations", width = 110)) & fig_theme
+```
+
+## Licensing and Copyright Information
+
+-   All text and images in this course are made available for public non-commercial use under a [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/).
+
+-   All R, HTML, and CSS code is provided for public use under a [BSD 3-Clause License](https://github.com/ajnafa/psci-3300-political-science-research/blob/main/LICENSE).
+
+## References

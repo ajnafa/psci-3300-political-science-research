@@ -12,5 +12,9 @@ ol.aside-footnotes {
 }
 
 .reveal a {
-    color: #eee;
+    color: #FF355E;
+}
+
+.reveal pre.sourceCode code {
+    max-height: 800px;
 }
