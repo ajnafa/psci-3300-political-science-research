@@ -1,0 +1,40 @@
+---
+title: "Causal Theory Assignment"
+date: '`r format(Sys.time(), "%A, %B %d %Y")`'
+author: "A. Jordan Nafa"
+format: 
+  html:
+    toc: false
+    bibliography: "../../assets/references.bib"
+    csl: "../../assets/apsa.csl"
+    theme: journal
+    highlight-style: monokai
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    linkcolor: "#00853E"
+    code-block-bg: "#272822"
+css: "../../assets/page-style.css"
+link-citations: yes
+fig-cap-location: top
+editor: visual
+---
+
+# Developing Causal Theories
+
+The second step in your final paper assignment requires you to elaborate upon *why* and *how* the treatment or intervention of interest (X) influences your outcome (Y). How this should be structured will depend largely on the naturte of your research question, but the relevant sections in the two articles that were assigned for the week on theory building and corresponding lecture slides provide a good starting point. Note, that you are expected to revise your research question based on the feedback provided on the first assignment **and** add the next section, your theory, to the document.
+
+## General Guidelines and Requirements
+
+-   Your theory section should be 3-4 pages double spaced and at least partially informed by existing research on your topic of interest.
+
+-   Your submission should reference at least **five additional** sources from **peer-reviewed journals** or academic books in the **social sciences** (e.g., political science, economics, sociology, public policy, and epidemiology) published by a major university press. Any references to websites/blog posts, white papers, law reviews, podcasts and other non-scientific materials will not be counted towards this requirement. We covered how to perform precise keyword searches by term and journal name in google scholar during class.
+
+-   You are free to use visuals such as [flowcharts](https://support.microsoft.com/en-us/office/create-a-flow-chart-with-smartart-30f87402-ba3d-48c8-8e9f-a66bcee7e5aa) or [DAGs](https://cran.r-project.org/web/packages/ggdag/vignettes/intro-to-dags.html) if they help you convey your assumed theoretical process
+
+-   References should conform to the style of the American Political Science Association, which uses a variant of the Chicago Manual of Style, 16th edition. The example document for the research question assignment illustrating what your submission's references section formatting and in text citation is expected to look like adheres to this format and you can use it for reference if necessary. We also went over how to automatically generate citations in the correct format using Microsoft Word in class so there are no excuses for failure to adhere to these formatting requirements.
+
+-   If you have chosen to work in a group for the final project, you must email me with the names of those in your group **before the due date for the assignment**.
+
+This assignment should be submitted via Canvas in either PDF or docx file format and is due **Friday, October 21st by 11:59 PM**
+

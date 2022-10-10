@@ -18,7 +18,6 @@ format:
     css: "../../../../assets/slide-style.css"
     include-in-header: "../../../../assets/math-colors.js"
 linkcolor: "#FF3030"
-editor: visual
 width: 1360
 height: 800
 bibliography: "../../../../assets/references.bib"
@@ -84,8 +83,8 @@ shorten_dag_arrows <- function(tidy_dag, proportion){
 -   Important Deadlines
 
     -   Deadline to form groups for the final project is Friday, September 30th
-    
-        - Groups work on a single paper together--there appears to have been some confusion about this
+
+        -   Groups work on a single paper together--there appears to have been some confusion about this
 
     -   Problem Set I is due Friday, September 30th
 :::
@@ -203,7 +202,7 @@ ggplot(vdem_df, aes(x = gender_equality, y = polyarchy)) +
 -   **Standard Deviation** $\vari{\sigma}_{\treat{x}}$: $\sqrt{\vari{\sigma}_{\treat{x}}^{2}}$
 
     -   Another measure of the variability in some variable. It is the square root of the variance and has the advantage of being on roughly the same scale as the the variable itself
-    
+
 -   **Covariance** $Cov_{\treat{x}, \resp{y}} = \frac{\sum_{\obs{i}=\obs{1}}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu}_{\treat{x}})(\resp{y}_{\obs{i}} - \mean{\mu}_{\resp{y}})}{\sample{N}}$
 
     -   A measure of the correlation between two variables. It is calculated as the average of the product of the deviations from the mean
@@ -218,9 +217,9 @@ ggplot(vdem_df, aes(x = gender_equality, y = polyarchy)) +
 ::: incremental
 -   How does $\treat{X}$ influence $\resp{Y}$?
 
-    - Good research questions are broad but also precise
-    
-    - Your research question should clearly state your <font style="color:#00F2FF">treatment</font> and <font style="color: #62FC6B">outcome</font> of interest
+    -   Good research questions are broad but also precise
+
+    -   Your research question should clearly state your <font style="color:#00F2FF">treatment</font> and <font style="color: #62FC6B">outcome</font> of interest
 
 -   How does the <font style="color:#00F2FF">prospect of inclusion</font> for historically dispossessed social groups influence <font style="color: #62FC6B">voter turnout</font>?
 
@@ -296,132 +295,133 @@ ggplot(vdem_df, aes(x = gender_equality, y = polyarchy)) +
 ## Estimands
 
 ::: incremental
-- In a perfect world, we could estimate observation-level causal effects
+-   In a perfect world, we could estimate observation-level causal effects
 
-    - $\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)$
-    
-    - In practice this requires **strong assumptions** and is virtually impossible to identify
-    
-- Instead, we usually attempt to estimate the **average causal effect** (ACE) in some subset of the population
+    -   $\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)$
 
-- Our estimand connects theory to data
+    -   In practice this requires **strong assumptions** and is virtually impossible to identify
 
-- Every study must be able to answer the question "What is your estimand?" [@Lundberg2021]
+-   Instead, we usually attempt to estimate the **average causal effect** (ACE) in some subset of the population
+
+-   Our estimand connects theory to data
+
+-   Every study must be able to answer the question "What is your estimand?" [@Lundberg2021]
 :::
 
 ## Estimands
 
 ::: incremental
-- **Sample Average Treatment Effect (SATE)**
+-   **Sample Average Treatment Effect (SATE)**
 
-  $$
-  \mathrm{SATE} = \frac{1}{\sample{n}}\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\
-  = \frac{\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]}{\sample{n}}
-  $$
-    - Average of the outcomes if everyone is treated versus if no one is treated
-    
-    - Answers the question what "would happen if everyone received the treatment compared to no one receiving it?"
+    $$
+    \mathrm{SATE} = \frac{1}{\sample{n}}\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\
+    = \frac{\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]}{\sample{n}}
+    $$
+
+    -   Average of the outcomes if everyone is treated versus if no one is treated
+
+    -   Answers the question what "would happen if everyone received the treatment compared to no one receiving it?"
 :::
-
 
 ## Estimands
 
 ::: incremental
-- **Sample Average Treatment Effect for the Treated (SATT)**
+-   **Sample Average Treatment Effect for the Treated (SATT)**
 
-  $$
-  \mathrm{SATT} = \frac{1}{\sample{n}_{1}}\sum_{\obs{i}=1}^{\sample{n}}\treat{X}_{\obs{i}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\ 
-  = \frac{1}{\sample{n}_{1}}\sum_{\obs{i}=1}^{\sample{n}}\treat{X}_{\obs{i}}[\resp{Y}_{\obs{i}} - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\
-  = \frac{\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}} - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]}{\sample{n}_{1}}
-  $$
+    $$
+    \mathrm{SATT} = \frac{1}{\sample{n}_{1}}\sum_{\obs{i}=1}^{\sample{n}}\treat{X}_{\obs{i}}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\ 
+    = \frac{1}{\sample{n}_{1}}\sum_{\obs{i}=1}^{\sample{n}}\treat{X}_{\obs{i}}[\resp{Y}_{\obs{i}} - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]\\
+    = \frac{\sum_{\obs{i}=1}^{\sample{n}}[\resp{Y}_{\obs{i}} - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]}{\sample{n}_{1}}
+    $$
 
-- Answers the question "What is the average effect of the treatment among those who received treatment?"
+-   Answers the question "What is the average effect of the treatment among those who received treatment?"
 :::
 
 ## Population versus Sample Estimands
 
 ::: incremental
-- SATE and SATT are specific to a given study
+-   SATE and SATT are specific to a given study
 
-  - Theoretically, these estimands are well defined without the kind of magical thinking people usually rely on for inference about a population (e.g., repeated sampling)
-  
-  - They are **finite sample** or **finite population** estimands
-  
-- What if we want to make inferences about a larger population though?
+    -   Theoretically, these estimands are well defined without the kind of magical thinking people usually rely on for inference about a population (e.g., repeated sampling)
 
-  - Assume units are a **random sample** from a large/infinite population and hedge our bets on the central limit theorem
-  
-  - In many areas of political science and international relations, this is not a logically defensible assumption
-::: 
+    -   They are **finite sample** or **finite population** estimands
+
+-   What if we want to make inferences about a larger population though?
+
+    -   Assume units are a **random sample** from a large/infinite population and hedge our bets on the central limit theorem
+
+    -   In many areas of political science and international relations, this is not a logically defensible assumption
+:::
 
 ## Population Estimands
 
 ::: incremental
-- **Population Average Treatment Effects (PATE)**
+-   **Population Average Treatment Effects (PATE)**
 
-  $$
-  \mathrm{PATE} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]
-  $$
+    $$
+    \mathrm{PATE} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0)]
+    $$
 
-- **Population Average Treatment Effect for the Treated (PATT)**
+-   **Population Average Treatment Effect for the Treated (PATT)**
 
-  $$
-  \mathrm{PATT} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0) | \treat{X}_{\obs{i}} = 1]
-  $$
-  
-- In the case of a non-random sample from an **apparent population** where repeated sampling is logically impossible, $\mathrm{PATE} = \mathrm{SATE}$ and $\mathrm{PATT} = \mathrm{SATT}$ 
+    $$
+    \mathrm{PATT} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0) | \treat{X}_{\obs{i}} = 1]
+    $$
 
-  - Arriving at uncertainty estimates is less straightforward since we can't rely on magical thinking [@Berk1995; @Western1994; @Gill2020]
-::: 
+-   In the case of a non-random sample from an **apparent population** where repeated sampling is logically impossible, $\mathrm{PATE} = \mathrm{SATE}$ and $\mathrm{PATT} = \mathrm{SATT}$
+
+    -   Arriving at uncertainty estimates is less straightforward since we can't rely on magical thinking [@Berk1995; @Western1994; @Gill2020]
+:::
 
 ## Other Interesting Estimands
 
 ::: incremental
-- **Conditional Average Treatment Effect (CATE)**
+-   **Conditional Average Treatment Effect (CATE)**
 
-  $$
-  \mathrm{CATE} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0) | \treat{X}_{\obs{i}} = \treat{x}]
-  $$
-  - We can use this to detect heterogenous effects for theory testing or targeting
+    $$
+    \mathrm{CATE} = \mathrm{E}[\resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 1) - \resp{Y}_{\obs{i}}(\treat{X}_{\obs{i}} = 0) | \treat{X}_{\obs{i}} = \treat{x}]
+    $$
 
-- We will discuss additional estimands for direct and indirect causal effects later in the course
+    -   We can use this to detect heterogenous effects for theory testing or targeting
+
+-   We will discuss additional estimands for direct and indirect causal effects later in the course
 :::
 
 ## Summary
 
 ::: incremental
-- Causal inference is about **counterfactuals**
+-   Causal inference is about **counterfactuals**
 
-- **Potential outcomes** constitute a way of formally expressing counterfactual relationships
+-   **Potential outcomes** constitute a way of formally expressing counterfactual relationships
 
-  - There are many possible estimands of interest--any possible difference between potential outcomes
+    -   There are many possible estimands of interest--any possible difference between potential outcomes
 
-- Estimands connect research question, theory, and data
+-   Estimands connect research question, theory, and data
 
-  - A quantitative study that cannot answer the question "What is your estimand?" is effectively useless
-  
-- Goal of contemporary political science is to provide vague answers to precise questions
+    -   A quantitative study that cannot answer the question "What is your estimand?" is effectively useless
+
+-   Goal of contemporary political science is to provide vague answers to precise questions
 :::
 
 ## Where We're Headed
 
 ::: incremental
-- Theoretical relationships as Bayesian networks
+-   Theoretical relationships as Bayesian networks
 
-  - Types of bias
-  
-  - Difference between direct and indirect effects
+    -   Types of bias
 
-- Applied example to make this all more concrete
+    -   Difference between direct and indirect effects
 
-  - Replicating @Barnes2020a
-  
-- Moving from causal question to causal theory
+-   Applied example to make this all more concrete
 
-  - If you have not yet **at least** identified a causal relationship between some $\treat{X}$ and $\resp{Y}$ for your paper, you are now behind in the course
-::: 
+    -   Replicating @Barnes2020a
 
----
+-   Moving from causal question to causal theory
+
+    -   If you have not yet **at least** identified a causal relationship between some $\treat{X}$ and $\resp{Y}$ for your paper, you are now behind in the course
+:::
+
+------------------------------------------------------------------------
 
 ```{r dag-1, echo=FALSE, dpi=600, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center', cache=TRUE}
 ## Define the coordinates for the complex DAG

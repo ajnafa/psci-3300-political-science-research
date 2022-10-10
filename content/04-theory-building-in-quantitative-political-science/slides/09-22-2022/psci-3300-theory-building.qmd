@@ -1259,9 +1259,9 @@ htmltools::includeHTML(
 -   Authors theorize about a **causal mechanism**, a complex process by which things influence one another both directly and indirectly to produce some outcome
 
 -   They test their argument on subnational data from Argentina between 2004 and 2018
-::: 
+:::
 
-##
+## 
 
 ```{r dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
 ## Define the coordinates for the DAG
@@ -1334,7 +1334,7 @@ ggplot(main_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
   guides(color = "none", fill = "none", label = "none")
 ```
 
-##
+## 
 
 ```{r quota-dag-rep, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center', cache=TRUE}
 main_dag %>% 
@@ -1424,7 +1424,7 @@ main_dag %>%
     )
 ```
 
-##
+## 
 
 ```{r femleg-causal-paths, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
 femleg_paths <- main_dag %>% 
@@ -1479,7 +1479,7 @@ femleg_paths %>%
     )
 ```
 
-##
+## 
 
 ```{r quota-causal-paths, dpi=300, dev.args = list(bg = 'transparent'), fig.height=10, fig.width=16, fig.align='center'}
 quota_paths <- main_dag %>% 
@@ -1638,7 +1638,7 @@ model_data <- jop_data %>%
 
 ## Specifying the Models
 
-- @Barnes2020a consider six different versions of their outcome, legislative diversity. For each outcome $\resp{y}$, their model specification can be expressed as
+-   @Barnes2020a consider six different versions of their outcome, legislative diversity. For each outcome $\resp{y}$, their model specification can be expressed as
 
 $$
 \begin{align*}
@@ -1663,7 +1663,7 @@ responses <- c(
   "prof_diversity_m",
   "diversity_person_m"
 )
-``` 
+```
 
 ## Specifying the Models {auto-animate="true"}
 
@@ -1682,7 +1682,7 @@ responses <- c(
 
 # Formula for the LHS which are the same across models in table 1
 rhs_form <- "~female + quotayear + logdm + senate + unemployment + gdi"
-``` 
+```
 
 ## Specifying the Models {auto-animate="true"}
 
@@ -1704,7 +1704,7 @@ rhs_form <- "~female + quotayear + logdm + senate + unemployment + gdi"
 
 # Build the list of formulas
 model_forms <- formula_builder(lhs = responses, rhs = rhs_form)
-``` 
+```
 
 ## Priors for the Model
 
@@ -1945,13 +1945,13 @@ full_quota_prof + full_quota_pers & plot_annotation(
 ## Summary
 
 ::: incremental
--  We use nodes to represent concepts and their operationalizations, which we'll call variables
+-   We use nodes to represent concepts and their operationalizations, which we'll call variables
 
--  Causal relationships are comprised of concepts that influence one another
+-   Causal relationships are comprised of concepts that influence one another
 
--  We can represent dependencies between concepts in the form of a network structure
+-   We can represent dependencies between concepts in the form of a network structure
 
--  If the validity of our conclusions rests fundamentally on our assumptions about the data generation process, we ought to explicit about those assumptions
+-   If the validity of our conclusions rests fundamentally on our assumptions about the data generation process, we ought to explicit about those assumptions
 :::
 
 ## Licensing and Copyright Information
