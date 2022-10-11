@@ -15,6 +15,10 @@ ol.aside-footnotes {
     color: #FF355E;
 }
 
+div.cell-output cell-output-stdout {
+  height: 800px;
+}
+
 .reveal pre.sourceCode code {
     max-height: 800px;
 }

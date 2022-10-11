@@ -1,0 +1,511 @@
+---
+title: "Conceptualization and Measurement I"
+author: "A. Jordan Nafa"
+date: "September 29th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  "dagitty",
+  "ggraph",
+  "ggdag",
+  install = FALSE
+  )
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 24, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+
+shorten_dag_arrows <- function(tidy_dag, proportion){
+  # Update underlying ggdag object
+  tidy_dag$data <- dplyr::mutate(tidy_dag$data, 
+                                 xend = (1-proportion/2)*(xend - x) + x, 
+                                 yend = (1-proportion/2)*(yend - y) + y,
+                                 xstart = (1-proportion/2)*(x - xend) + xend,
+                                 ystart = (1-proportion/2)*(y-yend) + yend)
+  return(tidy_dag)
+}
+```
+
+## Overview
+
+::: incremental
+-   Social science is about developing and evaluating causal theories
+
+    -   Does <font style="color:#00F2FF">economic development</font> lead to <font style="color: #62FC6B">democratization</font>?
+
+    -   Do <font style="color:#00F2FF">gender quotas</font> cause an increase in <font style="color: #62FC6B">female representation</font>?
+
+-   Theories are comprised of linkages between **concepts**
+
+    -   Gender Quotas, electoral institutions, women's CSOs, public opinion, and political corruption
+
+    -   Causal relationships are comprised of concepts that influence one another
+
+    -   Important to consider how we measure these concepts
+:::
+
+$$
+\definecolor{treat}{RGB}{27,208,213}
+\definecolor{outcome}{RGB}{98,252,107}
+\definecolor{baseconf}{RGB}{244,199,58}
+\definecolor{covariates}{RGB}{178,26,1}
+\definecolor{index}{RGB}{37,236,167}
+\definecolor{timeid}{RGB}{244,101,22}
+\definecolor{mu}{RGB}{71,119,239}
+\definecolor{sigma}{RGB}{219,58,7}
+\newcommand{normalcolor}{\color{white}}
+\newcommand{treat}[1]{\color{treat} #1 \normalcolor}
+\newcommand{resp}[1]{\color{outcome} #1 \normalcolor}
+\newcommand{sample}[1]{\color{baseconf} #1 \normalcolor}
+\newcommand{covar}[1]{\color{covariates} #1 \normalcolor}
+\newcommand{obs}[1]{\color{index} #1 \normalcolor}
+\newcommand{tim}[1]{\color{timeid} #1 \normalcolor}
+\newcommand{mean}[1]{\color{mu} #1 \normalcolor}
+\newcommand{vari}[1]{\color{sigma} #1 \normalcolor}
+$$
+
+## Concepts and Measurement
+
+::: incremental
+-   Concepts are theoretical abstractions
+
+    -   Sometimes measurement is straightforward
+
+        -   What is your age?
+
+        -   What state do you live in?
+
+    -   Other times measurement is more complicated
+
+        -   What is political corruption?
+
+        -   What is female reppresentation?
+
+        -   What is democracy?
+
+    -   Have to develop an **operational** definition of a concept before we can measure it
+:::
+
+## Why Does Measurement Matter?
+
+::: incremental
+-   The measures we use often influence the answers we get
+
+-   As a general principle, the result of any operation performed on a precise number and garbage is some variation of garbage
+
+    -   $\mathrm{Precise~Number} \times \mathrm{Garbage} = \mathrm{Garbage}$
+
+    -   $\sqrt{\mathrm{Garbage}} = \mathrm{Less~Bad~Garbage}$
+
+    -   $\mathrm{Garbage}^{2} = \mathrm{Worse~Garbage}$
+
+    -   $\frac{1}{\sample{n}}\sum_{\obs{i}=\obs{1}}^{\sample{n}}[ \mathrm{Garbage}_{\obs{i}}] = \mathrm{Better~Garbage}$
+
+    -   $\mathrm{Precise~Number}^{\mathrm{Garbage}} = \mathrm{Much~Worse~Garbage}$
+
+    -   $\mathrm{E[Garbage~|~\treat{X}_{\obs{i}}=Precise~Number}] = \mathrm{Expectation~of~Garbage}$
+
+    -   $\alpha + \hat{\beta_{1}}\times\mathrm{Polity~IV}_{\obs{i}\tim{t}} = \mathrm{Comparative~Garbage}$
+:::
+
+## Measuring Democracy
+
+::: incremental
+-   How should we measure democracy?
+
+    -   Requires we first define democracy
+
+    -   One of the oldest debates in comparative politics
+
+        -   Current gold standard is V-Dem [@Coppedge2016; @Lindberg2014], but even it is imperfect and leaves room for improvement
+
+    -   Sometimes *the worst, except for all the others* is the best we can do
+
+    -   As a general rule, treating complex multi-dimensional concepts as dichotomies is at best logically fallacious
+
+    -   Need to make principled tradeoffs between **parsimony** and **precision**
+
+-   We'll come back to this on Monday!
+:::
+
+# Principles of Tidy Data
+
+## A Grammar of Data Manipulation
+
+::: incremental
+-   Data grammar and `{tidyverse}`
+
+    -   **verbs** are functions that that do things
+
+        -   `select`, `filter`, `mutate`, `transmute`, `summarize`, `arrange`, `left_join`, `inner_join`, and many more in `{dplyr}` and `{tidyr}`
+
+    -   **nouns** are data frames, the things verbs act upon
+
+    -   The **tidyverse** is a collection of data manipulation and visualization packages
+
+        -   `{ggplot2}`, `{purrr}`, `{tibble}`, `{dplyr}`, `{tidyr}`, `{stringr}`, `{readr}`, and `{forcats}` are part of the `{tidyverse}` package
+
+-   For more on this read the chapter on data transformation in [R for Data Science](https://r4ds.had.co.nz/transform.html) or see the [dplyr cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+:::
+
+## Reading Data into R
+
+::: incremental
+-   To read external data into R, we can use the `read_csv` for standard tab delimited data formats or `read_rds` for the native R rds format from the `{readr}` package
+
+-   For proprietary file formats like those used by Stata, SPSS, and SAS we can use functions such as `read_dta`, `read_spss`, and `read_sas` from the `{haven}` package
+
+-   The `{arrow}` package provides an R interface to Apache Arrow that supports common dplyr verbs
+
+    -   Allows for larger-than-memory data analytics
+
+    -   Provides access to the parquet file storage format via the `read_parquet` and `write_parquet` formats
+:::
+
+## Reading Data into R
+
+-   The first step is to load the `{tidyverse}` package which we can do using either `library` or `pacman::p_load`
+
+## Reading Data into R
+
+-   The first step is to load the `{tidyverse}` package which we can do using either `library` or `pacman::p_load`
+
+```{r, echo=TRUE}
+# Load {tidyverse} using library()
+library(tidyverse) # Suite of data management packages
+```
+
+## Reading Data into R
+
+-   The first step is to load the `{tidyverse}` package which we can do using either `library` or `pacman::p_load`
+
+```{r, echo=TRUE}
+# Load {tidyverse} using library()
+library(tidyverse) # Suite of data management packages
+```
+
+-   Next we'll read in a subset of the Integrated Values Survey [@WVSTrend; @EVSTrend] which you can either download from Canvas or retrieve using `git pull` in the RStudio terminal
+
+## Reading Data into R
+
+-   The first step is to load the `{tidyverse}` package which we can do using either `library` or `pacman::p_load`
+
+```{r, echo=TRUE}
+# Load {tidyverse} using library()
+library(tidyverse) # Suite of data management packages
+```
+
+-   Next we'll read in a subset of the Integrated Values Survey [@WVSTrend; @EVSTrend] which you can either download from Canvas or retrieve using `git pull` in the RStudio terminal
+
+```{r, eval=FALSE, echo=TRUE}
+# Read in the IVS Data
+ivs <- read_rds("data/IVS_Data_Subset.rds")
+```
+
+```{r, echo=FALSE}
+# Read in the IVS Data
+ivs <- read_rds(str_c(here::here(), "/data/IVS_Data_Subset.rds"))
+```
+## Reading Data into R
+
+-   We can use `glimpse` to print a preview of the data in a readable format
+
+## Reading Data into R
+
+-   We can use `glimpse` to print a preview of the data in a readable format
+
+```{r, echo=TRUE}
+# Print a preview of the data
+glimpse(ivs)
+```
+
+## Reading Data into R
+
+-   We can use `glimpse` to print a preview of the data in a readable format
+
+```{r, echo=TRUE}
+# Print a preview of the data
+glimpse(ivs)
+```
+
+-  We see the data has 40 columns and 364,771 rows, each of which corresponds to a unique survey respondent
+
+## Transforming Data
+
+::: incremental
+-  We'll cover the major `{dplyr}` verbs today 
+
+    - `mutate` transforms a column or columns in a data frame in place
+    
+      - It either adds a new column or replaces an existing one and returns the modified data frame
+      
+    - `select` performs column-wise subsetting on a data frame
+      
+    - `transmute` transforms a column or columns in a data frame and returns only the transformed columns
+    
+      - `transmute` is like `select` and `mutate` combined into a single function
+    
+    - `filter` performs row-wise subsetting on a data frame
+    
+    - `arrange` sorts the data by values in the specified column(s)
+:::  
+
+## The Pipe
+
+::: incremental
+- The logic of the pipe operator is simple in that the default behavior is to pass some object, in this case a data frame, to the first argument of a function $f(x,y)$ which we can express as
+
+    - $\mathrm{data} \enspace \%\gt\% \enspace function(., \, y) = function(\mathrm{data}, \, y)$
+
+-   More complex formulations are also possible thanks to the . operator which allows us to pass an object to higher order arguments in a function as in the case of the expression
+
+    - $\mathrm{data} \enspace \%\gt\% \enspace function(x, \, y, \,z) = function(x, \, y, \,\mathrm{data})$
+::: 
+
+## Transforming Data {.auto-animate}
+
+- `mutate` transforms a column or columns in a data frame in place and returns the original data frame
+
+## Transforming Data {.auto-animate}
+
+- `mutate` transforms a column or columns in a data frame in place and returns the original data frame
+
+- Here we are creating a new column `female` in the data frame `ivs` and using `if_else` to assign it a 1 if a respondent is female based on the existing column `sex` and 0 otherwise
+
+## Transforming Data {.auto-animate}
+
+- `mutate` transforms a column or columns in a data frame in place and returns the original data frame
+
+- Here we are creating a new column `female` in the data frame `ivs` and using `if_else` to assign it a 1 if a respondent is female based on the existing column `sex` and 0 otherwise
+
+```r
+ivs <- ivs %>% 
+  mutate(
+    # Add a column to the ivs data frame object that recodes respondent sex
+    female = if_else(sex == "Female", 1,  0),
+  )
+```
+
+## Transforming Data {.auto-animate}
+
+- `mutate` transforms a column or columns in a data frame in place and returns the original data frame
+
+- Here we are creating a new column `female` in the data frame `ivs` and using `if_else` to assign it a 1 if a respondent is female based on the existing column `sex` and 0 otherwise
+
+```r
+ivs <- ivs %>% 
+  mutate(
+    # Add a column to the ivs data frame object that recodes respondent sex
+    female = if_else(sex == "Female", 1,  0),
+    # Add a column to the ivs data frame that takes a value of 1 for surveys in 2000, 2010, 2020
+    decade_start = if_else(year %in% c(2000, 2010, 2020), 1, 0)
+  )
+```
+
+## Transforming Data {.auto-animate}
+
+- `mutate` transforms a column or columns in a data frame in place and returns the original data frame
+
+- Here we are creating a new column `female` in the data frame `ivs` and using `if_else` to assign it a 1 if a respondent is female based on the existing column `sex` and 0 otherwise
+
+```r
+ivs <- ivs %>% 
+  mutate(
+    # Add a column to the ivs data frame object that recodes respondent sex
+    female = if_else(sex == "Female", 1,  0),
+    # Add a column to the ivs data frame that takes a value of 1 for surveys in 2000, 2010, 2020
+    decade_start = if_else(year %in% c(2000, 2010, 2020), 1, 0)
+  )
+```
+
+- We can use the `%in%` operator to match multiple conditions in the same column. `year %in% c(2000, 2010, 2020)` is equivalent to `year == 2000 | year == 2010 | year == 2020`
+
+## Subsetting Data {.auto-animate}
+
+- `select` performs **column-wise subsetting** on a data frame
+
+## Subsetting Data {.auto-animate}
+
+- `select` performs **column-wise subsetting** on a data frame
+
+```r
+ivs_sub <- ivs %>% 
+  # select extracts only the columns we specify
+  select(country_jj:project, soc_pctfemleg, pctfemleg, churchill)
+```
+
+## Subsetting Data {.auto-animate}
+
+- `select` performs **column-wise subsetting** on a data frame
+
+```r
+ivs_sub <- ivs %>% 
+  # select extracts only the columns we specify
+  select(country_jj:project, soc_pctfemleg, pctfemleg, churchill)
+```
+
+- Here we extracting the columns in the range `country_jj` through `project` using the `:` operator along with `soc_pctfemleg`, `pctfemleg`, and `churchill`
+
+
+## Subsetting Data {.auto-animate}
+
+- `select` performs **column-wise subsetting** on a data frame
+
+```{r, echo=TRUE}
+ivs_sub <- ivs %>% 
+  # select extracts only the columns we specify
+  select(country_jj:project, soc_pctfemleg, pctfemleg, churchill)
+```
+
+- Here we extracting the columns in the range `country_jj` through `project` using the `:` operator along with `soc_pctfemleg`, `pctfemleg`, and `churchill`
+
+```{r, echo=TRUE}
+# Print the new object
+glimpse(ivs_sub)
+```
+
+## Filtering Data {.auto-animate}
+
+- `filter` performs **row-wise subsetting** on a data frame and returns all **rows** that match the specified condition
+
+## Filtering Data {.auto-animate}
+
+- `filter` performs **row-wise subsetting** on a data frame and returns all **rows** that match the specified condition
+
+```r
+ivs_sub_decades <- ivs_sub %>% 
+  # filter subsets the rows that match a specified condition
+  filter(year %in% c(2000, 2010, 2020))
+```
+
+## Filtering Data {.auto-animate}
+
+- `filter` performs **row-wise subsetting** on a data frame and returns all **rows** that match the specified condition
+
+```r
+ivs_sub_decades <- ivs_sub %>% 
+  # filter subsets the rows that match a specified condition
+  filter(year %in% c(2000, 2010, 2020))
+```
+
+- Here we are extracting the rows that contain 2000, 2010, or 2020 in the column `year`
+
+## Filtering Data {.auto-animate}
+
+- `filter` performs **row-wise subsetting** on a data frame and returns all **rows** that match the specified condition
+
+```{r, echo=TRUE}
+ivs_sub_decades <- ivs_sub %>% 
+  # filter subsets the rows that match a specified condition
+  filter(year %in% c(2000, 2010, 2020))
+```
+
+- Here we are extracting the rows that contain 2000, 2010, or 2020 in the column `year`
+
+```{r, echo=TRUE}
+# Print the new object
+glimpse(ivs_sub_decades)
+```
+
+## Sorting Data {.auto-animate}
+
+- `arrange` sorts the data by values in the specified column(s)
+
+## Sorting Data {.auto-animate}
+
+- `arrange` sorts the data by values in the specified column(s)
+
+```{r, echo=TRUE}
+ivs_sub_decades <- ivs_sub_decades %>% 
+  # sort the data in ascending order by country and year 
+  arrange(country_jj, year)
+
+# Print the new object
+glimpse(ivs_sub_decades)
+```
+
+## Summarizing Data {.auto-animate}
+
+- `summarize` can be used in conjunction with `group_by` to perform aggregation and obtain grouped summary statistics and cross-tabulations
+
+## Summarizing Data {.auto-animate}
+
+- `summarize` can be used in conjunction with `group_by` to perform aggregation and obtain grouped summary statistics and cross-tabulations
+
+```r
+ivs_sub_summ <- ivs_sub_decades %>% 
+  # Group the data by country and survey
+  group_by(country_jj, year, project) %>% 
+  # Summarize the data, taking the mean and sd
+  summarise(across(
+    .cols = c(soc_pctfemleg, churchill),
+    .fns = list(
+      mean = ~ mean(.x, na.rm = TRUE),
+      sd = ~ sd(.x, na.rm = TRUE)
+    )
+  ))
+```
+
+## Summarizing Data {.auto-animate}
+
+- `summarize` can be used in conjunction with `group_by` to perform aggregation and obtain grouped summary statistics and cross-tabulations
+
+```{r, echo=TRUE}
+ivs_sub_summ <- ivs_sub_decades %>% 
+  # Group the data by country and survey
+  group_by(country_jj, year, project) %>% 
+  # Summarize the data, taking the mean and sd
+  summarise(across(
+    .cols = c(soc_pctfemleg, churchill),
+    .fns = list(
+      mean = ~ mean(.x, na.rm = TRUE),
+      sd = ~ sd(.x, na.rm = TRUE)
+    )
+  ))
+```
+
+- For each column in the range `soc_pctfemleg:churchill`, we take the mean and the standard deviation within survey-years and assign it to an object `ivs_sub_summ`
+
+## References
