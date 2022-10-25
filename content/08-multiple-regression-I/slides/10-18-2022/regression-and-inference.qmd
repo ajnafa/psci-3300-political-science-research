@@ -1,0 +1,707 @@
+---
+title: "Introduction to Regression I"
+author: "A. Jordan Nafa"
+date: "October 25th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  "dagitty",
+  "ggraph",
+  "ggdag",
+  install = FALSE
+  )
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 30, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+
+shorten_dag_arrows <- function(tidy_dag, proportion){
+  # Update underlying ggdag object
+  tidy_dag$data <- dplyr::mutate(tidy_dag$data, 
+                                 xend = (1-proportion/2)*(xend - x) + x, 
+                                 yend = (1-proportion/2)*(yend - y) + y,
+                                 xstart = (1-proportion/2)*(x - xend) + xend,
+                                 ystart = (1-proportion/2)*(y-yend) + yend)
+  return(tidy_dag)
+}
+
+# Set the seed for reproducibility
+set.seed(12345)
+```
+
+## Overview
+
+::: incremental
+-   Intro to Multiple Regression Analysis
+
+    -  Review of estimators
+    
+    -   Gauss-Markov Assumptions
+
+    -   Drawing "lines of best fit" through data
+
+    -   Lines, Greek, and regression analysis
+
+    -   Counterfactuals, uncertainty, and effect existence
+
+    -   Assumptions and credibility
+
+-   Regression analysis is the primary workhorse in the social sciences
+:::
+
+$$
+\definecolor{treat}{RGB}{27,208,213}
+\definecolor{outcome}{RGB}{98,252,107}
+\definecolor{baseconf}{RGB}{244,199,58}
+\definecolor{covariates}{RGB}{178,26,1}
+\definecolor{index}{RGB}{37,236,167}
+\definecolor{timeid}{RGB}{244,101,22}
+\definecolor{mu}{RGB}{71,119,239}
+\definecolor{sigma}{RGB}{219,58,7}
+\newcommand{normalcolor}{\color{white}}
+\newcommand{treat}[1]{\color{treat} #1 \normalcolor}
+\newcommand{resp}[1]{\color{outcome} #1 \normalcolor}
+\newcommand{sample}[1]{\color{baseconf} #1 \normalcolor}
+\newcommand{covar}[1]{\color{covariates} #1 \normalcolor}
+\newcommand{obs}[1]{\color{index} #1 \normalcolor}
+\newcommand{tim}[1]{\color{timeid} #1 \normalcolor}
+\newcommand{mean}[1]{\color{mu} #1 \normalcolor}
+\newcommand{vari}[1]{\color{sigma} #1 \normalcolor}
+$$
+
+# Estimators
+
+## Properties of Estimators
+
+::: incremental
+- Estimators have no inherent use to us without properties.
+
+  - A random guess or mere dead reckoning is an estimator, albeit not a very good one.
+
+- What are the desirable properties of an estimator?
+
+  - Small Sample Properties
+
+      - Unbaisedness
+      
+      - Efficiency
+
+  - Large Sample Properties
+
+      - Consistency
+::: 
+
+## Unbaisedness
+
+::: incremental
+- If $\mathrm{E}(\hat{\theta}) = \theta$ and $\mathrm{E}(\hat{\theta}) - \theta = 0$ our estimator is said to be unbiased.
+
+- Conversely, $\mathrm{E}(\hat{\theta}) - \theta \ne 0$ implies that our estimator is biased.
+
+- Unbiasedness is a repeated sampling property that tells us something about the central tendency of the sampling distribution.
+
+- Possible sources of bias
+
+  - Non-random samples
+
+  - Model misspecification
+
+  - Endogeneity
+::: 
+
+## Efficiency
+
+::: incremental
+- An efficient estimator is that which minimizes the amount of unexplained variance such that $var(\hat{\theta}) < var(\tilde{\theta})$.
+
+  - If both $\hat{\theta}$ and $\tilde{\theta}$ are unbiased estimators, but $\hat{\theta}$ is a minimum variance estimator, then $\hat{\theta}$ is efficient.
+
+- If $\hat{\theta}$ is a linear function of sample data, then $\hat{\theta}$ is a linear estimator.
+
+  - Therefore, if $\hat{\theta}$ is efficient and linear, then in the class of linear estimator, it is the "best unbiased."
+
+  - In the case of linear regression, if the assumptions imposed by the **Gauss-Markov theorem hold**, it is the *best linear unbiased estimator*.
+::: 
+
+## Large Sample Properties
+
+::: incremental
+- Some estimators will not satisfy these properties in small samples and require a large sample size for approximately equivalent properties to hold.
+
+  - These large sample properties are called **asymptotic properties** and are directly tied to the sample size.
+  
+  - Asymptotic unbiasedness is expressed as $lim_{n\rightarrow\infty}E(\hat{\theta}_{n}) = \theta$
+  
+  - Asymptotic estimator for the variance is $$s^{2} = \frac{\Sigma(x_{i}-\bar{x})^2}{n}$$
+  
+  - These estimators are *asymptotically unbiased*. That is, as $n$ tends towards $\infty$, the bias of the estimator tends towards zero.
+:::
+
+## Consistency
+
+::: incremental
+- Consistency is a probabilistic statement $$\lim_{n\rightarrow\infty}Pr(|\hat{\theta} - \theta| < \delta) = 1  \qquad \delta > 0$$
+
+  - If both bias and variance tend towards 0 as $n$ increases, the estimator is said to be consistent.
+  
+- The central limit theorem is an asymptotic theorem.
+
+  - Asymptotic normality holds if the sampling distribution of $\hat{\theta}\rightarrow N$ as the sample size increases.
+
+- While unbiasedness can hold for any sample size; consistency is a purely asymptotic property.
+:::
+
+## Summary
+
+::: incremental
+- The uncertainty principal looms large and most of the time the closest you will ever come to an unbiased estimate of $\mathrm{E[\resp{Y} ~|~ \treat{X}]}$ is a blurry average
+
+- It is impossible to escape the bias variance trade-off 
+
+  - Depending on the inferential goals it may be desirable to accept some bias in exchange for a large reduction in variance
+  
+  - Beware of claims made by people who suggest otherwise
+  
+  - In **lots of cases** there is no unbiased estimator and it is generally advisable to conduct some form of sensitivity analysis
+  
+- Remember, stupid assumptions lead to stupid results
+::: 
+
+# Gauss-Markov and Linear Regression
+
+## Multiple Linear Regression
+
+::: incremental
+- The Gauss-Markov theorem states that if a series of assumptions hold, ordinary least squares is the the *best linear unbiased estimator*.
+
+  - The dependent variable is quantitative, continuous and unbounded such that $\resp{y} \in (-\infty, \infty)$
+
+  - There is a linear relationship between the dependent variable $Y$ and each of the predictors $X_{k} ~ \forall~ k \in \{1,2,\dots, K\}$
+
+      $$\resp{Y} = \beta_{1}X_{1} + \beta_{2}X_{2} + \dots + \beta_{k}X_{k}$$
+
+  - The error term $\epsilon$ is statistically independent of each and every predictor $X_{k}$
+
+      - This is the assumption of strict exogeneity; it is **strong** and **fundamentally untestable**
+::: 
+
+## Multiple Linear Regression
+
+::: incremental
+- The conditional variance of the error term $\epsilon$ is zero such that $$Var(\epsilon ~|~ X_{k}) = \sigma^{2} \quad \forall \quad X_{k}$$
+
+- The error term $\epsilon$ is independently distributed and uncorrelated across space and time $$Cov(\epsilon_{i}, \epsilon_{j}) = 0$$
+
+- None of the independent variables can be written as perfect linear function of another independent variable.
+
+  - This is the assumption of no multicollinearity.
+:::
+
+# Drawing Lines
+
+## Components of Regression
+
+::: incremental
+-   The **outcome variable**, **response variable**, or **dependent variable**
+
+    -   What we've been refering to thus far as $\resp{Y}$
+
+    -   The outcome is the thing we are trying to explain or predict
+
+-   The **explanatory variables**, **predictor variables**, or **independent variables**
+
+    -   What we've been refering to thus far as $\treat{X}$, $\covar{Z}$, etc.
+
+    -   Explanatory variables are things we use to explain or predict *variation* in $\resp{Y}$
+:::
+
+## Identify Variables
+
+::: incremental
+-   A study that examines the effect of conflict ($\treat{X}$) on economic development ($\resp{Y}$)
+
+-   Researchers attempt to predict the onset of genocides ($\resp{Y}$) by looking at ethnic cleavages ($\treat{X}$), revolutions in neighboring countries ($\covar{Z}$), and economic growth ($\covar{W}$)
+
+-   Netflix uses your past viewing history ($\treat{X}$), the day of the week ($\covar{W}$), and the time of the day ($\covar{Z}$) to guess which show you want to watch next ($\resp{Y}$)
+
+-   Remember the distinction between prediction, causal explanation, and description is important
+:::
+
+## Purposes of Regression
+
+::: incremental
+-   **Prediction**
+
+    -   Useful if we want to forecast the future
+
+    -   Focus is on predicting future values of $\resp{Y}$
+
+    -   Netflix trying to guess your next show or predicting who will enroll in SNAP
+
+-   **Explanation**
+
+    -   Here we want to explain effect of $\resp{Y}$ on $\treat{X}$
+
+    -   Focus is on the **effect** of $\treat{X}$ on $\resp{Y}$
+
+    -   Estimating the effect of conflict on economic growth
+:::
+
+## How Does Regression Work?
+
+::: incremental
+-   Assume $\treat{X}$ and $\resp{Y}$ are both theoretically continuous quantities
+
+    -   Make a scatter plot of the relationship between $\treat{X}$ and $\resp{Y}$
+
+-   Draw a line to approximate the relationship between $\treat{X}$ and $\resp{Y}$
+
+    -   And that could plausibly work for data not in the sample
+
+    -   Find the mathy parts of the line and then interpret the math
+
+-   Let's look at a simulated example
+:::
+
+## Simulating a DGP
+
+We assume the following Data Generation Process (DGP) where the fixed parameters $\beta_{1} = 2.5$ and $\alpha = 1.5$
+
+## Simulating a DGP
+
+We assume the following Data Generation Process (DGP) where the fixed parameters $\beta_{1} = 2.5$ and $\alpha = 1.5$
+
+$$
+\begin{align}
+\resp{Y}_{\obs{i}} &= \alpha~+~\beta_{1}\cdot \treat{X}_{\obs{i}} + \vari{\epsilon}_{\obs{i}}\\
+\mathrm{where}\\
+\treat{X} &\sim \mathrm{Uniform}(-3, 3)\\
+\vari{\epsilon} &\sim \mathrm{Normal}(0, 2.5)\\
+\end{align}
+$$
+
+## Simulating a DGP
+
+We assume the following Data Generation Process (DGP) where the fixed parameters $\beta_{1} = 2.5$ and $\alpha = 1.5$
+
+$$
+\begin{align}
+\resp{Y}_{\obs{i}} &= \alpha~+~\beta_{1}\cdot \treat{X}_{\obs{i}} + \vari{\epsilon}_{\obs{i}}\\
+\mathrm{where}\\
+\treat{X} &\sim \mathrm{Uniform}(-3, 3)\\
+\vari{\epsilon} &\sim \mathrm{Normal}(0, 2.5)\\
+\end{align}
+$$
+
+```{r, echo=TRUE}
+# Specify the fixed parameters
+alpha = 1.5; beta = 2.5
+
+# Simulate some example data
+sim_data <- tibble(
+  epsilon = rnorm(50, 0, 5),
+  X = runif(50, -5, 5),
+  Y = alpha + beta*X + epsilon
+)
+```
+
+## Scatterplot of X and Y {.auto-animate}
+
+-   We can use `lm` to fit a linear model to the simulated data and `broom::tidy` to get a quick summary of the result
+
+## Scatterplot of X and Y {.auto-animate}
+
+-   We can use `lm` to fit a linear model to the simulated data and `broom::tidy` to get a quick summary of the result
+
+```{r, echo=TRUE}
+# Fit a linear regression model
+ols <- lm(Y ~ X, data = sim_data)
+
+# Get a summary of the results
+ols_summary <- broom::tidy(ols, conf.int = TRUE)
+```
+
+## Scatterplot of X and Y {.auto-animate}
+
+-   We can use `lm` to fit a linear model to the simulated data and `broom::tidy` to get a quick summary of the result
+
+```{r, echo=TRUE}
+# Fit a linear regression model
+ols <- lm(Y ~ X, data = sim_data)
+
+# Get a summary of the results
+ols_summary <- broom::tidy(ols, conf.int = TRUE)
+
+# Get the residuals and fitted values
+fitted <- broom::augment(ols)
+```
+
+## Scatterplot of X and Y {.auto-animate}
+
+-   We can use `lm` to fit a linear model to the simulated data and `broom::tidy` to get a quick summary of the result
+
+```{r, echo=TRUE}
+# Fit a linear regression model
+ols <- lm(Y ~ X, data = sim_data)
+
+# Get a summary of the results
+ols_summary <- broom::tidy(ols, conf.int = TRUE)
+
+# Get the residuals and fitted values
+fitted <- broom::augment(ols)
+
+# Print the summary
+print(ols_summary)
+```
+
+## Scatterplot of X and Y
+
+-   Make the scatter plot in R using `{ggplot2}`
+
+```{r, echo=TRUE, eval=FALSE}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y)) +
+  # Add the data points
+  geom_point(fill = "cyan", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y"
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Plot theme settings
+  theme_minimal(
+    base_family = "serif", 
+    base_size = 24
+    ) -> base_plot
+
+# Print the plot
+print(base_plot)
+```
+
+## Scatterplot of X and Y
+
+```{r regression-sim-1, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y)) +
+  # Add the data points
+  geom_point(fill = "cyan", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y"
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme -> base_plot
+
+# Print the plot
+print(base_plot)
+```
+
+## Lines of Best Fit {.auto-animate}
+
+-   Lots of different functional forms we could consider depending on whether our DGP is linear or non-linear
+
+``` r
+# Basic linear fit
+linear_plot <- base_plot +
+   geom_smooth(method = lm, color = "white", 
+               se = FALSE, size = 2, lty = 2)
+```
+
+## Lines of Best Fit {.auto-animate}
+
+-   Lots of different functional forms we could consider depending on whether our DGP is linear or non-linear
+
+``` r
+# Basic linear fit
+linear_plot <- base_plot +
+   geom_smooth(method = lm, color = "white", 
+               se = FALSE, size = 2, lty = 2)
+ 
+# Semi-parametric spline fit
+spline_plot <- base_plot + 
+  geom_smooth(method = lm, color = "white", 
+              formula = y ~ splines::bs(x, 7), 
+              se = FALSE, size = 2)
+```
+
+## Lines of Best Fit {.auto-animate}
+
+-   Lots of different functional forms we could consider depending on whether our DGP is linear or non-linear
+
+```{r, echo=TRUE}
+# Basic linear fit
+linear_plot <- base_plot +
+   geom_smooth(method = lm, color = "white", 
+               se = FALSE, size = 2, lty = 2)
+ 
+# Semi-parametric spline fit
+spline_plot <- base_plot + 
+  geom_smooth(method = lm, color = "white", 
+              formula = y ~ splines::bs(x, 7), 
+              se = FALSE, size = 2)
+
+# Non-parametric loess fit
+loess_plot <- base_plot + 
+  geom_smooth(method = "loess", color = "white", 
+              se = FALSE, size = 2)
+```
+
+## Non-Linear Spline Fit
+
+```{r spline-fit, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+print(spline_plot)
+```
+
+## Non-Linear LOESS Fit
+
+```{r loess-fit, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+print(loess_plot)
+```
+
+## Linear Best Fit
+
+```{r linear-fit, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+print(linear_plot)
+```
+
+------------------------------------------------------------------------
+
+```{r linear-fit-residuals, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(fitted, aes(x = X, y = Y)) +
+  # Add the residuals
+  geom_segment(aes(xend = X, yend = .fitted), color = "red", size = 1) +
+  # Add the linear fit line
+  geom_smooth(method = lm, color = "white", se = FALSE, size = 2, lty = 2) +
+  # Add the data points
+  geom_point(fill = "cyan", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($\hat{y}_{i} = 1.5 + 2.5 \cdot x_{i} + \epsilon_{i}$)'),
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme
+```
+
+# Lines, Math, and Regression
+
+## Drawing Lines with Math
+
+::: incremental
+-   Remember $y = mx + b$ from high school algebra
+
+-   We can express a standard linear regression equation as $$\resp{\hat{y}}_{\obs{i}} = \hat{\alpha} + \hat{\beta}_{1} \cdot \treat{x}_{\obs{i}} + \vari{\epsilon}_{\obs{i}}$$
+    
+  -   $\resp{\hat{y}}_{\obs{i}}$ is the expected value of the response for the $\obs{i^{th}}$ observation
+  
+  -   $\hat{\alpha}$ is the intercept, typically the expected value of $\resp{y}$ when $\treat{x} = 0$
+  
+  -   $\hat{\beta}_{1}$ is the slope coefficient, the average increase in $\resp{y}$ for each one unit increase in $\treat{x}$
+  
+  -   $\vari{\epsilon}_{\obs{i}}$ is a random noise term
+::: 
+
+## Slopes and Intercepts
+
+::: incremental
+- The intercept $\hat{\alpha}$ captures the baseline value
+
+  - In the previous examples, we set $\alpha = 1.5$
+  
+- The slope $\hat{\beta}_{1}$ captures the rate of **linear change** in $y$ as $x$ increases
+
+  - In the previous examples, we set $\beta = 2.5$
+  
+- What happens if we change these values?
+:::
+
+## Slopes and Intercepts
+
+- The intercept $\hat{\alpha}$ captures the baseline value
+
+  - In the previous examples, we set $\alpha = 1.5$
+  
+- The slope $\hat{\beta}_{1}$ captures the rate of **linear change** in $y$ as $x$ increases
+
+  - In the previous examples, we set $\beta = 2.5$
+  
+- What happens if we change the values of $\alpha$ or $\beta$ in our simulation?
+
+```{r, echo=TRUE}
+# Change the fixed parameters
+new_alpha = 5; new_beta = 4
+
+# Simulate some example data
+sim_data <- sim_data %>% 
+  mutate(Y2 = new_alpha + beta*X + epsilon,
+         Y3 = alpha + new_beta*X + epsilon,
+         Y4 = new_alpha - new_beta*X + epsilon)
+```
+
+---
+
+```{r linear-fit-old, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y)) +
+  # Add the linear fit line
+  geom_smooth(method = lm, color = "white", se = FALSE, size = 2, lty = 2) +
+  # Add the data points
+  geom_point(fill = "cyan", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = 1.5 + 2.5 \cdot X_{i} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme
+```
+
+---
+
+```{r linear-fit-new-1, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y2)) +
+  # Add the linear fit line
+  geom_smooth(method = lm, color = "white", se = FALSE, size = 2, lty = 2) +
+  # Add the data points
+  geom_point(fill = "green", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = 5 + 2.5 \cdot X_{i} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme
+```
+
+---
+
+```{r linear-fit-new-2, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y3)) +
+  # Add the linear fit line
+  geom_smooth(method = lm, color = "white", se = FALSE, size = 2, lty = 2) +
+  # Add the data points
+  geom_point(fill = "pink", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = 1.5 + 4 \cdot X_{i} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme
+```
+
+
+---
+
+```{r linear-fit-new-3, dpi=300, dev.args = list(bg = 'transparent'), fig.height=9, fig.width=16, fig.align='center'}
+# Initiate the plot object
+ggplot(sim_data, aes(x = X, y = Y4)) +
+  # Add the linear fit line
+  geom_smooth(method = lm, color = "white", se = FALSE, size = 2, lty = 2) +
+  # Add the data points
+  geom_point(fill = "red", shape = 21, size = 4) +
+  # Labels for the plot
+  labs(
+    x = "X",
+    y = "Y",
+    title = latex2exp::TeX(r'($Y_{i} = 5 - 4 \cdot X_{i} + \epsilon_{i}$)')
+  ) +
+  # Adjust the x axis scales
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  # Adjust the y axis scales
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+  fig_theme
+```
+
+## More Notation
+
+::: incremental
+- We use $\beta$ and $\alpha$ to represent the unknown parameter values for the slope and intercept respectively
+
+- We use $\hat{\beta}$ and $\hat{\alpha}$ to represent our estimates of these parameters
+
+- Regression is a tool for obtaining estimates $\hat{\beta}$ and $\hat{\alpha}$ that we hope approximate the true values $\beta$ and $\alpha$
+
+- Questions?
+:::
+
+## Where We're Headed
+
+::: incremental
+- Regression with more than one independent variable
+
+  - Regression adjustment is the primary tool for dealing with confounding, but by no means the only one
+  
+  - When and how the Gauss-Markov theorem fails and what to do about it
+  
+  - Probabilistic formulations of linear regression and an introduction to applied Bayesian inference
+:::

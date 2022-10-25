@@ -1,0 +1,734 @@
+---
+title: "Foundations of Probability and Statistics"
+author: "A. Jordan Nafa"
+date: "October 18th, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r, include=FALSE}
+## Load required packages
+pacman::p_load(
+  "tidyverse",
+  "dagitty",
+  "ggraph",
+  "ggdag",
+  install = FALSE
+  )
+
+## Base theme for the figures
+fig_theme <- theme_light(base_size = 24, base_family = "serif") +
+  ## Settings sepcific to the reveal.js theme
+  theme(
+    strip.background = element_blank(),
+    panel.background = element_rect(fill = "transparent", colour = NA),
+    plot.background = element_rect(fill = "transparent", colour = NA),
+    legend.background = element_rect(fill = "transparent", colour = NA),
+    legend.key = element_rect(fill = "transparent", colour = NA),
+    plot.title = element_text(color = "white"),
+    plot.subtitle = element_text(color = "white"),
+    plot.caption = element_text(color = "white", face = "italic"),
+    axis.text = element_text(color = "white"),
+    axis.title = element_text(color = "white", face = "bold"),
+    legend.title = element_text(color = "white", face = "bold"),
+    legend.text = element_text(color = "white", face = "bold"),
+    strip.text = element_text(face = "bold"),
+    plot.caption.position = "plot",
+    legend.position = "top"
+  )
+
+shorten_dag_arrows <- function(tidy_dag, proportion){
+  # Update underlying ggdag object
+  tidy_dag$data <- dplyr::mutate(tidy_dag$data, 
+                                 xend = (1-proportion/2)*(xend - x) + x, 
+                                 yend = (1-proportion/2)*(yend - y) + y,
+                                 xstart = (1-proportion/2)*(x - xend) + xend,
+                                 ystart = (1-proportion/2)*(y-yend) + yend)
+  return(tidy_dag)
+}
+```
+
+## Overview
+
+::: incremental
+- Probability and Statistics Review
+
+  - Basic Concepts
+  
+  - Random Variables
+
+  - Sampling Distributions
+
+  - Properties of Estimators
+  
+- Theory assignment due Friday October 21st
+
+  - Remember to email me with who your group members are if applicable before you submit the assignment
+:::
+
+$$
+\definecolor{treat}{RGB}{27,208,213}
+\definecolor{outcome}{RGB}{98,252,107}
+\definecolor{baseconf}{RGB}{244,199,58}
+\definecolor{covariates}{RGB}{178,26,1}
+\definecolor{index}{RGB}{37,236,167}
+\definecolor{timeid}{RGB}{244,101,22}
+\definecolor{mu}{RGB}{71,119,239}
+\definecolor{sigma}{RGB}{219,58,7}
+\newcommand{normalcolor}{\color{white}}
+\newcommand{treat}[1]{\color{treat} #1 \normalcolor}
+\newcommand{resp}[1]{\color{outcome} #1 \normalcolor}
+\newcommand{sample}[1]{\color{baseconf} #1 \normalcolor}
+\newcommand{covar}[1]{\color{covariates} #1 \normalcolor}
+\newcommand{obs}[1]{\color{index} #1 \normalcolor}
+\newcommand{tim}[1]{\color{timeid} #1 \normalcolor}
+\newcommand{mean}[1]{\color{mu} #1 \normalcolor}
+\newcommand{vari}[1]{\color{sigma} #1 \normalcolor}
+$$
+
+# Basic Concepts
+
+## Properties of Aleatoric Probability
+
+::: incremental
+- Implies the long-run relative frequency of some event $\resp{A}$
+  
+  - $\Pr(\resp{A})$ is a real-valued function defined on a sample space
+  
+  - Probabilities have the following important properties
+  
+      - $0 \le \Pr(\resp{A}_{\obs{i}}) \le 1 \quad \forall \quad \resp{A}_{\obs{i}}$
+      
+      - $\Pr(\resp{A}_{\obs{i}} + \dots + \resp{A}_{\sample{n}}) = 1$
+      
+      - $\Pr(\resp{A}_{\obs{i}} + \dots + \resp{A}_{\sample{n}}) = \Pr(\resp{A}_{\obs{i}}) + \dots + \Pr(\resp{A}_{\sample{n}})$
+
+  - Implies that events are **exhaustive** (2) and **mutually exclusive** (3)
+::: 
+
+## Random Variables
+
+::: incremental
+- **Random Variable** 
+
+  - A variable that may take a range of values as defined by some stochastic process
+
+  - It may be observed as either **discrete** or **continuous**
+
+  - It has a **Probability Density Function (PDF)** that assigns probabilities to outcomes
+  
+  - A particular value that a random variable takes is called its **Realization**
+:::
+
+## Discrete Random Variables
+
+- **Discrete Random Variables** are those that may only take on a finite series of possible values and are described by their **moments**
+
+::: incremental
+  - **First Moment (Mean)** 
+  
+    - $\sum_{\obs{i} = 1}^{\sample{n}} \treat{x}_{\obs{i}}\cdot\Pr(\treat{X} = \treat{x}_{\obs{i}})$
+
+  - **Second Moment (Variance)** 
+  
+    - $\sum_{\obs{i} = 1}^{\sample{n}} (\treat{x}_{\obs{i}} - \mean{\mu})^{2} \cdot \Pr(\treat{X} = \treat{x}_{\obs{i}})$
+:::
+
+## Discrete Random Variables
+
+- **Discrete Random Variables** are those that may only take on a finite series of possible values and are described by their **moments**
+
+::: incremental
+  - **Third Moment (Skewness)**
+  
+    - $E\left [ \left(\frac{\treat{X}-\mean{\mu}}{\vari{\sigma}} \right)^{3} \right] = \frac{\mean{\mu}^3}{\vari{\sigma}^3}$
+
+  - **Fourth Moment (Kurtosis)** 
+  
+    - $E\left [ \left(\frac{\treat{X}-\mean{\mu}}{\vari{\sigma}} \right)^{4} \right] = \frac{\mean{\mu}^4}{\vari{\sigma}^4}$
+:::
+
+## Discrete Random Variables
+
+::: incremental
+- **Probability Mass Function** (PMF): The process by which the probability $\pi$ is assigned to a given value $i$ for a discrete random variable.
+
+  - $\pi(\treat{x}_{\obs{i}}) = \Pr(\treat{X}=\treat{x}_{\obs{i}}) \quad \forall \quad \obs{i} \in \{0,1, \dots,\sample{n}\}$
+
+  - Where $\quad 0\le \pi(\treat{x}_{\obs{i}}) \ge 1 \quad$ and $\quad \sum \pi(\treat{x}_{\obs{i}}) = 1$ 
+
+- In other words, the PMF is the function that yields the probability $\pi$ that the realization of the random variable $\treat{X}$ is equal to some observed discrete value $\treat{x}$.
+:::
+
+## Discrete Random Variables
+
+- **Probability Mass Function** (PMF): The process by which the probability $\pi$ is assigned to a given value $i$ for a discrete random variable.
+
+  - $\pi(\treat{x}_{\obs{i}}) = \Pr(\treat{X}=\treat{x}_{\obs{i}}) \quad \forall \quad \obs{i} \in \{0,1, \dots,\sample{n}\}$
+
+  - Where $\quad 0\le \pi(\treat{x}_{\obs{i}}) \ge 1 \quad$ and $\quad \sum \pi(\treat{x}_{\obs{i}}) = 1$ 
+
+- In other words, the PMF is the function that yields the probability $\pi$ that the realization of the random variable $\treat{X}$ is equal to some observed discrete value $\treat{x}$.
+
+```{r, results="hide", echo=TRUE}
+library(tidyverse)
+
+# Simulate 100000 rolls of two statistically independent dice in R
+dice <- tibble(
+  die_1 = sample(1:6, 10e3, replace = T),
+  die_2 = sample(1:6, 10e3, replace = T),
+  dice_roll = die_1 + die_2
+  )
+```
+
+
+## PMF for 10,000 Rolls of Fair Dice {.auto-animate}
+
+```r
+# Calculate the probability density function
+dice_probs <- dice %>% 
+  group_by(dice_roll) %>% 
+  summarise(totals = n()) %>% 
+  mutate(prob = totals/sum(totals))
+```
+
+## PMF for 10,000 Rolls of Fair Dice {.auto-animate}
+
+```r
+# Calculate the relative frequencies
+dice_probs <- dice %>% 
+  group_by(dice_roll) %>% 
+  summarise(totals = n()) %>% 
+  mutate(prob = totals/sum(totals))
+  
+# Plot the PMF for each outcome of the dice
+ggplot(dice_probs, aes(x = dice_roll, y = prob, fill = as_factor(dice_roll))) +
+  # Add a barplot geom to ggplot object
+  geom_bar(stat = "identity", show.legend = F, col = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(2, 12, 1)) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 0.18, 0.03),
+    limits = c(0, 0.18),
+    expand = c(0, 0)
+    ) +
+  # Add labels to the plot
+  labs(
+    title = "Probability Mass Function",
+    x = "Value of Dice Roll",
+    y = "Probability"
+    )
+```
+
+## PMF for 10,000 Rolls of Fair Dice
+
+```{r dice-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=10, fig.align='center'}
+# Calculate the relative frequencies
+dice_probs <- dice %>% 
+  group_by(dice_roll) %>% 
+  summarise(totals = n()) %>% 
+  mutate(prob = totals/sum(totals))
+  
+# Plot the PMF for each outcome of the dice
+ggplot(dice_probs, aes(x = dice_roll, y = prob, fill = as_factor(dice_roll))) +
+  # Add a barplot geom to ggplot object
+  geom_bar(stat = "identity", show.legend = F, col = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(2, 12, 1)) +
+  # Adjust the parameters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 0.18, 0.03),
+    limits = c(0, 0.18),
+    expand = c(0, 0)
+    ) +
+  # Add labels to the plot
+  labs(
+    x = "Value of Dice Roll",
+    y = "Probability"
+    ) + 
+  fig_theme
+```
+
+## Continuous Random Variables
+
+::: incremental
+- **Continuous Random Variables** are continuous and unbounded, taking on an infinite number of possible values.
+
+- The probability of observing any specific realization of $\treat{X}$ is effectively zero.
+
+- We instead focus on the probability that $\treat{X}$ falls within a given range of values such that $\Pr(\treat{X} \ge \treat{x}_{\obs{i}})$ or $\Pr(\treat{X} \le \treat{x}_{\obs{i}})$.
+:::
+
+## Continuous Random Variables
+
+::: incremental
+- **Probability Density Function (PDF)** is the function that determines the realization of a continuous random variable.
+
+- The PDF gives the *relative likelihood of drawing any specific value, and the exact probability of drawing a value within a given range.*
+
+- The PDF of a random variable $\treat{X}$ in one dimension is generally given by
+
+  $$\Pr(\treat{X} \in [a,b])=\int^{a}_{b} f(\treat{x})d\treat{x}$$
+  
+- The random variable $\treat{X}$ has a probability of falling within the range of the lower bound $a$ and upper bound $b$ that is derived from the definite integral of the probability distribution function from $a$ to $b$
+  
+:::
+
+## PDF of the Normal Distribution {.auto-animate}
+
+- First we need to set the parameters of the random number generator. This ensures that the numbers randomly generated from a given distribution are reproducible on the same machine.
+
+## PDF of the Standard Normal Distribution {.auto-animate}
+
+- First we need to set the parameters of the random number generator. This ensures that the numbers randomly generated from a given distribution are reproducible on the same machine.
+
+```r
+#Set the parameters of the random number generator
+set.seed(666)
+```
+
+## PDF of the Normal Distribution {.auto-animate}
+
+- First we need to set the parameters of the random number generator. This ensures that the numbers randomly generated from a given distribution are reproducible on the same machine.
+
+```r
+#Set the parameters of the random number generator
+set.seed(666)
+```
+
+- Next we need to generate 10,000 random values from a standard normal distribution with $\mean{\mu} = 0$ and $vari{\sigma} = 1$.
+
+## PDF of the Normal Distribution {.auto-animate}
+
+- First we need to set the parameters of the random number generator. This ensures that the numbers randomly generated from a given distribution are reproducible on the same machine.
+
+```r
+#Set the parameters of the random number generator
+set.seed(666)
+```
+
+- Next we need to generate 10,000 random values from a standard normal distribution with $\mean{\mu} = 0$ and $vari{\sigma} = 1$.
+
+```r
+# Generate a tibble of 10,000 random values from a normal distribution
+stdnorm_df <- tibble(
+  std_rnorm = rnorm(10e3, mean = 0, sd = 1),
+  std_dnorm = dnorm(std_rnorm, mean = 0, sd = 1),
+  std_pnorm = pnorm(std_rnorm, mean = 0, sd = 1)
+  )
+```
+
+## PDF of the Normal Distribution
+
+- We can then plot the distribution using `{ggplot}`
+
+```r
+# Plot the PDF of the normal distribution
+ggplot(stdnorm_df, aes(x = std_rnorm, y = std_dnorm)) +
+  # Add a line geom for the PDF
+  geom_line(size = 2, color = "red") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(-4, 4, 1), limits = c(-3.5, 3.5)) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 0.45, 0.05),
+    limits = c(0, 0.45),
+    expand = c(0.005, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "Z-Score", y = "Density")
+```
+
+## PDF of the Normal Distribution
+
+```{r normal-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=10, fig.align='center'}
+#Set the parameters of the random number generator
+set.seed(666)
+
+# Generate a tibble of 10,000 random values from a normal distribution
+stdnorm_df <- tibble(
+  std_rnorm = rnorm(10e3, mean = 0, sd = 1),
+  std_dnorm = dnorm(std_rnorm, mean = 0, sd = 1),
+  std_pnorm = pnorm(std_rnorm, mean = 0, sd = 1)
+  )
+
+# Plot the PDF of the normal distribution
+ggplot(stdnorm_df, aes(x = std_rnorm, y = std_dnorm)) +
+  # Add a line geom for the PDF
+  geom_line(size = 3, color = "red") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(-4, 4, 1), limits = c(-3.5, 3.5)) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 0.45, 0.05),
+    limits = c(0, 0.45),
+    expand = c(0.005, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "Z-Score", y = "Density") +
+  fig_theme
+```
+
+## Continuous Random Variables
+
+::: incremental
+- To obtain the probabilities we turn to the **Cumulative Distribution Function (CDF)** of a continuous random variable.
+
+  - We encounter the same issue of the exact probability of observing a given value of $\treat{X}$ being extremely small
+
+    - The general equation for the CDF of a continuous random variable can be expressed as
+    $$\Pr(\treat{X}\le \treat{x}) = F(\treat{x}) = \int^{\treat{x}}_{-\infty}f(\treat{x})d\treat{x}$$
+
+  - Here $f(\treat{x})$ represents the PDF while $F(\treat{x})$ represents the CDF
+:::
+
+## CDF of the Normal Distribution
+
+```r
+# Plot the CDF of the normal distribution
+ggplot(stdnorm_df, aes(x = std_rnorm, y = std_pnorm)) +
+  #Add a line geom for the CDF
+  geom_line(size = 2, color = "red") +
+  #Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(-4, 4, 1), limits = c(-3.5, 3.5)) +
+  #Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.2),
+    limits = c(0, 1),
+    expand = c(0.005, 0)
+    ) +
+  #Add labels to the plot
+  labs(x = 'Z-Score', y = 'Pr(X \u2264 x)')
+```
+
+## CDF of the Normal Distribution
+
+```{r cdf-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=10, fig.align='center'}
+# Plot the CDF of the normal distribution
+ggplot(stdnorm_df, aes(x = std_rnorm, y = std_pnorm)) +
+  #Add a line geom for the CDF
+  geom_line(size = 2, color = "red") +
+  #Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(-4, 4, 1), limits = c(-3.5, 3.5)) +
+  #Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 1, 0.2),
+    limits = c(0, 1),
+    expand = c(0.005, 0)
+    ) +
+  #Add labels to the plot
+  labs(x = 'Z-Score', y = 'Pr(X \u2264 x)') +
+  fig_theme
+```
+
+## Continuous Random Variables
+
+::: incremental
+- In the classic linear model it is assumed the outcome is continuous and unbounded.
+
+  - When the outcome of interest is nominal, ordinal, or count data regression will fail us in certain ways and to varying degrees.
+
+  - We'll spend the next few weeks introducing regression and thinking about when it fails and what to do about it.
+::: 
+  
+# Sampling Distributions
+
+## Sampling Distributions
+
+::: incremental
+- The **Central Limit Theorem** is one of the most foundation concepts in modern statistics and is core to *frequency-based* conceptions of probability.
+
+  - The CLT states that as the size of the **sampling distribution** increases, the distribution of the the sample means will tend towards normality
+
+  - More precisely, if the sum of **independently and identically distributed** variables has a mean $\mean{\mu}$ and a finite variance $\vari{\sigma}^{2}$, it will approximate a normal distribution
+
+  - To sustain statistical inference under a frequency-based framework, we effectively hedge all of our bets on the central limit theorem
+::: 
+  
+## Sampling Distributions {.auto-animate}
+
+::: incremental
+- The **sampling distribution** of a statistic is the probability distribution of a statistic obtained from repeated sampling.
+
+  - Suppose our statistic is $\theta$
+  
+  - Let's begin by simulating 100,000 observations to represent our population
+::: 
+
+## Sampling Distributions {.auto-animate}
+
+- The **sampling distribution** of a statistic is the probability distribution of a statistic obtained from repeated sampling.
+
+  - Suppose our statistic is $\theta$
+  
+  - Let's begin by simulating 100,000 observations from a Gamma distribution to represent our population
+  
+```r
+# Simulate 100,000 observations from a gamma distribution
+gamma_dist <- tibble(r_dist = rgamma(100000, 5, 5))
+```
+
+## Sampling Distributions {.auto-animate}
+
+- The **sampling distribution** of a statistic is the probability distribution of a statistic obtained from repeated sampling.
+
+  - Suppose our statistic is $\theta$
+  
+- Let's begin by simulating 100,000 observations from a Gamma distribution to represent our population
+  
+```r
+# Simulate 100,000 observations from a gamma distribution
+gamma_dist <- tibble(r_dist = rgamma(100000, 5, 5))
+```
+
+- Next let's retrieve the values for the parameters of our population.
+
+## Sampling Distributions {.auto-animate}
+
+- The **sampling distribution** of a statistic is the probability distribution of a statistic obtained from repeated sampling.
+
+  - Suppose our statistic is $\theta$
+  
+- Let's begin by simulating 100,000 observations from a Gamma distribution to represent our population
+  
+```r
+# Simulate 100,000 observations from a gamma distribution
+gamma_dist <- tibble(r_dist = rgamma(100000, 5, 5))
+```
+
+- Next let's retrieve the values for the parameters of our population
+
+```r
+# Mean of the distribution
+print(mu <- mean(gamma_dist$r_dist))
+```
+
+## Sampling Distributions {.auto-animate}
+
+- The **sampling distribution** of a statistic is the probability distribution of a statistic obtained from repeated sampling.
+
+  - Suppose our statistic is $\theta$
+  
+- Let's begin by simulating 100,000 observations from a Gamma distribution to represent our population
+  
+```{r, echo=TRUE}
+# Simulate 100,000 observations from a gamma distribution
+gamma_dist <- tibble(r_dist = rgamma(100000, 5, 5))
+```
+
+- Next let's retrieve the values for the parameters of our population.
+
+```{r, echo=TRUE}
+# Mean of the distribution
+print(mu <- mean(gamma_dist$r_dist))
+
+# Standard deviation of the distribution
+print(sigma <- sd(gamma_dist$r_dist))
+```
+
+## Sampling Distributions Using R
+
+```r
+# Plot a histogram of the specified gamma distribution
+ggplot(gamma_dist, aes(x = r_dist)) +
+  # Add a histogram geom
+  geom_histogram(binwidth = 0.10, fill = "aquamarine", color = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(0, 4, 0.5), limits = c(0, 4)) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 10000, 2000),
+    limits = c(0, 10000),
+    expand = c(0.006, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "", y = "Frequency")
+```
+
+## Sampling Distributions Using R
+
+```{r sampdist-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=10, fig.align='center'}
+# Plot a histogram of the specified gamma distribution
+ggplot(gamma_dist, aes(x = r_dist)) +
+  # Add a histogram geom
+  geom_histogram(binwidth = 0.10, fill = "aquamarine", color = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(breaks = seq(0, 4, 0.5), limits = c(0, 4)) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 10000, 2000),
+    limits = c(0, 10000),
+    expand = c(0.006, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "Value", y = "Frequency") +
+  fig_theme
+```
+
+## Sampling Distributions Using R
+
+::: incremental
+- The central limit theorem says that the distribution of "draws" of some statistic from the population will tend to a normal distribution even if the population itself is non-normal
+  
+  - Suppose I took one sample of size 500?
+::: 
+
+## Sampling Distributions Using R
+
+- The central limit theorem says that the distribution of "draws" of some statistic from the population will tend to a normal distribution even if the population itself is non-normal
+  
+  - Suppose I took one sample of size 500?
+  
+```{r, echo=TRUE}
+#Randomly sample 500 observations from the population
+gamma_dist_500 <- gamma_dist %>% 
+  # Randomly sample from the population distribution with replacement
+  slice_sample(n = 500, replace = T)
+
+# Check the sample mean
+mean(gamma_dist_500$r_dist)
+
+# Check the sample standard deviation
+sd(gamma_dist_500$r_dist)
+```
+
+## Sampling Distributions Using R
+
+- Now suppose we were to take 500 random samples of size 100?
+
+```{r, echo=TRUE}
+# Create an empty vector with length 500
+gamma_dist_500 <- rep(NA, length.out = 500)
+
+# Fill the matrix with the mean from 500 random samples of n = 100
+for (i in seq_along(gamma_dist_500)) {
+ gamma_dist_500[i] <- mean(sample(gamma_dist$r_dist, 100, replace = T))
+}
+
+#Check the mean of the sampling distribution
+mean(gamma_dist_500)
+```
+
+
+## Sampling Distributions Using R
+
+```r
+# Plot a histogram of the specified sample distribution
+ggplot(as_tibble(gamma_dist_500), aes(x = value)) +
+  # Add a histogram geom
+  geom_histogram(binwidth = 0.01, fill = "cyan", color = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(
+    breaks = seq(0.8, 1.2, 0.05), 
+    limits = c(0.8, 1.2)
+    ) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 50, 5),
+    limits = c(0, 50),
+    expand = c(0.006, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "\u03B8", y = "Frequency")
+```
+
+## Sampling Distributions Using R
+
+```{r sampdistrep-example, echo=FALSE, dpi=300, dev.args = list(bg = 'transparent'), fig.height=7, fig.width=10, fig.align='center'}
+# Plot a histogram of the specified sample distribution
+ggplot(as_tibble(gamma_dist_500), aes(x = value)) +
+  # Add a histogram geom
+  geom_histogram(binwidth = 0.01, fill = "cyan", color = "black") +
+  # Adjust the paramters of the x axis
+  scale_x_continuous(
+    breaks = seq(0.8, 1.2, 0.05), 
+    limits = c(0.8, 1.2)
+    ) +
+  # Adjust the paramters of the y axis
+  scale_y_continuous(
+    breaks = seq(0, 50, 5),
+    limits = c(0, 50),
+    expand = c(0.006, 0)
+  ) +
+  # Add labels to the plot
+  labs(x = "\u03B8", y = "Frequency") +
+  fig_theme
+```
+
+## Sampling Distributions
+
+::: incremental
+- Our sampling distribution is the distribution of means obtained from repeated sampling
+
+  - The mean of the sampling distribution is approximately 1.00
+
+  - The variability around the mean is the standard deviation
+
+  - Inferentially, the standard error reported to you in a frequentist regression output is "the standard deviation of the sampling distribution."
+  
+- The problem of estimation is we generally only have one sample with which to work
+
+  - The central limit theorem and magical thinking get you reasonably close to the normal distribution necessary for sample-based inference
+:::
+
+# Estimators
+
+## Estimators
+
+::: incremental
+- The statistic $\hat{\theta}$ is our estimator
+
+  - Often, we're interested in the first moment of the sampling distribution
+
+  - The first moment of the sampling distribution is its **expected value**
+  
+      - $\mathrm{E}[X] = \sum_{\obs{i} = 1}^{\sample{n}} \treat{x}_{\obs{i}}\cdot\Pr(\treat{X} = \treat{x}_{\obs{i}})$
+      
+  - Formally, an estimator can be defined as
+  
+      - $\hat{\theta} = \mathrm{Estimand} + \mathrm{Bias} + \mathrm{Noise}$
+::: 
+
+
+## Properties of Estimators
+
+::: incremental
+- Estimators have no inherent use to us without properties
+
+  - A random guess or mere dead reckoning is an estimator, albeit not a very good one
+
+- What are the desirable properties of an estimator?
+
+  - Small Sample Properties
+
+      - **Unbaisedness**
+      
+      - **Efficiency**
+
+  - Large Sample Properties
+
+      - **Consistency**
+      
+- We will pick back up here on Thursday!
+:::
