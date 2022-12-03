@@ -39,7 +39,7 @@ knitr::opts_chunk$set(
 
 # Getting Started with Stan
 
-Much of this course is taught from a primarily Bayesian perspective which provides a principled and intuitive framework for quantitative analysis and probabilistic reasoning. For much of what we cover in terms of application, we will be using the R package [`{brms}`](https://paul-buerkner.github.io/brms/) which provides a user-friendly and computationally efficient interface to Stan's implementation of the No-U-Turn Sampler, a Hamiltonian Markov Chain Monte Carlo algorithm [@Buerkner2017; @Buerkner2018; @Carpenter2017; @Hoffman2014]. After you have installed R, Rtools/Xcode, and RStudio as detailed on the "Getting Started with R" page, this guide will walk you through the process of installing Stan, [`{brms}`](https://paul-buerkner.github.io/brms/), and the necessary dependencies. You can download all of the code shown in this document in the form of a script or copy and paste the code shown here into your RStudio session by clicking in the top right corner of each code block.
+Much of this course is taught from a primarily Bayesian perspective which provides a principled and intuitive framework for quantitative analysis and probabilistic reasoning. For much of what we cover in terms of application, we will be using the R package [`{brms}`](https://paul-buerkner.github.io/brms/) which provides a user-friendly and computationally efficient interface to Stan's implementation of dynamic Hamiltonian Monte Carlo, a Markov Chain Monte Carlo algorithm [@Buerkner2017; @Buerkner2018; @Carpenter2017; @Hoffman2014]. After you have installed R, Rtools/Xcode, and RStudio as detailed on the "Getting Started with R" page, this guide will walk you through the process of installing Stan, [`{brms}`](https://paul-buerkner.github.io/brms/), and the necessary dependencies. You can download all of the code shown in this document in the form of a script or copy and paste the code shown here into your RStudio session by clicking in the top right corner of each code block.
 
 ## Preliminaries
 
@@ -173,10 +173,10 @@ Once we have successfully installed `{cmdstanr}`, we can use the `check_cmdstan_
 cmdstanr::check_cmdstan_toolchain(fix = TRUE)
 ```
 
-After verifying the toolchain configuration is correct, we can run the following code to download and compile the latest release of cmdstan, which at the time of writing this tutorial is version 2.30.1.
+After verifying the toolchain configuration is correct, we can run the following code to download and compile the latest release of cmdstan, which at the time of writing this tutorial is version 2.31.
 
 ```{r}
-# Install cmdstan version 2.30.1
+# Install cmdstan version 2.31
 cmdstanr::install_cmdstan(
   cores = parallel::detectCores(logical = FALSE),
   overwrite = TRUE,

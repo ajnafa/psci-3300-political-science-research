@@ -144,16 +144,16 @@ mpg_priors <- prior(student_t(10, 20.09, 2), class = Intercept) +
 bayes_mpg_fit <- brm(
   formula = mpg ~ wt + log_hp, # Formula describing the model
   family = gaussian(), # Linear regression
-  prior = mpg_priors, # Priors on the parameters
   data = mtcars, # Data for the model
-  cores = 4, # Number of cores to use for parallel chains
+  prior = mpg_priors,
+  cores = parallel::detectCores(logical = FALSE), # Number of cores to use
   chains = 4, # Number of chains, should be at least 4
   iter = 2000, # Total iterations = Warm-Up + Sampling
   warmup = 1000, # Warm-Up Iterations
   refresh = 0, # Disable printing progress
   save_pars = save_pars(all = TRUE),
   backend = "cmdstanr", # Requires cmdstanr and cmdstan be installed
-  silent = 2 # Set to 0 or 1 to print compiler messages
+  silent = 2
 )
 
 ## Print a summary of the output
