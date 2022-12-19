@@ -1,0 +1,252 @@
+---
+title: "Hypothesis Testing and Theory Evaluation"
+author: "A. Jordan Nafa"
+date: "November 1st, 2022"
+institute: "University of North Texas"
+subtitle: "PSCI 3300.003 Political Science Research Methods"
+format: 
+  revealjs:
+    theme: blood
+    highlight-style: monokai
+    toc-depth: 2
+    self-contained: true
+    citations-hover: true
+    code-link: true
+    transition: "fade"
+    code-block-bg: "#272822"
+    logo: "../../../../inst/figures/psci-3300-dag-trimmed-hex.png"
+    css: "../../../../assets/slide-style.css"
+    include-in-header: "../../../../assets/math-colors.js"
+linkcolor: "#FF3030"
+editor: visual
+width: 1360
+height: 800
+bibliography: "../../../../assets/references.bib"
+csl: "../../../../assets/apsa.csl"
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  eval = TRUE,
+  comment = ' ',
+  fig.path = 'figs/',
+  fig.align = "center",
+  fig.process = function(x) {
+    x2 = sub('-\\d+([.][a-z]+)$', '\\1', x)
+    if (file.rename(x, x2))
+      x2
+    else
+      x
+  }
+)
+```
+
+## Overview
+
+::: incremental
+-   Introduction to approaches to hypothesis testing and theory evaluation
+
+    -   History of hypothesis testing in inferential statistics
+
+    -   Perils and pitfalls of the classical approach
+
+-   Introduction to Bayesian Inference
+
+    -   Priors, Posteriors, and Bayes Theorem
+:::
+
+## Definitions
+
+::: incremental
+-   A classical p-value **is**
+
+    -   the probability of observing a result at least as extreme under the assumption the null hypothesis $\mathrm{H_{0}}$ is true
+
+-   A classical p-value **is not**
+
+    -   the probability an effect exists
+
+    -   the probability the null hypothesis is true
+
+    -   anything else that isn't the definition provided above
+:::
+
+## Error Probabilities
+
+|                   | Accept H~0~                       | Reject H~0~                  |
+|-------------------|-----------------------------------|------------------------------|
+| **H~0~ is True**  | Correct Decision ($1-\alpha$)     | Type I Error ($\alpha$)      |
+| **H~0~ is False** | Type II Error ($\beta$)           | Correct Decision ($1-\beta$) |
+
+::: incremental
+- **Type I Error**
+
+    - The probability of rejecting a null hypothesis $\mathrm{H_{0}}$ when it is in fact true
+    
+- **Type II Error**
+
+    - The probability of failing to reject a null hypothesis $\mathrm{H_{0}}$ when it is in fact false
+    
+- $\alpha$ is the "significance level" and is usually fixed at .05 in practice because Fisher said so once
+:::
+
+## Fisher's Test of Significance
+
+Fisher [-@Fisher1925; -@Fisher1925a; @Fisher1955] proposed a *test of significance* to assess whether an observed result is unlikely to arise due purely to random chance, which can be summarized as follows
+
+::: incremental
+1.  Identify the null hypothesis $\mathrm{H_{0}}$
+
+2.  Determine the appropriate test statistic $T$ and its distribution under the assumption $\mathrm{H_{0}}$ is true
+
+3.  Estimate the test statistic $t$ from the observed data
+
+4.  Determine the *achieved significance level* that corresponds to $t$ under the assumption $\mathrm{H_{0}}$ is true
+
+5.  Reject $\mathrm{H_{0}}$ if the *achieved significance level* is below an arbitrary threshold; otherwise **reach no conclusion**
+:::
+
+## Neyman-Pearson Hypothesis Testing
+
+In a direct challenge to Fisher's proposed test, Neyman and Pearson [-@Neyman1933a; -@Neyman1933b] proposed a rigid decision theoretic framework for hypothesis testing, which can be summarized as follows
+
+::: incremental
+1.  Identify a hypothesis of interest, $\mathrm{H_{a}}$, and its complement hypothesis, $\mathrm{H_{0}}$.
+
+2.  Determine the appropriate test statistic $T$ and its distribution under the assumption that $\mathrm{H_{0}}$ is true.
+
+3.  Define a *significance level* $\alpha$, and determine the corresponding critical value $t^{*}$ of the test statistic assuming that $\mathrm{H_{0}}$ is true
+
+4.  Estimate the test statistic $t$ from the data
+
+5.  Reject $\mathrm{H_{0}}$ and accept $\mathrm{H_{a}}$ if the test statistic $t$ is further than $t^{*}$ from the expected value of the test statistic under the assumption $\mathrm{H_{0}}$ is true. Otherwise, accept $\mathrm{H_{0}}$.
+:::
+
+## Neyman-Pearson Hypothesis Testing
+
+::: incremental
+-   The Neyman-Pearson approach is *decision theoretic* in that if strictly followed, it represents a [*cost function*](https://en.wikipedia.org/wiki/Neyman%E2%80%93Pearson_lemma) that attempts to minimize the long-run type I error rate, or the chance of making an incorrect decision.
+
+-   For conclusions to be valid, $\alpha$ and most aspects of analysis must be fixed prior to data collection and multiple-comparisons corrections may be required depending on the analysis.
+
+-   The probability of rejecting $\mathrm{H_{0}}$ when it is in fact true is called **power** and is defined as $1-\beta$ where $\beta$ represents the probability of a type II error
+
+-   Approach can only be used to facilitate a **dichotomous decision**, either we reject $\mathrm{H_{0}}$ in favor of $\mathrm{H_{0}}$ or we fail to reject $\mathrm{H_{0}}$
+
+-   In passing, note that if the goal is to decide between two competing hypotheses, NP testing tends to perform poorly [@Christensen2005].
+:::
+
+## Null Hypothesis Significance Testing
+
+::: incremental
+-   Null Hypothesis Significance Testing (NHST) is an unholy hybrid of the Neyman-Pearson hypothesis test and Fisher's test of significance.
+
+    -   Decision-element of rejecting a null hypothesis in favor of an alternative taken from the NP framework and concept of "statistical significance" taken from the Fisherian test.
+
+    -   Reformulates *modus tollens* or *proof by contradiction* as a probabilistic axiom which tends to fail spectacularly in practice.
+:::
+
+## NHST and Proof by Contradiction {.smaller}
+
+::: {style="font-size: 28pt"}
+Proof by contradiction, a form of valid deductive logical reasoning, can be expressed as follows
+:::
+
+::: columns
+::: {.column width="50%"}
+If A then B
+
+B not observed
+
+Therefore not A
+:::
+
+::: {.column width="50%"}
+If $\mathrm{H_{0}}$ is true then the data will follow an expected pattern
+
+The data do not follow the expected pattern
+
+Therefore $\mathrm{H_{0}}$ is false
+:::
+:::
+
+## NHST and Proof by Contradiction {.smaller}
+
+::: {style="font-size: 28pt"}
+Proof by contradiction, a form of valid deductive logical reasoning, can be expressed as follows
+:::
+
+::: columns
+::: {.column width="50%"}
+If A then B
+
+B not observed
+
+Therefore not A
+:::
+
+::: {.column width="50%"}
+If $\mathrm{H_{0}}$ is true then the data will follow an expected pattern
+
+The data do not follow the expected pattern
+
+Therefore $\mathrm{H_{0}}$ is false
+:::
+:::
+
+::: {style="font-size: 28pt"}
+NHST reformulates these deterministic logical statements as probabilistic assertions which renders them invalid.
+:::
+
+::: columns
+::: {.column width="50%"}
+If A then B is highly likely
+
+B not observed
+
+Therefore A is highly unlikely
+:::
+
+::: {.column width="50%"}
+If a person is an American then it is highly unlikely she is a member of Congress
+
+The person is a member of Congress
+
+Therefore it is highly unlikely she is an American.
+:::
+:::
+
+## Comparison of Approaches
+
+![Figure 1. Comparison of Frequentist Approaches to Hypothesis Testing](images/frequentist-flavors.png){fig-align="center"}
+
+## Statistical Significance
+
+::: incremental
+- When a p-value is less than $\alpha$ it often referred to as "statistically significant"
+
+- In practice, all this means is that someone is telling you they are surprised by a result
+
+    - It doesn't mean that anything important has been discovered
+    
+    - It doesn't say anything about the size of an effect or its *substantive significance*
+    
+    - It's meaning is entirely context-specific and is difficult to assess without domain knowledge
+    
+- Since p-values are mostly just a crude proxy for sample size, as $n \longrightarrow \infty$ most things are "statistically significant"
+::: 
+
+## Where We're Headed
+
+::: incremental
+-   Introduction to Bayesian Inference
+
+    -   Priors, Posteriors, and Bayes Theorem
+    
+    -   Estimation and Uncertainty
+::: 
+
+## References
